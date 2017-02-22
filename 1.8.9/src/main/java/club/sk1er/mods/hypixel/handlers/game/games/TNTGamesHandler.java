@@ -9,26 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Mitchell Katz on 2/21/2017.
+ * Created by Mitchell Katz on 2/22/2017.
  */
-public class ArcadeGameHandler extends Sk1erGameHandler {
+public class TNTGamesHandler extends Sk1erGameHandler{
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();
-        quests.add(HypixelQuest.fromBackend("arcade_gamer"));
-        quests.add(HypixelQuest.fromBackend("arcade_winner"));
-        quests.add(HypixelQuest.fromBackend("arcade_specialist"));
+        quests.add(HypixelQuest.fromBackend("tnt_daily_play"));
+        quests.add(HypixelQuest.fromBackend("tnt_daily_win"));
+        quests.add(HypixelQuest.fromBackend("tnt_weekly_play"));
         return quests;
+
     }
 
     @Override
     public boolean isGame(String game) {
-        game=game.toLowerCase();
-        return game.contains("arcade") || game.contains("arcade games") || game.contains("hypixel says");
+        return game.equalsIgnoreCase("tnt") || game.equalsIgnoreCase("tntgames") || game.equalsIgnoreCase("tnt games") || game.equalsIgnoreCase("explosive") || game.equalsIgnoreCase("explosive games");
     }
 
     @Override
     public void handlePlayerStats(JSONObject player) {
-        ChatUtils.sendMessage("Not finished :(");
+        //TODO add specific handler
+        ChatUtils.sendMessage("This is not finished");
     }
 }

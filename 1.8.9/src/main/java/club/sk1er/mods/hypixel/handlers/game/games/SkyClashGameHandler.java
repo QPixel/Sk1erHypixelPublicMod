@@ -3,6 +3,7 @@ package club.sk1er.mods.hypixel.handlers.game.games;
 import club.sk1er.mods.hypixel.handlers.game.Sk1erGameHandler;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.handlers.stats.games.SimpleStatsHandler;
+import net.hypixel.api.GameType;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,6 +33,6 @@ return quests;
     @Override
     public void handlePlayerStats(JSONObject player) {
         //TODO add more to this
-        SimpleStatsHandler.handleStatic(player,"SkyClash");
+        SimpleStatsHandler.handleStatic(player, GameType.SKYCLASH.getDatabaseName());
     }
 }

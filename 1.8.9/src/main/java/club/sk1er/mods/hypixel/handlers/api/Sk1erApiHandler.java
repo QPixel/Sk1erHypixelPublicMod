@@ -44,7 +44,7 @@ public class Sk1erApiHandler {
     private JSONObject specialBoosterCache = new JSONObject();
 
     public void genQuests() {
-        if(QUEST_INFO ==null) {
+        if (QUEST_INFO == null) {
             QUESTS = new JSONObject(rawExpectJson("http://sk1er.club/css/Quests.txt"));
             QUEST_INFO = new JSONObject(rawExpectJson("http://sk1er.club/css/Quest_info.json"));
         }
@@ -176,14 +176,13 @@ public class Sk1erApiHandler {
     }
 
 
-
     public void pullPlayerProfile() {
         JSONObject USER = new JSONObject(rawExpectJson("http://sk1er.club/data/" + Minecraft.getMinecraft().thePlayer.getName() + "/" + SK1ER_API_KEY + "/main"));
         if (USER.has("success") && USER.getBoolean("success")) {
             try {
                 this.USER = USER;
                 JSONObject player = USER.getJSONObject("player");
-              //  ChatUtils.sendMessage("starting quests");
+                //  ChatUtils.sendMessage("starting quests");
 //                if (player.has("quests")) {
 //                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
 //                    String today = format.format(new Date(System.currentTimeMillis()));
@@ -209,14 +208,12 @@ public class Sk1erApiHandler {
 //                        }
 //                    }
 //                }
-              //  ChatUtils.sendMessage("Done with quests!");
+                //  ChatUtils.sendMessage("Done with quests!");
             } catch (Exception e) {
-    mod.newError(e);
+                mod.newError(e);
             }
 
-        } else
-
-        {
+        } else {
             if (USER.optString("cause").contains("key")) {
                 ChatUtils.sendMessage("Your Key has expired! Attempting to generate a new one!");
             } else
