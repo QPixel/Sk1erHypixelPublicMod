@@ -25,6 +25,9 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(GUILD_CHAT_CUSTOM_PREFIX);
         v.add(GUILD_CHAT_OFFICER_PREFIX);
         v.add(GUILD_CHAT_MASTER_PREFIX);
+        v.add(SHOW_GUILD_CHAT);
+        v.add(SHOW_PARTY_CHAT);
+        v.add(SHOW_DIRECT_MESSAGES);
 
     }
 

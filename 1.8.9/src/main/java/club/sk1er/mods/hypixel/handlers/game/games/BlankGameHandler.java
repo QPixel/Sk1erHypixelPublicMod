@@ -24,6 +24,6 @@ public class BlankGameHandler extends Sk1erGameHandler{
 
     @Override
     public void handlePlayerStats(JSONObject player) {
-        ChatUtils.sendMessage("Black game handle stats reference!!!!");
+        ChatUtils.sendMessage("Blank game handle stats reference!!!!");
     }
 }
