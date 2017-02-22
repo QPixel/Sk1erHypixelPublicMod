@@ -12,7 +12,7 @@ public enum CValue {
     GUILD_CHAT_OFFICER_PREFIX("GUILD_CHAT_OFFICER_PREFIX","&c[O]&f","*","Officer prefix", "The prefix that is put before an officers' name in guild chat when guild ranks are displayed"),
     GUILD_CHAT_MEMBER_PREFIX("GUILD_CHAT_MEMBER_PREFIX","&2[M]&f","*", "Member prefix", "The prefix that is put before a members' name in guild chat when guild ranks are displayed"),
     GUILD_CHAT_SHOW_RANK("GUILD_CHAT_SHOW_RANK", true, "true,false","Show ranks in guild chat","Decides if rank of the user in the guild is shown in guild chat"),
-    GUILD_CHAT_CUSTOM_PREFIX("GUILD_CHAT_CUSTOM_PREFIX", "default", "*","Custom header to guild chat messages", "When toggled on, this will show before any guild message"),
+    GUILD_CHAT_CUSTOM_PREFIX("GUILD_CHAT_CUSTOM_PREFIX", "&aG&6u&ci&bl&ad &2> ", "*","Custom header to guild chat messages", "When toggled on, this will show before any guild message"),
     GUILD_CHAT_START("GUILD_CHAT","NAME","CUSTOM,DEFAULT,SIMPLE","Header to a guild chat message", "This is the first thing in the line of chat containing a guild chat message"),
     COLORED_GUILD_CHAT("COLORED_GUILD_CHAT",false,"true,false","Guild chat color","Should automatic broadcasts to guild chat be formatted with color"),
     PARTY_CHAT_HEADER("PARTY_CHAT_HEADER","&8P > ", "*","Header to party chat messages"),

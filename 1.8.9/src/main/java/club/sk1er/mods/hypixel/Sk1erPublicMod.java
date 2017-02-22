@@ -35,7 +35,7 @@ public class Sk1erPublicMod {
     ####Hello####
         Any code used in this mod may be decompiled and inspected for EDUCATIONAL PURPOSES ONLY.
         Any attempt to recreate the circumstances by which this mod can access the api will lead to full blacklisted from all services I publish including autotip, sk1er.club and this mod.
-        Your UUID and all other accounts accosiated with it will be at full blacklist.
+        Your UUID and all other accounts associated with it will be at full blacklist.
         If you have any questions feed free to send me a Dm on twitter (@Sk1er_) Or email me sk1er@lythrim.net
 
      */
@@ -46,7 +46,7 @@ public class Sk1erPublicMod {
          Quest: http://i.imgur.com/tGIXJAX.png
           */
     public static final String MODID = "Sk1er-Public";
-    public static final String VERSION = "2.0-Beta-DEV";
+    public static final String VERSION = "1.0-DEV";
     public static final String NAME = "Sk1er Public Mod";
     private Handlers handlers;
     public boolean isMovingCustomDisplay = false;
@@ -54,25 +54,20 @@ public class Sk1erPublicMod {
     public boolean isHypixel = false;
     private Sk1erConfig config;
     private GameType currentGameType;
-
     public HashMap<String, Sk1erErrorReport> getErrors() {
         return errors;
     }
-
     private HashMap<String, Sk1erErrorReport> errors;
-
     public static Sk1erPublicMod getInstance() {
         return instance;
     }
-
     private static Sk1erPublicMod instance;
-
     public Sk1erTempDataSaving getDataSaving() {
         return dataSaving;
     }
-
     private Sk1erTempDataSaving dataSaving;
     private HypixelMinuteScrips scrips;
+    private String currentGame = "";
 
     public String getCurrentGame() {
         return currentGame;
@@ -82,7 +77,6 @@ public class Sk1erPublicMod {
         this.currentGame = currentGame;
     }
 
-    private String currentGame = "";
 
     @EventHandler
     public void init(FMLPreInitializationEvent event) {

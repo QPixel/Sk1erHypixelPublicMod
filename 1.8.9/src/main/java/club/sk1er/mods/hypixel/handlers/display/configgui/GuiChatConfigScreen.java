@@ -35,31 +35,38 @@ public class GuiChatConfigScreen extends GuiScreen {
         int rad = 30;
         boolean left = true;
         resolution = new ScaledResolution(Minecraft.getMinecraft());
+        int c = 0;
         for (CValue value : v) {
+            c++;
+            if (left && c < 4)
+                rad += 10 * resolution.getScaleFactor();
+
             if (value.getDefaultvalue() instanceof Boolean) {
                 BooleanSk1erGuiButton theButton = new BooleanSk1erGuiButton(value, left ? (int) (.10 * resolution.getScaledWidth_double()) : (int) (.55 * resolution.getScaledWidth_double()), rad, resolution);
                 buttonList.add(theButton);
                 buttons.add(theButton);
             } else if (value.getDefaultvalue() instanceof String) {
-                String s  = Sk1erPublicMod.getInstance().getConfig().getString(value);
-                StringSk1erGuiButton theButton = new StringSk1erGuiButton(value, left ? (int) (.10 * resolution.getScaledWidth_double()) : (int) (.55 * resolution.getScaledWidth_double()), rad, resolution,Sk1erPublicMod.getInstance().getConfig().getString(value));
+                StringSk1erGuiButton theButton = new StringSk1erGuiButton(value, left ? (int) (.10 * resolution.getScaledWidth_double()) : (int) (.55 * resolution.getScaledWidth_double()), rad, resolution, Sk1erPublicMod.getInstance().getConfig().getString(value));
                 buttonList.add(theButton);
                 buttons.add(theButton);
-                rad+=5* resolution.getScaleFactor();
+
             } else
                 throw new IllegalArgumentException(value.getName() + " is not able to run in gui " + "Gui Chat Screen");
             left = !left;
-            if (left)
+            if (left) {
                 rad += 8 * resolution.getScaleFactor();
+
+            }
+
         }
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        for(Sk1erConfigGuiValue value : buttons){
-            if(value instanceof StringSk1erGuiButton) {
-                ((StringSk1erGuiButton)value).textInput(keyCode,typedChar);
+        for (Sk1erConfigGuiValue value : buttons) {
+            if (value instanceof StringSk1erGuiButton) {
+                ((StringSk1erGuiButton) value).textInput(keyCode, typedChar);
             }
         }
     }

@@ -3,10 +3,7 @@ package club.sk1er.mods.hypixel.commands;
 import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erErrorReport;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
-import club.sk1er.mods.hypixel.handlers.display.Sk1erRenderEvent;
-import club.sk1er.mods.hypixel.handlers.server.Sk1erPlayerLogIntoServerEvent;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -134,6 +131,7 @@ public class CommandErrorReport extends CommandBase {
                             conn.setRequestMethod("POST");
                             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                             conn.setRequestProperty("charset", "utf-8");
+                            conn.setRequestProperty("User-Agent", "Sk1er Public Mod V." + Sk1erPublicMod.VERSION);
                             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));
                             conn.setUseCaches(false);
                             try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {

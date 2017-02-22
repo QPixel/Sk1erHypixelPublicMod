@@ -72,7 +72,7 @@ public class StringSk1erGuiButton extends GuiButton implements Sk1erConfigGuiVal
         String tempText = text;
         if(blinkyDude)
             tempText+="|";
-        this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition - (this.height - 8) / 2, j);
+        this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition - (this.height - 8) , j);
         this.drawString(fontrenderer, tempText, this.xPosition+ resolution.getScaledWidth()/100, this.yPosition+ (this.height-8)/2 ,j);
     }
 
