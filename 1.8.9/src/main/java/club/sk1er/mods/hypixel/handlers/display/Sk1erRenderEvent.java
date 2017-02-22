@@ -56,13 +56,11 @@ public class Sk1erRenderEvent extends Sk1erListener {
                     if (getMod().isMovingCustomDisplay) {
                         render(pColor + Sk1erPublicMod.NAME + " V." + Sk1erPublicMod.VERSION);
                         spacer();
-                        render(pColor + "Example value" + sColor + " value");
-                        render(pColor + "Longer example value " + sColor + " value");
-                        render(pColor + "Other example value " + sColor + " value");
                     } else {
                         render("Drag to relocate");
                     }
                 } else {
+                    if(getConfigBoolean(CValue.DISPLAY_WATERMARK))
                     render(pColor + Sk1erPublicMod.NAME + " V." + Sk1erPublicMod.VERSION);
                     spacer();
                 }

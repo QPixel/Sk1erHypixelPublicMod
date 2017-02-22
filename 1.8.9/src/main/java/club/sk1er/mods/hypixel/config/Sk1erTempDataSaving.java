@@ -35,7 +35,6 @@ public class Sk1erTempDataSaving {
     private HashMap<String, Integer> xpForGame = new HashMap<>();
     private HashMap<String, Integer> coinsForGame = new HashMap<>();
     private HashMap<String, Integer> QUEST_STATUS = new HashMap<>();
-
     public int getRankedRating() {
         return rankedRating;
     }
@@ -95,7 +94,6 @@ public class Sk1erTempDataSaving {
                         JSONObject object = new JSONObject(tmp);
                         xp = object.getInt("xp");
                         coins = object.getInt("coins");
-                        rankedRating=object.optInt("rating");
                         String[] xp_nmes = JSONObject.getNames(object.getJSONObject("game_xp"));
                         if (xp_nmes != null) {
                             for (String name : xp_nmes) {
@@ -111,6 +109,8 @@ public class Sk1erTempDataSaving {
                                 coinsForGame.put(name, object.getJSONObject("game_coin").getInt(name));
                             }
                         }
+                        br.close();
+                        fr.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -118,10 +118,23 @@ public class Sk1erTempDataSaving {
                 } catch (IOException e) {
                 }
             }
+            File f2 = new File(dir.getAbsolutePath() +"/" + dateMM()+".json");
+            if(f2.exists()) {
+                try {
+                    FileReader fr = new FileReader(f2);
+BufferedReader br = new BufferedReader(fr);
+JSONObject object = new JSONObject(br.readLine());
+rankedRating=object.optInt("rating");
+br.close();
+fr.close();
+                } catch (Exception e) {
+
+                }
+            }
         }
 
     }
-
+    public String dateMM() {return new SimpleDateFormat("MM-YY").format(new Date(System.currentTimeMillis()));}
     public String date() {
         return new SimpleDateFormat("dd-MM-yy").format(new Date(System.currentTimeMillis()));
     }
@@ -158,12 +171,24 @@ public class Sk1erTempDataSaving {
                     quest.put(quests, QUEST_STATUS.get(quest));
                 }
                 object.put("quests", quest);
-                object.put("rating", rankedRating);
                 object.put("game_coin", coinThing);
                 bw.write(object.toString());
                 bw.close();
                 fw.close();
             } catch (IOException e) {
+            }
+            File f2 = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod/" + dateMM() +".json");
+            try {
+                if (!f2.exists()) {
+                    f2.createNewFile();
+                }
+                FileWriter fw = new FileWriter(f2);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(new JSONObject().put("rating", rankedRating).toString());
+                bw.close();
+                fw.close();
+            } catch (Exception e){
+
             }
         } else {
             this.coins = coins;
