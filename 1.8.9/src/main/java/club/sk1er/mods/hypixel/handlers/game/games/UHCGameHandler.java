@@ -25,7 +25,7 @@ public class UHCGameHandler extends Sk1erGameHandler{
 
     @Override
     public boolean isGame(String game) {
-        return game.equalsIgnoreCase("uhc") || game.equalsIgnoreCase("Hypixel UHC") || game.equalsIgnoreCase("ultra hardcore");
+        return game.equalsIgnoreCase("uhc") || game.equalsIgnoreCase("Hypixel UHC") || game.equalsIgnoreCase("ultra hardcore") || game.equalsIgnoreCase("uhc champions");
     }
 
     @Override

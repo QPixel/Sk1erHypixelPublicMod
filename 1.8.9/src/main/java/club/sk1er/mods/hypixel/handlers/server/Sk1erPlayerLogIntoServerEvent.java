@@ -50,23 +50,16 @@ public class Sk1erPlayerLogIntoServerEvent extends Sk1erListener {
                         e.printStackTrace();
                     }
                 }
-                getMod().startHypixelScripts();
-                //ChatUtils.sendMessage("Generating Sk1er Api Key");
                 getMod().getApiHandler().genKey();
-                //ChatUtils.sendMessage("Pulling Watchdog");
                 getMod().getApiHandler().refreshWatchogAndLiveCoins();
-                //ChatUtils.sendMessage("Pulling Player");
                 getMod().getApiHandler().pullPlayerProfile();
-                //ChatUtils.sendMessage("Pulling guild");
                 getMod().getApiHandler().pullGuild();
-                //ChatUtils.sendMessage("Starting scripts");
-                //ChatUtils.sendMessage("Done Starting scripts");
                 getMod().getApiHandler().genQuests();
+                getMod().startHypixelScripts();
+
             } catch (Exception e) {
                 getMod().newError(e);
             }
-
-
         });
     }
 

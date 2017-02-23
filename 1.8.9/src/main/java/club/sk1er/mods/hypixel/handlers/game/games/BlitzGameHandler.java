@@ -25,7 +25,7 @@ public class BlitzGameHandler extends Sk1erGameHandler{
 
     @Override
     public boolean isGame(String game) {
-        return game.equalsIgnoreCase("sg") || game.equalsIgnoreCase("blitz") || game.equalsIgnoreCase("blitzsg") || game.equalsIgnoreCase("survivalgames");
+        return game.equalsIgnoreCase("sg") || game.equalsIgnoreCase("blitz") || game.equalsIgnoreCase("blitzsg") || game.equalsIgnoreCase("survivalgames") || game.equalsIgnoreCase("blitz sg");
     }
 
     @Override

@@ -24,7 +24,7 @@ public class TNTGamesHandler extends Sk1erGameHandler{
 
     @Override
     public boolean isGame(String game) {
-        return game.equalsIgnoreCase("tnt") || game.equalsIgnoreCase("tntgames") || game.equalsIgnoreCase("tnt games") || game.equalsIgnoreCase("explosive") || game.equalsIgnoreCase("explosive games");
+        return game.equalsIgnoreCase("tnt") || game.equalsIgnoreCase("tntgames") || game.equalsIgnoreCase("tnt games") || game.equalsIgnoreCase("explosive") || game.equalsIgnoreCase("explosive games") || game.equalsIgnoreCase("the tnt games");
     }
 
     @Override

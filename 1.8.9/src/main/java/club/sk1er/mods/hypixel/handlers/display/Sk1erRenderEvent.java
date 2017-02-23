@@ -60,8 +60,8 @@ public class Sk1erRenderEvent extends Sk1erListener {
                         render("Drag to relocate");
                     }
                 } else {
-                    if(getConfigBoolean(CValue.DISPLAY_WATERMARK))
-                    render(pColor + Sk1erPublicMod.NAME + " V." + Sk1erPublicMod.VERSION);
+                    if (getConfigBoolean(CValue.DISPLAY_WATERMARK))
+                        render(pColor + Sk1erPublicMod.NAME + " V." + Sk1erPublicMod.VERSION);
                     spacer();
                 }
                 JSONObject wdstats = getMod().getApiHandler().getWatchdogStats();
@@ -159,22 +159,26 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 }
                 if (getConfigBoolean(CValue.DISPLAY_QUESTS)) {
                     spacer();
-                    GameType type = getMod().getCurrentGameType();
-                    if (type != null) {
-                        if(type.getGameHandler() !=null && type.getGameHandler().getQuests() !=null) {
-                            List<HypixelQuest> quests = type.getGameHandler().getQuests();
-                            if (quests != null)
-                                for (HypixelQuest quest : quests) {
-                                    render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
-                                }
+                    try {
+                        GameType type = getMod().getCurrentGameType();
+                        if (type != null) {
+                            if (type.getGameHandler() != null && type.getGameHandler().getQuests() != null) {
+                                List<HypixelQuest> quests = type.getGameHandler().getQuests();
+                                if (quests != null)
+                                    for (HypixelQuest quest : quests) {
+                                        render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
+                                    }
+                            }
                         }
-                    }
+                    } catch (Exception e3) {
+
                     }
                 }
-            } catch(Exception e2){
-                getMod().newError(e2);
             }
+        } catch (Exception e2) {
+            getMod().newError(e2);
         }
+    }
 
     private void spacer() {
         render("");

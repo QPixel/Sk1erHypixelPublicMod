@@ -3,7 +3,6 @@ package club.sk1er.mods.hypixel.handlers.chat;
 import club.sk1er.mods.hypixel.C;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
-import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
@@ -70,6 +69,6 @@ public class GuildChatHandler extends Sk1erChatHandler{
                 }
             }
             e.message=message;
-        }
+        }else e.setCanceled(true);
     }
 }

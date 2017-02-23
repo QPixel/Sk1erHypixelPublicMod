@@ -55,6 +55,8 @@ public class HypixelQuest {
         ChatUtils.sendMessage("You completed the " + getFrontEndName() + " quest!");
         completed = true;
         lastCompleted = System.currentTimeMillis();
+        Sk1erPublicMod.getInstance().getDataSaving().applyQuestStatus(backendName, 1);
+
     }
 
     private boolean completed = false;
@@ -75,6 +77,7 @@ public class HypixelQuest {
             completed = status == 1;
             type=QuestType.valueOf(quest_data.getString("type"));
             gameType=GameType.fromDatabase(quest_data.getString("gameType"));
+
     }
 
     public boolean isActive() {

@@ -24,9 +24,9 @@ public class PartyChatHandler extends Sk1erChatHandler{
     public void handle(ClientChatReceivedEvent e) {
         e.setCanceled(true);
         if(getConfig().getBoolean(CValue.SHOW_PARTY_CHAT)) {
-            IChatComponent  message = new ChatComponentText("");
+            IChatComponent message = new ChatComponentText("");
             IChatComponent old = e.message;
-              message.appendText(getConfig().getString(CValue.PARTY_CHAT_HEADER).replace("&",C.COLOR_CODE_SYMBOL));
+            message.appendText(getConfig().getString(CValue.PARTY_CHAT_HEADER).replace("&", C.COLOR_CODE_SYMBOL));
             String PLAYER_NAME = "";
             if (old.getUnformattedText().split(" ")[2].contains("[")) {
                 PLAYER_NAME = old.getUnformattedText().split(" ")[3];
@@ -49,6 +49,6 @@ public class PartyChatHandler extends Sk1erChatHandler{
                 }
             }
             ChatUtils.sendRawMessage(message);
-        }
+        } else e.setCanceled(true);
     }
 }

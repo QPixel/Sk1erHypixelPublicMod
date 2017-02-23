@@ -99,7 +99,7 @@ public class FriendsChatHandler extends Sk1erChatHandler{
         IChatComponent comp = new ChatComponentText(EnumChatFormatting.AQUA + "[Party]");
         ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party " + playername) {
             @Override
-            public ClickEvent.Action getAction() {
+            public Action getAction() {
                 return Action.RUN_COMMAND;
             }
         });

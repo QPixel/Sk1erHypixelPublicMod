@@ -235,7 +235,12 @@ public class Sk1erApiHandler {
 
 
     public void refreshWatchogAndLiveCoins() {
-        WATCHDOG_STATS = new JSONObject(rawExpectJson("http://sk1er.club/staff/info.php"));
+        try {
+           JSONObject st  = new JSONObject(rawExpectJson("http://sk1er.club/staff/info.php"));
+            WATCHDOG_STATS=st;
+        } catch (Exception e) {
+
+        }
     }
 
     public String getStatus(String player) {

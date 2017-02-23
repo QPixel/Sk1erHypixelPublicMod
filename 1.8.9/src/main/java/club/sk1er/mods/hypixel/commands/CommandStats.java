@@ -12,7 +12,6 @@ import net.minecraft.util.BlockPos;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CommandStats extends CommandBase {
@@ -44,9 +43,7 @@ public class CommandStats extends CommandBase {
                 if (args.length == 1) {
                     String playername = args[0];
                     JSONObject raw = mod.getApiHandler().pullPlayerProfile(playername);
-                    if (raw.optBoolean("success")) {
-                        ChatUtils.sendMessage(raw.toString());
-                        Arrays.stream(raw.getNames()).forEach(ChatUtils::sendMessage);
+                    if (!raw.optBoolean("success")) {
                         ChatUtils.sendMessage("Player '" + playername + "' could not be found!");
                         return;
                     }
@@ -76,9 +73,7 @@ public class CommandStats extends CommandBase {
                     }
                     String playername = args[0];
                     JSONObject raw = mod.getApiHandler().pullPlayerProfile(playername);
-                    if (raw.optBoolean("success")) {
-                        ChatUtils.sendMessage(raw.toString());
-                        Arrays.stream(raw.getNames()).forEach(tmp -> ChatUtils.sendMessage(tmp));
+                    if (!raw.optBoolean("success")) {
                         ChatUtils.sendMessage("Player '" + playername + "' could not be found!");
                         return;
                     }

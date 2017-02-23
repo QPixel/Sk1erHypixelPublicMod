@@ -168,7 +168,7 @@ fr.close();
                 }
                 JSONObject quest = new JSONObject();
                 for (String quests : QUEST_STATUS.keySet()) {
-                    quest.put(quests, QUEST_STATUS.get(quest));
+                    quest.put(quests, QUEST_STATUS.get(quests));
                 }
                 object.put("quests", quest);
                 object.put("game_coin", coinThing);

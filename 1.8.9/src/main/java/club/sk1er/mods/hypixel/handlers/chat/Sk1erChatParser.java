@@ -63,7 +63,8 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             getMod().newError(a);
             }
         }
-        if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild")) {
+        if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
+            //TODO fix this from reboardcasting
             ChatUtils.sendMesssageToServer("/gchat " + (color ? e.message.getFormattedText().replace(C.COLOR_CODE_SYMBOL,"~") : EnumChatFormatting.getTextWithoutFormattingCodes(e.message.getUnformattedText())));
         }
         if(wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
