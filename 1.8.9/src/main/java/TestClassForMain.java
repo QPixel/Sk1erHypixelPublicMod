@@ -9,7 +9,6 @@ public class TestClassForMain {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         JSONObject master = new JSONObject();
-
         while(true) {
             String line = sc.nextLine();
             if(line.equals("end")) {
