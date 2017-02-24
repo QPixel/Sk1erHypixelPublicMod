@@ -106,6 +106,7 @@ public class Sk1erApiHandler {
                     + "&modver=" + Sk1erPublicMod.VERSION
                     + "&mod=PUBLIC_PRIVATE_MOD");
             ChatUtils.sendMessage(gen_key.toString());
+            ChatUtils.sendMessage("No 'key' value returned. Possible downage of website");
             ChatUtils.sendMessage("Plesae DM ^^ to Sk1er");
         }
         if (gen_key.optBoolean("update")) {
@@ -119,7 +120,6 @@ public class Sk1erApiHandler {
             while (true) {
                 try {
                     Thread.sleep(1000 * 60);
-
                     JSONObject tmp = new JSONObject(rawExpectJson("http://sk1er.club/keyupdate/" + SK1ER_API_KEY));
                     if (tmp.optBoolean("success")) {
                         System.out.println("Successfully regained api key");
@@ -163,8 +163,6 @@ public class Sk1erApiHandler {
             officers.add(tmp.getJSONArray("officers").getString(i));
         }
         guildmaster = tmp.getJSONArray("master").getString(0);
-
-
     }
 
     public String getBoosters() {
@@ -181,34 +179,6 @@ public class Sk1erApiHandler {
         if (USER.has("success") && USER.getBoolean("success")) {
             try {
                 this.USER = USER;
-                JSONObject player = USER.getJSONObject("player");
-                //  ChatUtils.sendMessage("starting quests");
-//                if (player.has("quests")) {
-//                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
-//                    String today = format.format(new Date(System.currentTimeMillis()));
-//                    for (String string : JSONObject.getNames(player.getJSONObject("quests"))) {
-//                  //
-//                        JSONObject tmp = player.getJSONObject("quests").getJSONObject(string);
-//                        long big = 1l;
-//                        if (tmp.has("completions")) {
-//                            JSONArray array = tmp.getJSONArray("completions");
-//                            for (int i =0;i<array.length();i++) {
-//                                JSONObject is = array.getJSONObject(i);
-//                                long t =is.getLong("time");
-//                                if (t > big)
-//                                    t = big;
-//                            }
-//                        }
-//
-//                        String last = format.format(new Date(big));
-//                        if (last.equalsIgnoreCase(today)) {
-//                            mod.getDataSaving().applyQuestStatus(string,1);
-//                        } else {
-//                            mod.getDataSaving().applyQuestStatus(string,0);
-//                        }
-//                    }
-//                }
-                //  ChatUtils.sendMessage("Done with quests!");
             } catch (Exception e) {
                 mod.newError(e);
             }
@@ -218,7 +188,6 @@ public class Sk1erApiHandler {
                 ChatUtils.sendMessage("Your Key has expired! Attempting to generate a new one!");
             } else
                 ChatUtils.sendMessage("An unkown error occurred while loading your profile (" + Minecraft.getMinecraft().thePlayer.getName() + ")");
-            System.out.println(getUser().toString());
         }
 
     }

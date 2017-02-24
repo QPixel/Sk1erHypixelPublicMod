@@ -2,14 +2,11 @@ package club.sk1er.mods.hypixel.handlers.input;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
-
-import java.util.HashMap;
 
 /**
  * Created by mitchellkatz on 12/7/16.
@@ -38,33 +35,6 @@ public class MouseInput {
             moving = true;
             mod.isMovingCustomDisplay = true;
         }
-//        if (!moving && !isHoldingDown && Mouse.isButtonDown(0) && Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
-//            double sx = CValue.CUSTOM_DISPLAY_LOCATION_X.asDouble()
-//                    * res.getScaledWidth_double() * res.getScaleFactor();
-//            double sy = CValue.CUSTOM_DISPLAY_LOCATION_Y.asDouble() * res.getScaleFactor() * res.getScaledHeight();
-//            sy += (int)(17.5*(double)res.getScaleFactor());
-//            int x = Mouse.getX();
-//            int y = Math.abs(Mouse.getY() - (res.getScaledHeight() * res.getScaleFactor()));
-//            boolean found = false;
-//            for (Sk1erButton button : Button.allButtons) {
-//                sy+=10*res.getScaleFactor();
-//                if (!found)
-//                    for (ButtonElement element : button.getElements()) {
-//                        if (Math.abs(y - sy) <= 5*res.getScaleFactor()) {
-//                            int width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(element.getRender());
-//                            if(x<sx || x >sx+(width*res.getScaleFactor())) {
-//                                 continue;
-//                             }
-//                            element.click((int) Math.abs(sx - x), (int) Math.abs(y - sy));
-//                            mod.getConfig().save();
-//                            found = true;
-//                            break;
-//                        } else sy += 10 *res.getScaleFactor();
-//                    }
-//            }
-//
-//
-//        }
         if (moving && isHoldingDown) {
             double xpres = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)+ (double) x_change / res.getScaledWidth_double();
             double yVariant = 0;

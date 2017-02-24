@@ -35,6 +35,7 @@ public class Sk1erTempDataSaving {
     private HashMap<String, Integer> xpForGame = new HashMap<>();
     private HashMap<String, Integer> coinsForGame = new HashMap<>();
     private HashMap<String, Integer> QUEST_STATUS = new HashMap<>();
+
     public int getRankedRating() {
         return rankedRating;
     }
@@ -43,7 +44,7 @@ public class Sk1erTempDataSaving {
         this.rankedRating = rankedRating;
     }
 
-    private int rankedRating =0;
+    private int rankedRating = 0;
     String lastDate = date();
 
     public int getXpForGame(String game) {
@@ -118,15 +119,15 @@ public class Sk1erTempDataSaving {
                 } catch (IOException e) {
                 }
             }
-            File f2 = new File(dir.getAbsolutePath() +"/" + dateMM()+".json");
-            if(f2.exists()) {
+            File f2 = new File(dir.getAbsolutePath() + "/" + dateMM() + ".json");
+            if (f2.exists()) {
                 try {
                     FileReader fr = new FileReader(f2);
-BufferedReader br = new BufferedReader(fr);
-JSONObject object = new JSONObject(br.readLine());
-rankedRating=object.optInt("rating");
-br.close();
-fr.close();
+                    BufferedReader br = new BufferedReader(fr);
+                    JSONObject object = new JSONObject(br.readLine());
+                    rankedRating = object.optInt("rating");
+                    br.close();
+                    fr.close();
                 } catch (Exception e) {
 
                 }
@@ -134,7 +135,11 @@ fr.close();
         }
 
     }
-    public String dateMM() {return new SimpleDateFormat("MM-YY").format(new Date(System.currentTimeMillis()));}
+
+    public String dateMM() {
+        return new SimpleDateFormat("MM-YY").format(new Date(System.currentTimeMillis()));
+    }
+
     public String date() {
         return new SimpleDateFormat("dd-MM-yy").format(new Date(System.currentTimeMillis()));
     }
@@ -177,7 +182,7 @@ fr.close();
                 fw.close();
             } catch (IOException e) {
             }
-            File f2 = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod/" + dateMM() +".json");
+            File f2 = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod/" + dateMM() + ".json");
             try {
                 if (!f2.exists()) {
                     f2.createNewFile();
@@ -187,7 +192,7 @@ fr.close();
                 bw.write(new JSONObject().put("rating", rankedRating).toString());
                 bw.close();
                 fw.close();
-            } catch (Exception e){
+            } catch (Exception e) {
 
             }
         } else {
@@ -197,6 +202,9 @@ fr.close();
             xpForGame.clear();
             coinsForGame.clear();
             refreshCoinsAndXp(coins, xp);
+            for(String s : QUEST_STATUS.keySet()) {
+                QUEST_STATUS.put(s,0);
+            }
         }
     }
 

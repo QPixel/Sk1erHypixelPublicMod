@@ -1,7 +1,6 @@
 package club.sk1er.mods.hypixel.config;
 
 import club.sk1er.mods.hypixel.Multithreading;
-import net.minecraft.client.Minecraft;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -88,7 +87,6 @@ public class Sk1erConfig {
     public void save() {
         Multithreading.runAsync(() -> {
             try {
-
                 configFile.createNewFile();
                 FileWriter fw = new FileWriter(configFile);
                 BufferedWriter bw = new BufferedWriter(fw);

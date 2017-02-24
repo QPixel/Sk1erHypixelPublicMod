@@ -10,15 +10,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.lang.reflect.Array;
-
 /**
  * Created by mitchellkatz on 12/7/16.
  */
-public class FriendsChatHandler extends Sk1erChatHandler{
+public class FriendsChatHandler extends Sk1erChatHandler {
 
 
     private long time = 0l;
+
     @Override
     public void handle(ClientChatReceivedEvent e) {
         String wrk = e.message.getUnformattedText();
@@ -26,7 +25,6 @@ public class FriendsChatHandler extends Sk1erChatHandler{
             if ((wrk.contains("is in a") && (wrk.endsWith("game") || wrk.endsWith("Lobby"))) || wrk.endsWith("is idle in Limbo") || wrk.endsWith("is in an unknown realm") || wrk.endsWith("is in Housing") || wrk.endsWith("the Main Lobby")) {
                 String[] tmp = wrk.split(" ");
                 String playername = tmp[0];
-                tmp.toString().startsWith("helo");
                 String[] t = e.message.getFormattedText().split(" ");
                 IChatComponent newMessage = new ChatComponentText(t[0]);
                 if (wrk.contains("Mega Walls")) {
@@ -55,71 +53,65 @@ public class FriendsChatHandler extends Sk1erChatHandler{
                 }
                 newMessage.appendSibling(message(playername));
                 newMessage.appendSibling(party(playername));
-                newMessage.appendSibling(remove(playername));
-
+                newMessage.appendSibling(remove(playername,e.message.getFormattedText().split(" ")[0]));
                 e.setCanceled(true);
-               ChatUtils.sendRawMessage(newMessage);
-
-
+                ChatUtils.sendRawMessage(newMessage);
             } else if (wrk.endsWith("is currently offline")) {
                 String[] tmp = wrk.split(" ");
                 String playername = tmp[0];
-                e.message.appendSibling(remove(playername));
+                e.message.appendSibling(remove(playername, e.message.getFormattedText().split(" ")[0]));
             }
         }
     }
+
     @Override
     public boolean containsTrigger(ClientChatReceivedEvent event) {
         String wrk = event.message.getUnformattedText();
-        if(System.currentTimeMillis() - time < 2000) {
+        if (System.currentTimeMillis() - time < 2000) {
             return true;
         }
-        if(wrk.contains("Friends (Page")) {
+        if (wrk.contains("Friends (Page")) {
             time = System.currentTimeMillis();
             return true;
         }
         return false;
 
     }
-    public  IChatComponent message(String playername) {
+
+    public IChatComponent message(String playername) {
 
         IChatComponent comp = new ChatComponentText(EnumChatFormatting.GREEN + " [Message] ");
-        ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/msg " + playername) {
-            @Override
-            public Action getAction() {
-
-                return Action.RUN_COMMAND;
-            }
-        });
+        ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/msg " + playername));
         comp.setChatStyle(style);
         return comp;
     }
-    public  IChatComponent party(String playername) {
+
+    public IChatComponent party(String playername) {
 
         IChatComponent comp = new ChatComponentText(EnumChatFormatting.AQUA + "[Party]");
-        ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party " + playername) {
-            @Override
-            public Action getAction() {
-                return Action.RUN_COMMAND;
-            }
-        });
+        ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party " + playername));
         comp.setChatStyle(style);
         return comp;
     }
-    public  IChatComponent remove(String playername) {
 
+    public IChatComponent remove(String playername, String raw) {
+    raw=raw.replace(C.COLOR_CODE_SYMBOL,"");
         IChatComponent comp = new ChatComponentText(EnumChatFormatting.RED + " [Remove]");
+        String finalRaw = raw;
         ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend remove " + playername) {
             @Override
             public Action getAction() {
-                return Action.SUGGEST_COMMAND;
+                if(finalRaw.startsWith("7") || finalRaw.startsWith("a") || finalRaw.startsWith("b"))
+                return Action.RUN_COMMAND;
+                else return Action.SUGGEST_COMMAND;
             }
         });
         comp.setChatStyle(style);
         return comp;
     }
+
     public FriendsChatHandler(Sk1erPublicMod mod) {
-            super(mod);
-        }
+        super(mod);
+    }
 
 }

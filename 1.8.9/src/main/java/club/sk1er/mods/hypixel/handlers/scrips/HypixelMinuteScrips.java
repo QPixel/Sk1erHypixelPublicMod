@@ -85,6 +85,7 @@ public class HypixelMinuteScrips {
         switch (name) {
             case "mini walls":
                 return "Arcade";
+
         }
 
         return "Unknown";

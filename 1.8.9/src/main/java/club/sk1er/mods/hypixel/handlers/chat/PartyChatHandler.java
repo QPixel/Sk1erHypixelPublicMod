@@ -41,7 +41,7 @@ public class PartyChatHandler extends Sk1erChatHandler{
                 if (!es.getChatStyle().isEmpty()) {
                     ClickEvent tmp = es.getChatStyle().getChatClickEvent();
                     IChatComponent component = new ChatComponentText("");
-                    component.appendText(es.getFormattedText());
+                    component.appendText(es.getFormattedText().replace("~",C.COLOR_CODE_SYMBOL));
                     component.getChatStyle().setChatClickEvent(tmp);
                     message.appendSibling(component);
                 } else {

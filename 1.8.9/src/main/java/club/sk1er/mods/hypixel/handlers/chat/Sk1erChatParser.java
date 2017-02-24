@@ -1,12 +1,10 @@
 package club.sk1er.mods.hypixel.handlers.chat;
 
-import club.sk1er.mods.hypixel.C;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
@@ -22,9 +20,7 @@ public class Sk1erChatParser extends Sk1erChatHandler{
     @Override
     public boolean containsTrigger(ClientChatReceivedEvent event) {
         String raw = event.message.getUnformattedText().replace("\n","").replace("\r","");
-        if(raw.contains("+") && raw.contains("coins!"))
-            return true;
-        if(raw.contains("+") && raw.contains("Hypixel Experience"))
+        if(raw.contains("+") && (raw.contains("coins!")||raw.contains("Hypixel Experience")))
             return true;
         if(raw.contains("Rating") && raw.contains("(") && raw.contains(")"))
             return true;
@@ -39,12 +35,12 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             return true;
         if(raw.contains("got lucky and found a " ) && raw.contains(Minecraft.getMinecraft().thePlayer.getName()))
             return true;
-        if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest: "))
+        if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest:"))
             return true;
 
         return false;
     }
-    private final String nums = "0123456789";
+
     @Override
     public void handle(ClientChatReceivedEvent e) {
         boolean color=  getConfig().getBoolean(CValue.COLORED_GUILD_CHAT);
@@ -53,6 +49,7 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             String split = wrk.split("\\(")[1];
             String tmp ="";
             for(char c : split.toCharArray()) {
+                String nums = "0123456789";
                 if(nums.contains(c+"")) {
                     tmp+=c;
                 }
@@ -64,14 +61,21 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             }
         }
         if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
-            //TODO fix this from reboardcasting
-            ChatUtils.sendMesssageToServer("/gchat " + (color ? e.message.getFormattedText().replace(C.COLOR_CODE_SYMBOL,"~") : EnumChatFormatting.getTextWithoutFormattingCodes(e.message.getUnformattedText())));
+            String message = e.message.getUnformattedText();
+            String ach = message.split(":")[1];
+
+            if(color){
+                ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach +" ~dAchievement!");
+            } else {
+                ChatUtils.sendMesssageToServer("/gchat I unlocked the " + ach +" Achievement!");
+            }
+
         }
         if(wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
             String raw = StringUtils.stripControlCodes(e.message.getUnformattedText().replace('\u00A7'+"", "").replace("\r", "").replace("\n", ""));
             String quest_line = raw.split("!")[0];
             String name = quest_line.split(":")[1].toLowerCase().replace("completed","").trim();
-            HypixelQuest quest = HypixelQuest.fromDisplayName(name);
+            HypixelQuest quest = HypixelQuest.fromDisplayName(name, getMod().getCurrentGameType());
             try {
                 if(quest !=null)
                 quest.complete();

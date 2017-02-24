@@ -33,7 +33,6 @@ public class Sk1erRenderEvent extends Sk1erListener {
     private double line = .1;
     public static List<
             RenderObject> renderObjects = new ArrayList<>();
-    private boolean isEditingChat = false;
     private String pColor;
     private String sColor;
 
@@ -106,7 +105,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 if (getConfigBoolean(CValue.DISPLAY_BOOSTERS_DAY)) {
                     JSONObject tmp = getMod().getApiHandler().getSpecialBoosterCache();
                     String[] names = JSONObject.getNames(tmp);
-                    if (names != null) {
+                    if (names != null && names.length>0) {
                         spacer();
                         for (String name : names) {
                             try {
@@ -194,7 +193,6 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 * res.getScaledWidth_double();
         double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double() + (line * 10);
         renderer.drawString(s, (int) x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? renderer.getStringWidth(s) : 0), (int) y, 16777215);
-        //  System.out.println("Rendering: \"" +s + "\" at " + x + ", " + y);
         line += 1.0;
     }
 

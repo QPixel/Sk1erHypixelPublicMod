@@ -40,8 +40,7 @@ public class HypixelQuest {
             if(quest.getFrontEndName().equalsIgnoreCase(displayName) && quest.getGameType().equals(type))
                 return quest;
         }
-        ChatUtils.sendMessage("Please report this to Skler: Error type = Quest.NOT_LOADED. Id: " + displayName);
-        return null;
+        return fromDisplayName(displayName);
     }
 
 
