@@ -26,6 +26,7 @@ public class HypixelQuest {
         allQuests.add(quest);
         return quest;
     }
+    @Deprecated
     public static HypixelQuest fromDisplayName(String displayName) {
         for(HypixelQuest quest : allQuests) {
             if(quest.getFrontEndName().equalsIgnoreCase(displayName))
@@ -34,6 +35,16 @@ public class HypixelQuest {
         ChatUtils.sendMessage("Please report this to Skler: Error type = Quest.NOT_LOADED. Id: " + displayName);
         return null;
     }
+    public static HypixelQuest fromDisplayName(String displayName, GameType type) {
+        for(HypixelQuest quest : allQuests) {
+            if(quest.getFrontEndName().equalsIgnoreCase(displayName) && quest.getGameType().equals(type))
+                return quest;
+        }
+        ChatUtils.sendMessage("Please report this to Skler: Error type = Quest.NOT_LOADED. Id: " + displayName);
+        return null;
+    }
+
+
     public static List<HypixelQuest> getQuestForGame(GameType type) {
         return type.getGameHandler().getQuests();
     }

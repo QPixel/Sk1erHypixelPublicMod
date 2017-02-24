@@ -28,6 +28,7 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(SHOW_GUILD_CHAT);
         v.add(SHOW_PARTY_CHAT);
         v.add(SHOW_DIRECT_MESSAGES);
+        v.add(AUTO_GG);
 
     }
 

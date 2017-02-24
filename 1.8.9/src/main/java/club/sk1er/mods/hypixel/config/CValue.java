@@ -45,7 +45,7 @@ public enum CValue {
     DISPLAY_RANKED_RATING("DISPLAY_RANKED_RATING",false,"true,false","Display your ranked rating"),
     DISPLAY_QUESTS("DISPLAY_QUESTS",true,"true,false","Display quests for game you are in"),
     DISPLAY_WATERMARK("DISPLAY_WATERMARK",true,"true,false","Display 'Sk1er Public Mod' and the version"),
-
+    AUTO_GG("AUTOGG",false, "true,false","Enable auto gg"),
     //CONSTANTS
     XP_LEVEL_GOAL("XP_LEVEL_GOAL",150,"INTEGER","Your XP Goal"),
     RANKED_RATING("RANKED_RATING_VALUE",0,"INTEGER","Your ranked rating"),
