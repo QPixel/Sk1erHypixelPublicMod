@@ -44,6 +44,7 @@ public class CommandSetConfigValue extends CommandBase {
             for (int i = 1; i < args.length; i++) {
                 a += " " + args[i];
             }
+            a=a.trim();
             args[0] = args[0].toUpperCase();
             if (mod.getConfig().setValue(args[0], a) || (args.length == 3 && args[2].equalsIgnoreCase("force"))) {
                 a = a.replace("force", "").trim();

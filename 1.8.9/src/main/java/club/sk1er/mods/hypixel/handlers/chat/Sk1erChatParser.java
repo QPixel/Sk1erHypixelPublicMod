@@ -39,7 +39,8 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             return true;
         if(raw.contains("got lucky and found a " ) && raw.contains(Minecraft.getMinecraft().thePlayer.getName()))
             return true;
-        if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest: "))
+        if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest:"))
+            //TODO this does not parse weekly quesats
             return true;
 
         return false;
@@ -63,7 +64,7 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             getMod().newError(a);
             }
         }
-        if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
+        if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName()) && Sk1erPublicMod.getInstance().getConfig().getBoolean(CValue.DISPLAY_GUILD_CHAT_ACHIEVEMENTS)) {
             //TODO fix this from reboardcasting
             ChatUtils.sendMesssageToServer("/gchat " + (color ? e.message.getFormattedText().replace(C.COLOR_CODE_SYMBOL,"~") : EnumChatFormatting.getTextWithoutFormattingCodes(e.message.getUnformattedText())));
         }

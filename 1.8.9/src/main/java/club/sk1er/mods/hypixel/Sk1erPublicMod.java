@@ -139,6 +139,9 @@ public class Sk1erPublicMod {
         apiHandler = new Sk1erApiHandler(this);
         dataSaving = new Sk1erTempDataSaving();
         Utils.init();
+        for(GameType type : GameType.values()) {
+            type.getGameHandler().getQuests();
+        }
     }
 
     public Sk1erApiHandler getApiHandler() {

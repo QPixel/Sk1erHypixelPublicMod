@@ -1,6 +1,7 @@
 package club.sk1er.mods.hypixel.commands;
 
 import club.sk1er.html.Utils;
+import club.sk1er.mods.hypixel.C;
 import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
@@ -54,12 +55,15 @@ public class CommandFriends extends CommandBase {
                     ChatUtils.sendMessage("Unable to load player: " + args[0] + ". Player does not exist!");
                     return;
                 }
-                ChatUtils.sendMessage("Targeted player: " + Utils.getFormatedName(returned) + " Page (" + page + ")");
-             //   ChatUtils.sendMessage("Loading friends user '" + args[0] +"'");
+               //   ChatUtils.sendMessage("Loading friends user '" + args[0] +"'");
                 JSONObject friends = mod.getApiHandler().getFriendsForPlayer(args[0]);
                 String[] names = JSONObject.getNames(friends);
                // ChatUtils.sendMessage("Loaded friends '" + args[0] +"'");
-                System.out.println(friends.toString());
+                if(page>names.length/10) {
+                    ChatUtils.sendMessage("Targeted player: " + Utils.getFormatedName(returned) + C.WHITE+" does not have " + page + " pages of friends! They have a max of  " + names.length/10);
+
+                }
+                ChatUtils.sendMessage("Targeted player: " + Utils.getFormatedName(returned) + C.WHITE+" Page (" + page + ")");
                 int left = page*10-10;
                 int right = page*10;
                 for (int i = left;i<right; i++) {
