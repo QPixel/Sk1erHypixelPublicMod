@@ -12,7 +12,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.json.JSONObject;
-import org.lwjgl.input.Mouse;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +48,6 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 pColor = getConfig().getString(CValue.DISPLAY_PRIMARY_COLOR).replace("&", C.COLOR_CODE_SYMBOL);
                 sColor = getConfig().getString(CValue.DISPLAY_SECONDARY_COLOR).replace("&", C.COLOR_CODE_SYMBOL);
 
-                int x = Math.abs(Mouse.getX());
                 renderer = Minecraft.getMinecraft().fontRendererObj;
                 if (Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
                     if (getMod().isMovingCustomDisplay) {
@@ -57,6 +55,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                         spacer();
                     } else {
                         render("Drag to relocate");
+                        spacer();
                     }
                 } else {
                     if (getConfigBoolean(CValue.DISPLAY_WATERMARK))
@@ -92,7 +91,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                     render(pColor + "Coins earned today: " + sColor + getMod().getDataSaving().getCoins());
                 }
                 boolean didPer = false;
-                if (getConfigBoolean(CValue.PERCENT_TO_NEXT_GOAL)) {
+                if (getConfigBoolean(CValue.PERCENT_TO_NEXT_LEVEL)) {
                     spacer();
                     didPer = true;
                     render(pColor + "Percent to next: " + sColor + getMod().getApiHandler().getPercentToNext() + "%");

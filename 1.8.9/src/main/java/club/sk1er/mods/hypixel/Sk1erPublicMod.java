@@ -46,7 +46,7 @@ public class Sk1erPublicMod {
          Quest: http://i.imgur.com/tGIXJAX.png
           */
     public static final String MODID = "Sk1er-Public";
-    public static final String VERSION = "2.0-DEV";
+    public static final String VERSION = "2.1-DEV";
     public static final String NAME = "Sk1er Public Mod";
     private Handlers handlers;
     public boolean isMovingCustomDisplay = false;
@@ -139,10 +139,14 @@ public class Sk1erPublicMod {
         apiHandler = new Sk1erApiHandler(this);
         dataSaving = new Sk1erTempDataSaving();
         Utils.init();
-        for(GameType type : GameType.values()) {
-            type.getGameHandler().getQuests();
-        }
-    }
+        Multithreading.runAsync(() -> {
+            getApiHandler().genQuests();
+            for(GameType type : GameType.values()) {
+                type.getGameHandler().getQuests();
+            }
+
+        });
+            }
 
     public Sk1erApiHandler getApiHandler() {
         return apiHandler;

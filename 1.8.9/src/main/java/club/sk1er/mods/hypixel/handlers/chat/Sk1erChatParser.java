@@ -62,7 +62,7 @@ public class Sk1erChatParser extends Sk1erChatHandler{
         }
         if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String message = e.message.getUnformattedText();
-            String ach = message.split(":")[1];
+            String ach = message.split(":")[1].split("  ")[0].trim();
 
             if(color){
                 ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach +" ~dAchievement!");

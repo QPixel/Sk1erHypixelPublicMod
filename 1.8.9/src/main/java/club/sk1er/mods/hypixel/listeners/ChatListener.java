@@ -1,14 +1,11 @@
 package club.sk1er.mods.hypixel.listeners;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
-import club.sk1er.mods.hypixel.handlers.Handlers;
 import club.sk1er.mods.hypixel.handlers.chat.Sk1erChatHandler;
-import com.google.common.eventbus.Subscribe;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +17,7 @@ public class ChatListener extends Sk1erListener{
         super(mod);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
     public void onChatReceiveEvent(ClientChatReceivedEvent e) {
         List<Sk1erChatHandler> chatHandlers = getMod().getHandlers().getChatHandlers();
             for(Sk1erChatHandler handler : chatHandlers) {

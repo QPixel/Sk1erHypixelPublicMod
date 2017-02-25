@@ -79,7 +79,13 @@ public class Sk1erConfig {
         }
     }
     public double getDouble(CValue value) {
-        return (double)map.get(value);
+        Object v = map.get(value);
+        if(v instanceof Double ) {
+            return (double)v;
+        } else if(v instanceof Integer) {
+            return Double.valueOf(v+"");
+        }
+        return -1;
     }
     public String getString(CValue value) {
         return ((String) map.get(value));
