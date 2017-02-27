@@ -37,7 +37,8 @@ public class Sk1erChatParser extends Sk1erChatHandler{
             return true;
         if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest:"))
             return true;
-
+        if((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length==2)
+            return true;
         return false;
     }
 
@@ -45,6 +46,11 @@ public class Sk1erChatParser extends Sk1erChatHandler{
     public void handle(ClientChatReceivedEvent e) {
         boolean color=  getConfig().getBoolean(CValue.COLORED_GUILD_CHAT);
         String wrk =e.message.getUnformattedText().replace('\u00A7'+"", "").replace("\r", "").replace("\n", "");
+
+        if((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length==2) {
+            e.setCanceled(true);
+            return;
+        }
         if(wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {
             String split = wrk.split("\\(")[1];
             String tmp ="";
@@ -73,7 +79,10 @@ public class Sk1erChatParser extends Sk1erChatHandler{
         }
         if(wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
             String raw = StringUtils.stripControlCodes(e.message.getUnformattedText().replace('\u00A7'+"", "").replace("\r", "").replace("\n", ""));
-            String quest_line = raw.split("!")[0];
+            if(raw.split("!").length>2) {
+                raw = raw.replaceFirst("!","");
+            }
+            String quest_line = raw.split("!")[raw.split("!").length];
             String name = quest_line.split(":")[1].toLowerCase().replace("completed","").trim();
             HypixelQuest quest = HypixelQuest.fromDisplayName(name, getMod().getCurrentGameType());
             try {

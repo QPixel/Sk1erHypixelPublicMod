@@ -52,6 +52,8 @@ public enum CValue {
     SHOW_GUILD_CHAT("SHOW_GUILD_CHAT", true,"true,false","Show guild chat"),
     SHOW_PARTY_CHAT("SHOW_PARTY_CHAT",true,"true,false","Show party chat"),
     SHOW_DIRECT_MESSAGES("SHOW_DIRECT_MESSAGES",true,"true,false","Show direct messages"),
+    SHOW_JOIN_LEAVE_MESSAGES("SHOW_JOIN_LEAVE_MESSAGES",true,"true,false","Show join leave messages"),
+
     ;
 
 
