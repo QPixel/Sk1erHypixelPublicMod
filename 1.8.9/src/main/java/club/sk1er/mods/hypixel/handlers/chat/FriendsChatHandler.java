@@ -2,7 +2,6 @@ package club.sk1er.mods.hypixel.handlers.chat;
 
 import club.sk1er.mods.hypixel.C;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
-import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
@@ -54,8 +53,7 @@ public class FriendsChatHandler extends Sk1erChatHandler {
                 newMessage.appendSibling(message(playername));
                 newMessage.appendSibling(party(playername));
                 newMessage.appendSibling(remove(playername,e.message.getFormattedText().split(" ")[0]));
-                e.setCanceled(true);
-                ChatUtils.sendRawMessage(newMessage);
+                e.message=newMessage;
             } else if (wrk.endsWith("is currently offline")) {
                 String[] tmp = wrk.split(" ");
                 String playername = tmp[0];

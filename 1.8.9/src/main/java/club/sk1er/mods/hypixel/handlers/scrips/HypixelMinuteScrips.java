@@ -15,7 +15,6 @@ public class HypixelMinuteScrips {
     public HypixelMinuteScrips(Sk1erPublicMod mod) {
         this.mod = mod;
     }
-
     public boolean run = false;
     int time = 0;
 
@@ -57,7 +56,7 @@ public class HypixelMinuteScrips {
                     if (time % 60 == 0) {
                         mod.getApiHandler().pullPlayerProfile();
                     }
-                    if (time % 120 == 0) {
+                    if (time % 60*5 == 0) {
                         mod.getApiHandler().pullGuild();
                     }
                 }

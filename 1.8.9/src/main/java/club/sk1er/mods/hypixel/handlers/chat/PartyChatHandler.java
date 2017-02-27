@@ -27,12 +27,6 @@ public class PartyChatHandler extends Sk1erChatHandler{
             IChatComponent message = new ChatComponentText("");
             IChatComponent old = e.message;
             message.appendText(getConfig().getString(CValue.PARTY_CHAT_HEADER).replace("&", C.COLOR_CODE_SYMBOL));
-            String PLAYER_NAME = "";
-            if (old.getUnformattedText().split(" ")[2].contains("[")) {
-                PLAYER_NAME = old.getUnformattedText().split(" ")[3];
-            } else {
-                PLAYER_NAME = old.getUnformattedText().split(" ")[2];
-            }
             for (IChatComponent es : e.message.getSiblings()) {
                 if (es.getUnformattedText().contains("Party")) {
                     message.appendSibling(new ChatComponentText(es.getFormattedText().replace("~", C.COLOR_CODE_SYMBOL)));

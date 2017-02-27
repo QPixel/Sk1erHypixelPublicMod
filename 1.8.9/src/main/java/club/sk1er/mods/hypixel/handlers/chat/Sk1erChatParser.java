@@ -11,129 +11,136 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 /**
  * Created by mitchellkatz on 12/1/16.
  */
-public class Sk1erChatParser extends Sk1erChatHandler{
+public class Sk1erChatParser extends Sk1erChatHandler {
 
-    public Sk1erChatParser(Sk1erPublicMod mod ) {
+    public Sk1erChatParser(Sk1erPublicMod mod) {
         super(mod);
     }
-    private long lastSeenLevelUp=0;
+
+    private long lastSeenLevelUp = 0;
+
     @Override
     public boolean containsTrigger(ClientChatReceivedEvent event) {
-        String raw = event.message.getUnformattedText().replace("\n","").replace("\r","");
-        if(raw.contains("+") && (raw.contains("coins!")||raw.contains("Hypixel Experience")))
+        String raw = event.message.getUnformattedText().replace("\n", "").replace("\r", "");
+        if (raw.contains("+") && (raw.contains("coins!") || raw.contains("Hypixel Experience")))
             return true;
-        if(raw.contains("Rating") && raw.contains("(") && raw.contains(")"))
+        if (raw.contains("Rating") && raw.contains("(") && raw.contains(")"))
             return true;
-        if(raw.contains("LEVEL UP")) {
+        if (raw.contains("LEVEL UP")) {
             lastSeenLevelUp = System.currentTimeMillis();
         }
-        if(System.currentTimeMillis()-lastSeenLevelUp<1000)
+        if (System.currentTimeMillis() - lastSeenLevelUp < 1000)
             return true;
-        if(raw.contains("Achievement Unlocked: ") && !raw.contains("Guild"))
+        if (raw.contains("Achievement Unlocked: ") && !raw.contains("Guild"))
             return true;
-        if(raw.startsWith("Your") && raw.contains("Triple Coins Booster"))
+        if (raw.startsWith("Your") && raw.contains("Triple Coins Booster"))
             return true;
-        if(raw.contains("got lucky and found a " ) && raw.contains(Minecraft.getMinecraft().thePlayer.getName()))
+        if (raw.contains("got lucky and found a ") && raw.contains(Minecraft.getMinecraft().thePlayer.getName()))
             return true;
-        if(raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest:"))
+        if (raw.startsWith("Daily Quest:") || raw.startsWith("Weekly Quest:"))
             return true;
-        if((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length==2)
+        if ((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length == 2)
             return true;
         return false;
     }
 
     @Override
     public void handle(ClientChatReceivedEvent e) {
-        boolean color=  getConfig().getBoolean(CValue.COLORED_GUILD_CHAT);
-        String wrk =e.message.getUnformattedText().replace('\u00A7'+"", "").replace("\r", "").replace("\n", "");
+        boolean color = getConfig().getBoolean(CValue.COLORED_GUILD_CHAT);
+        String wrk = e.message.getUnformattedText().replace('\u00A7' + "", "").replace("\r", "").replace("\n", "");
 
-        if((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length==2) {
+        if ((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length == 2) {
             e.setCanceled(true);
             return;
         }
-        if(wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {
+        if (wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {
             String split = wrk.split("\\(")[1];
-            String tmp ="";
-            for(char c : split.toCharArray()) {
+            String tmp = "";
+            for (char c : split.toCharArray()) {
                 String nums = "0123456789";
-                if(nums.contains(c+"")) {
-                    tmp+=c;
+                if (nums.contains(c + "")) {
+                    tmp += c;
                 }
             }
             try {
-               getMod().getDataSaving().setRankedRating(Integer.parseInt(tmp));
-            } catch(Exception a) {
-            getMod().newError(a);
+                getMod().getDataSaving().setRankedRating(Integer.parseInt(tmp));
+            } catch (Exception a) {
+                getMod().newError(a);
             }
         }
-        if(wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
+        if (wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String message = e.message.getUnformattedText();
             String ach = message.split(":")[1].split("  ")[0].trim();
 
-            if(color){
-                ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach +" ~dAchievement!");
+            if (color) {
+                ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach + " ~dAchievement!");
             } else {
-                ChatUtils.sendMesssageToServer("/gchat I unlocked the " + ach +" Achievement!");
+                ChatUtils.sendMesssageToServer("/gchat I unlocked the " + ach + " Achievement!");
             }
 
         }
-        if(wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
-            String raw = StringUtils.stripControlCodes(e.message.getUnformattedText().replace('\u00A7'+"", "").replace("\r", "").replace("\n", ""));
-            if(raw.split("!").length>2) {
-                raw = raw.replaceFirst("!","");
+        if (wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
+            String raw = StringUtils.stripControlCodes(e.message.getUnformattedText().replace('\u00A7' + "", "").replace("\r", "").replace("\n", ""));
+            if (raw.split("!").length > 2) {
+                raw = raw.replaceFirst("!", "");
             }
             String quest_line = raw.split("!")[raw.split("!").length];
-            String name = quest_line.split(":")[1].toLowerCase().replace("completed","").trim();
+            String name = quest_line.split(":")[1].toLowerCase().replace("completed", "").trim();
             HypixelQuest quest = HypixelQuest.fromDisplayName(name, getMod().getCurrentGameType());
             try {
-                if(quest !=null)
-                quest.complete();
-                else ChatUtils.sendMessage("Quest '" + name + "' was not parsed correctly!");
+                if (quest != null)
+                    quest.complete();
+                else {
+                    ChatUtils.sendMessage("Quest '" + name + "' was not parsed correctly!");
+                    ChatUtils.sendMessage(e.message.toString());
+                    ChatUtils.sendMessage("Please send to Sk1er | type="+ getMod().getCurrentGameType().getName()+ " | " + getMod().getCurrentGame());
+                }
             } catch (Exception a) {
                 getMod().newError(a);
             }
 
         }
-        if(wrk.startsWith("Your") && wrk.contains("Triple Coins Booster")) {
+        if (wrk.startsWith("Your") && wrk.contains("Triple Coins Booster")) {
             String smp = wrk.split(" ")[1];
             String tmp = "";
-            for(String s : wrk.split(" ")) {
-                if(s.equals("Your")) {
+            for (String s : wrk.split(" ")) {
+                if (s.equals("Your")) {
                     continue;
                 }
-                if(s.equalsIgnoreCase("Triple")) {
+                if (s.equalsIgnoreCase("Triple")) {
                     break;
                 }
-                tmp = tmp + " "+ s;
+                tmp = tmp + " " + s;
             }
             ChatUtils.sendMesssageToServer("/gchat " + (color ? "~c[P2W ALERT]" + "~f I queued " + (tmp.startsWith("an") ? "an" : "a") + "~b" + tmp + "~f booster!" : "[P2W ALERT]" + " I queued " + (tmp.startsWith("an") ? "an" : "a") + "" + tmp + " booster!"));
 
         }
-        if(wrk.contains("You are now Hypixel Level") || wrk.contains("You are now level")) {
+        if (wrk.contains("You are now Hypixel Level") || wrk.contains("You are now level")) {
             boolean next = false;
             String level = "";
-            for(String s : wrk.split(" ")) {
-                if(next) {
+            for (String s : wrk.split(" ")) {
+                if (next) {
                     level = s;
                 }
-                if(s.equalsIgnoreCase("level")) {
+                if (s.equalsIgnoreCase("level")) {
                     next = true;
                 }
             }
-            if(color) {
+            if (color) {
                 ChatUtils.sendMesssageToServer("/gchat " + "~a~kP~r ~6Level Up! ~a~kP~r~7 I am now ~3Hypixel Level " + level);
             } else {
                 ChatUtils.sendMesssageToServer("/gchat " + "Level Up! I am now Hypixel Level " + level);
             }
 
         }
-        if(wrk.contains("got lucky and found a " ) && wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
+        if (wrk.contains("got lucky and found a ") && wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String tmp = wrk.split("got lucky and found a")[1];
-            ChatUtils.sendMesssageToServer("/gchat " + (color? "/gchat " + "~a~kP~r ~dWarlords Legendary! ~a~kP~r~6 " +tmp : "/gchat " + "Warlords Legendary!  " +tmp) );
+            ChatUtils.sendMesssageToServer("/gchat " + (color ? "/gchat " + "~a~kP~r ~dWarlords Legendary! ~a~kP~r~6 " + tmp : "/gchat " + "Warlords Legendary!  " + tmp));
         }
         handleXP(e);
 
     }
+
     public void handleXP(ClientChatReceivedEvent e) {
         String wrk = StringUtils.stripControlCodes(e.message.getUnformattedText().replace("\u00A7.", "").replace("+", "PLUS").replace("\r", "").replace("\n", ""));
         if (wrk.contains("PLUS") && wrk.contains("coins")) {
@@ -176,7 +183,7 @@ public class Sk1erChatParser extends Sk1erChatHandler{
                             tmp[in] = "ERROR: " + sn.getClassName() + " AT LINE: " + sn.getLineNumber();
                             in++;
                         }
-             }
+                    }
                 }
                 if (s.contains("Coins")) {
                     String iso = "";
@@ -190,20 +197,21 @@ public class Sk1erChatParser extends Sk1erChatHandler{
                         try {
                             addCoins(Integer.parseInt(iso.replace(",", "").trim()));
                         } catch (NumberFormatException en) {
-                           }
+                        }
                         // +2400 Hypixel Experience
 
                     } catch (Exception es) {
 
-                     }
+                    }
                 }
             }
         }
-        }
+    }
 
     public void addCoins(int coins) {
-       getMod().getDataSaving().addCoins(coins);
+        getMod().getDataSaving().addCoins(coins);
     }
+
     public void addXp(int xp) {
         getMod().getDataSaving().addXp(xp);
     }
