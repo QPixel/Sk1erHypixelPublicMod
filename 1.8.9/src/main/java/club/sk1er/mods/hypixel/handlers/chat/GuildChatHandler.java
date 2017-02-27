@@ -30,7 +30,7 @@ public class GuildChatHandler extends Sk1erChatHandler{
         if(tmp.equalsIgnoreCase("default")) {
             return   C.GREEN +"G" + C.GOLD+ "u" +C.RED + "i" + C.AQUA + "l" + C.GREEN+"d" + C.WHITE + " " + C.DARK_GREEN +"> ";
         } else {
-            return tmp;
+            return tmp.replace("&",C.COLOR_CODE_SYMBOL).replace("~",C.COLOR_CODE_SYMBOL);
         }
     }
     public void handle(ClientChatReceivedEvent e) {
