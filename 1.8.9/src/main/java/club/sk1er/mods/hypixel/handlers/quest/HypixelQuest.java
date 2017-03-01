@@ -120,4 +120,8 @@ public class HypixelQuest {
     public GameType getGameType() {
         return gameType;
     }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }

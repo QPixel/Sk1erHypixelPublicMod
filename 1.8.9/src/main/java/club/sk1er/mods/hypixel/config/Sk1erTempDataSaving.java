@@ -1,6 +1,7 @@
 package club.sk1er.mods.hypixel.config;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
+import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import net.minecraft.client.Minecraft;
 import org.json.JSONObject;
 
@@ -204,6 +205,9 @@ public class Sk1erTempDataSaving {
             refreshCoinsAndXp(coins, xp);
             for(String s : QUEST_STATUS.keySet()) {
                 QUEST_STATUS.put(s,0);
+            }
+            for(HypixelQuest quest : HypixelQuest.allQuests) {
+                quest.setCompleted(false);
             }
         }
     }

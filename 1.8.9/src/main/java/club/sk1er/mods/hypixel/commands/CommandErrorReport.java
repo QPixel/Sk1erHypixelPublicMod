@@ -57,7 +57,7 @@ public class CommandErrorReport extends CommandBase {
                     ChatUtils.sendMessage(mes + " preview - Previews the report");
                     ChatUtils.sendMessage(mes + " adddesc [desciption] - Descibe how the error happened");
                     ChatUtils.sendMessage(mes + " setdesc [line] [value] - Previews the report");
-                    ChatUtils.sendMessage(mes + " send - Publishes the report and possible suggestion from the webserver");
+                    ChatUtils.sendMessage(mes + " publish - Publishes the report and possible suggestion from the webserver");
                 }
             } else {
                 Sk1erErrorReport report = mod.getErrors().get(a[0]);
@@ -161,10 +161,7 @@ public class CommandErrorReport extends CommandBase {
                                 ChatUtils.sendMessage("Unable to read from webserver!");
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
-                            ChatUtils.sendMessage("An error occured while publishing the data.");
-                            report.getStackTrace().forEach(ChatUtils::sendMessage);
-                            ChatUtils.sendMessage("Ahhh scary wall of text. Please screenshot this with as much of the wall of text and send to Sk1er via twitter or Hypixel Forums");
+                           ChatUtils.sendMessage("Something was not right when publishing. However, it is usually OK");
                         }
                     });
 

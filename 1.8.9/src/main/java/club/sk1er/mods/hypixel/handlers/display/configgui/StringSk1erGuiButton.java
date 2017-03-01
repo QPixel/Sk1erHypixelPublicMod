@@ -75,7 +75,7 @@ public class StringSk1erGuiButton extends GuiButton implements Sk1erConfigGuiVal
         this.drawCenteredString(fontrenderer, this.displayString, this.xPosition + this.width / 2, this.yPosition - (this.height - 8) , j);
         this.drawString(fontrenderer, tempText, this.xPosition+ resolution.getScaledWidth()/100, this.yPosition+ (this.height-8)/2 ,j);
     }
-
+    private final String VALID = "1234567890abcdefghijklmnopqrstuvwxyz.!@#$%^&*()-=;':\",.<>/?`~[]{}\\| ";
     public void textInput(int key, char c) {
         if (typing) {
             if (key == Keyboard.KEY_BACK) {
@@ -91,6 +91,8 @@ public class StringSk1erGuiButton extends GuiButton implements Sk1erConfigGuiVal
                 if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                     name1=name1.toUpperCase();
                 }
+                if(!VALID.contains(name1.toLowerCase()))
+                    return;
                 text+=name1;
                 displayString=value.getDname();
             }
