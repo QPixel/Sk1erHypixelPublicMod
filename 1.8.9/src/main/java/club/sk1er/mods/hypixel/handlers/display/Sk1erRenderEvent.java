@@ -104,7 +104,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 if (getConfigBoolean(CValue.DISPLAY_BOOSTERS_DAY)) {
                     JSONObject tmp = getMod().getApiHandler().getSpecialBoosterCache();
                     String[] names = JSONObject.getNames(tmp);
-                    if (names != null && names.length>0) {
+                    if (names != null && names.length > 0) {
                         spacer();
                         for (String name : names) {
                             try {
@@ -160,14 +160,13 @@ public class Sk1erRenderEvent extends Sk1erListener {
                     try {
                         GameType type = getMod().getCurrentGameType();
                         if (type != null) {
-                            if (type.getGameHandler() != null && type.getGameHandler().getQuests() != null) {
-                                List<HypixelQuest> quests = type.getGameHandler().getQuests();
-                                if (quests != null)
-                                    for (HypixelQuest quest : quests) {
-                                        render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
-                                    }
-                            }
+                            List<HypixelQuest> quests = HypixelQuest.getQuestForGame(type);
+                            if (quests != null)
+                                for (HypixelQuest quest : quests) {
+                                    render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
+                                }
                         }
+
                     } catch (Exception e3) {
 
                     }
@@ -176,6 +175,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
         } catch (Exception e2) {
             getMod().newError(e2);
         }
+
     }
 
     private void spacer() {
@@ -187,6 +187,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
     }
 
     private void render(String s) {
+        //TODO add scale system for text
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         double x = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
                 * res.getScaledWidth_double();

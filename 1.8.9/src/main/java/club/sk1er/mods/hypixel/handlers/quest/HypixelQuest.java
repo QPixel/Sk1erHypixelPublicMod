@@ -51,7 +51,11 @@ public class HypixelQuest {
 
 
     public static List<HypixelQuest> getQuestForGame(GameType type) {
-        return type.getGameHandler().getQuests();
+        if(type==null)
+            return new ArrayList<>();
+        List<HypixelQuest> quests = new ArrayList<>();
+        allQuests.stream().filter(t -> t.getGameType().equals(type)).forEach(quests::add);
+        return quests;
     }
 
     private QuestType type;
@@ -85,6 +89,7 @@ public class HypixelQuest {
 
     public String getFrontEndName() {
         return quest_data.getString("displayName");
+    }
     }
 
     public HypixelQuest(String backend) {

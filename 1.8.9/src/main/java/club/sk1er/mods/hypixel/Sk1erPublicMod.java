@@ -9,6 +9,7 @@ import club.sk1er.mods.hypixel.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.hypixel.handlers.display.Sk1erRenderEvent;
 import club.sk1er.mods.hypixel.handlers.input.KeyInput;
 import club.sk1er.mods.hypixel.handlers.input.MouseInput;
+import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.handlers.scrips.HypixelMinuteScrips;
 import club.sk1er.mods.hypixel.handlers.server.Sk1erPlayerLogIntoServerEvent;
 import club.sk1er.mods.hypixel.listeners.ChatListener;
@@ -20,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -143,6 +145,10 @@ public class Sk1erPublicMod {
             getApiHandler().genQuests();
             for(GameType type : GameType.values()) {
                 type.getGameHandler().getQuests();
+            }
+            JSONObject quests = getApiHandler().getQUEST_INFO();
+            for (String s : quests.getNames()) {
+                HypixelQuest.fromBackend(s);
             }
 
         });
