@@ -84,7 +84,7 @@ public class HypixelQuest {
     }
 
     public String getFrontEndName() {
-        return quest_data.getString("displayName");
+        return quest_data.optString("displayName");
     }
 
     public HypixelQuest(String backend) {
@@ -93,8 +93,8 @@ public class HypixelQuest {
         quest_data = quests.getJSONObject(backend);
         int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
         completed = status == 1;
-        type = QuestType.valueOf(quest_data.getString("type"));
-        gameType = GameType.fromDatabase(quest_data.getString("gameType"));
+        type = QuestType.valueOf(quest_data.optString("type"));
+        gameType = GameType.fromDatabase(quest_data.optString("gameType"));
 
     }
 
