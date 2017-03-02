@@ -49,10 +49,11 @@ public class Sk1erChatParser extends Sk1erChatHandler {
         boolean color = getConfig().getBoolean(CValue.COLORED_GUILD_CHAT);
         String wrk = e.message.getUnformattedText().replace('\u00A7' + "", "").replace("\r", "").replace("\n", "");
 
-        if ((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length == 2) {
+        if ((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length == 2 && !getConfig().getBoolean(CValue.SHOW_JOIN_LEAVE_MESSAGES)) {
             e.setCanceled(true);
             return;
         }
+
         if (wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {
             String split = wrk.split("\\(")[1];
             String tmp = "";
@@ -84,7 +85,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             if (raw.split("!").length > 2) {
                 raw = raw.replaceFirst("!", "");
             }
-            String quest_line = raw.split("!")[raw.split("!").length];
+            String quest_line = raw.split("!")[0];
             String name = quest_line.split(":")[1].toLowerCase().replace("completed", "").trim();
             HypixelQuest quest = HypixelQuest.fromDisplayName(name, getMod().getCurrentGameType());
             try {

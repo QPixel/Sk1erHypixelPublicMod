@@ -55,6 +55,7 @@ public class HypixelMinuteScrips {
                     }
                     if (time % 60 == 0) {
                         mod.getApiHandler().pullPlayerProfile();
+                        mod.getDataSaving().addCoins(0);
                     }
                     if (time % 60*5 == 0) {
                         mod.getApiHandler().pullGuild();
