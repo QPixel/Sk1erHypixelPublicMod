@@ -1,9 +1,11 @@
 package club.sk1er.mods.hypixel.handlers.chat;
 
+import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
+import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -41,6 +43,8 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             return true;
         if ((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length == 2)
             return true;
+        if(raw.startsWith(" ") && raw.toLowerCase().contains("win") && (!getMod().getCurrentGameType().equals(GameType.MCGO) || !raw.toLowerCase().contains("round winner")))
+            return true;
         return false;
     }
 
@@ -52,6 +56,16 @@ public class Sk1erChatParser extends Sk1erChatHandler {
         if ((wrk.endsWith("joined.") || wrk.endsWith("left.")) && wrk.split(" ").length == 2 && !getConfig().getBoolean(CValue.SHOW_JOIN_LEAVE_MESSAGES)) {
             e.setCanceled(true);
             return;
+        }
+        if(wrk.startsWith(" ") && wrk.toLowerCase().contains("win") && (!getMod().getCurrentGameType().equals(GameType.MCGO) || !wrk.toLowerCase().contains("round winner") && getConfig().getBoolean(CValue.AUTO_GG)) && getMod().ALLOW_AUTO_GG) {
+            Multithreading.runAsync(() -> {
+                try {
+                    Thread.sleep(2500l);
+                    ChatUtils.sendMesssageToServer("/achat gg");
+                } catch (InterruptedException e1) {
+
+                }
+            });
         }
 
         if (wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {

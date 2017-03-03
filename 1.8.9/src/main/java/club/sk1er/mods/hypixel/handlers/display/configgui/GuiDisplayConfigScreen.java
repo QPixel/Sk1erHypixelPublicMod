@@ -40,7 +40,6 @@ public class GuiDisplayConfigScreen extends GuiScreen {
         v.add(DISPLAY_WATERMARK);
         v.add(DISPLAY_PRIMARY_COLOR);
         v.add(DISPLAY_SECONDARY_COLOR);
-
     }
 
     private ScaledResolution resolution;
@@ -67,6 +66,9 @@ public class GuiDisplayConfigScreen extends GuiScreen {
             if (left)
                 rad += 8 * resolution.getScaleFactor();
         }
+        Sk1erDisplaySizeSlider slider = new Sk1erDisplaySizeSlider(v.size()+1, left ? (int) (.05 * resolution.getScaledWidth_double()) : (int) (.60 * resolution.getScaledWidth_double()), rad+10, guiSlider -> {});
+        buttons.add(slider);
+        buttonList.add(slider);
     }
 
     @Override

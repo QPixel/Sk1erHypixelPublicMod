@@ -42,7 +42,7 @@ public class QuakecraftGameHandler extends Sk1erGameHandler{
         ChatUtils.sendMessage("Solo kills: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills"));
         ChatUtils.sendMessage("Solo wins: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins"));
         ChatUtils.sendMessage("Solo kill streaks: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#killstreaks"));
-        ChatUtils.sendMessage("Ssolo K/D: " + Utils.buildRatio(Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills"),Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins")));
+        ChatUtils.sendMessage("Solo K/D: " + Utils.buildRatio(Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills"),Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins")));
         ChatUtils.sendMessage("Team kills: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills_teams"));
         ChatUtils.sendMessage("Team wins: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins_teams"));
         ChatUtils.sendMessage("Team kill streaks: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#killstreaks_teams"));

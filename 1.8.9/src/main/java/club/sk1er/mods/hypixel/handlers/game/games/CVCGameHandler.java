@@ -27,7 +27,7 @@ public class CVCGameHandler extends Sk1erGameHandler{
     @Override
     public boolean isGame(String game) {
         game = game.toLowerCase();
-        return game.equalsIgnoreCase("cvc") || game.equals("cops and crims") || game.equals("cac");
+        return game.equalsIgnoreCase("cvc") || game.equals("cops and crims") || game.equals("cac") || game.equalsIgnoreCase("mcgo");
     }
 
     @Override

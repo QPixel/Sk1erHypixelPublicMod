@@ -97,8 +97,10 @@ public class Sk1erApiHandler {
                 + "&modver=" + Sk1erPublicMod.VERSION
                 + "&mod=PUBLIC_PRIVATE_MOD"
         ));
-        if (gen_key.has("key"))
+        if (gen_key.has("key")) {
             SK1ER_API_KEY = gen_key.getString("key");
+            mod.ALLOW_AUTO_GG=gen_key.optBoolean("autogg");
+        }
         else {
             ChatUtils.sendMessage("[DEBUG] " + "http://sk1er.club/genkey?name=" + Minecraft.getMinecraft().thePlayer.getName()
                     + "&uuid=" + Minecraft.getMinecraft().thePlayer.getUniqueID().toString()
@@ -132,6 +134,7 @@ public class Sk1erApiHandler {
                                 + "&mod=PUBLIC_PRIVATE_MOD"
                         ));
                         SK1ER_API_KEY = gen_key1.getString("key");
+                        mod.ALLOW_AUTO_GG=gen_key1.optBoolean("autogg");
                         if (gen_key1.has("update") && gen_key.getBoolean("update")) {
                             if (!sentOutOFdate) {
                                 ChatUtils.sendMessage("Your version (" + Sk1erPublicMod.VERSION + ") is out of date. The new version is " + gen_key.getString("new_ver"));

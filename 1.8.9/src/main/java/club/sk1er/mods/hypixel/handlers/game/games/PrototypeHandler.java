@@ -2,6 +2,7 @@ package club.sk1er.mods.hypixel.handlers.game.games;
 
 import club.sk1er.mods.hypixel.handlers.game.Sk1erGameHandler;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
+import club.sk1er.mods.hypixel.utils.ChatUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,6 +24,6 @@ public class PrototypeHandler extends Sk1erGameHandler{
 
     @Override
     public void handlePlayerStats(JSONObject player) {
-
+        ChatUtils.sendMessage("There are no stats for the ProtoType lobby!");
     }
 }

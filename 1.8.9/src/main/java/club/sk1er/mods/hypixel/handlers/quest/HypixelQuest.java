@@ -34,7 +34,7 @@ public class HypixelQuest {
             if (quest.getFrontEndName().equalsIgnoreCase(displayName))
                 return quest;
         }
-        ChatUtils.sendMessage("Please report this to Sk1er: Error type = Quest.NOT_LOADED. Id: " + displayName);
+        ChatUtils.sendMessage("Please report this to Sk1er: Error type = Quest.NOT_REGISTERED. Id: " + displayName);
         return null;
     }
 
@@ -43,15 +43,15 @@ public class HypixelQuest {
             if (quest.getFrontEndName().equalsIgnoreCase(displayName) && quest.getGameType().equals(type))
                 return quest;
         }
-        ChatUtils.sendMessage("Please report this to Sk1er: Error type =  Quest.NOT_LOADED. Id: " + displayName
-                + " current parsed GameType: " + Sk1erPublicMod.getInstance().getCurrentGameType().getName()
-                + " Display: " + Sk1erPublicMod.getInstance().getCurrentGame());
+      //  ChatUtils.sendMessage("Please report this to Sk1er: Error type =  Quest.NOT_LOADED. Id: " + displayName
+        //        + " current parsed GameType: " + Sk1erPublicMod.getInstance().getCurrentGameType().getName()
+          //      + " Display: " + Sk1erPublicMod.getInstance().getCurrentGame());
         return fromDisplayName(displayName);
     }
 
 
     public static List<HypixelQuest> getQuestForGame(GameType type) {
-        if(type==null)
+        if (type == null)
             return new ArrayList<>();
         List<HypixelQuest> quests = new ArrayList<>();
         allQuests.stream().filter(t -> t.getGameType().equals(type)).forEach(quests::add);
@@ -90,7 +90,7 @@ public class HypixelQuest {
     public String getFrontEndName() {
         return quest_data.optString("displayName");
     }
-    }
+
 
     public HypixelQuest(String backend) {
         this.backendName = backend;

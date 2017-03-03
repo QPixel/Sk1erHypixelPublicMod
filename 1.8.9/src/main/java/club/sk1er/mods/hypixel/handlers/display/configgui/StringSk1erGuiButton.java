@@ -24,6 +24,7 @@ public class StringSk1erGuiButton extends GuiButton implements Sk1erConfigGuiVal
         this.value = value;
         text=va;
         displayString=value.getDname();
+
     }
 
     @Override

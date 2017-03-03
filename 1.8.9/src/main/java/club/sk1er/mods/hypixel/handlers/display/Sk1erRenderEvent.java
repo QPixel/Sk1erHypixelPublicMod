@@ -37,7 +37,10 @@ public class Sk1erRenderEvent extends Sk1erListener {
 
     @SubscribeEvent
     public void onRenderEvent(TickEvent.RenderTickEvent e) {
+        int size = renderer.FONT_HEIGHT;
+
         try {
+            renderer.FONT_HEIGHT = (int)((double)renderer.FONT_HEIGHT * (double)getConfig().getInt(CValue.DISPLAY_SIZE)/100.0);
             line = .1;
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             for (RenderObject object : renderObjects) {
@@ -175,7 +178,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
         } catch (Exception e2) {
             getMod().newError(e2);
         }
-
+        renderer.FONT_HEIGHT=size;
     }
 
     private void spacer() {
