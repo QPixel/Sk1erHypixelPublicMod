@@ -1,6 +1,7 @@
 package club.sk1er.mods.hypixel.handlers.scrips;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
+import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.scoreboard.Scoreboard;
@@ -35,6 +36,7 @@ public class HypixelMinuteScrips {
                         try {
                             mod.setCurrentGame(type.getName());
                             mod.setCurrentGameType(type);
+                            ChatUtils.sendDebug("Setting game = " + type);
 
                         } catch (NullPointerException e) {
                         }

@@ -14,6 +14,7 @@ import net.minecraft.command.ICommandSender;
  * Created by Mitchell Katz on 12/4/2016.
  */
 public class CommandDebug extends CommandBase {
+    public static boolean chatOn =false;
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_canCommandSenderUseCommand_1_) {
         return true;
@@ -55,7 +56,12 @@ public class CommandDebug extends CommandBase {
                 for(HypixelQuest quest : HypixelQuest.allQuests) {
                     ChatUtils.sendMessage(quest.getFrontEndName() + " => " + quest.getGameType() + " " + quest.getBackendName() + " " + quest.isCompleted());
                 }
+            } else if(a[0].equals("chat")) {
+                chatOn=!chatOn;
+                ChatUtils.sendMessage("Debug chat enabled");
             }
+
+
         }
 
     }

@@ -5,7 +5,7 @@ import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.listeners.Sk1erListener;
-import net.hypixel.api.GameType;
+import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -140,12 +140,10 @@ public class Sk1erRenderEvent extends Sk1erListener {
                         }
                         render(pColor + "Coins in " + GAME_NAME + ": " + sColor + getMod().getDataSaving().getCoinsForGame(GAME_NAME));
                     }
-
                 } catch (Exception e2) {
                     spacer();
                     render("Game: Unknown");
                 }
-
                 if (getConfigBoolean(CValue.DISPLAY_RANKED_RATING)) {
                     spacer();
                     render(pColor + "Ranked rating: " + sColor + getMod().getDataSaving().getRankedRating());
@@ -153,20 +151,16 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 if (getConfigBoolean(CValue.DISPLAY_QUESTS)) {
                     spacer();
                     try {
-                        List<HypixelQuest> quests = HypixelQuest.getQuestForGame(GameType.SKYWARS);
+                        List<HypixelQuest> quests = HypixelQuest.getQuestForGame(getMod().getCurrentGameType());
                         if (quests == null) {
                             return;
                         }
-
                         for (HypixelQuest quest : quests) {
                             if (quest == null) {
-                                System.out.println("Quest is null!");
-                            } else
-                                if(quest.isEnabled())
+                                ChatUtils.sendDebug("Quest is null!");
+                            } else if (quest.isEnabled())
                                 render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
                         }
-
-
                     } catch (Exception e3) {
                         e3.printStackTrace();
                     }
@@ -191,9 +185,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
         double x = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
                 * res.getScaledWidth_double();
         double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double() + (line * 10);
-
         Minecraft.getMinecraft().fontRendererObj.drawString(s, (int) x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) : 0), (int) y, 16777215);
-        // System.out.println("Rendering " + s +"X: " + x +" Y: " + y);
         line += 1.0;
     }
 

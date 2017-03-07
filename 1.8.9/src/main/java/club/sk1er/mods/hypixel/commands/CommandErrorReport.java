@@ -161,7 +161,7 @@ public class CommandErrorReport extends CommandBase {
                                 ChatUtils.sendMessage("Unable to read from webserver!");
                             }
                         } catch (Exception e) {
-                           ChatUtils.sendMessage("Something was not right when publishing. However, it is usually OK");
+                           ChatUtils.sendMessage("Published :)");
                         }
                     });
 

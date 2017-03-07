@@ -39,9 +39,6 @@ public class Sk1erConfig {
         for (CValue v : CValue.values()) {
             if (!config.has(v.getName())) {
                 config.put(v.getName(), v.getDefaultvalue());
-                for(int i = 0;i<100;i++) {
-                    System.out.println("No saved value for: " + v.getName());
-                }
             }
             map.put(v, config.get(v.getName()));
         }

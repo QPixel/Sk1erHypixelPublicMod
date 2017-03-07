@@ -107,8 +107,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                     quest.complete();
                 else {
                     ChatUtils.sendMessage("Quest '" + name + "' was not parsed correctly!");
-                    ChatUtils.sendMessage(e.message.toString());
-                    ChatUtils.sendMessage("Please send to Sk1er | type=" + getMod().getCurrentGameType().getName() + " | " + getMod().getCurrentGame());
+                    getMod().newError(new Exception("Quest '"+name+ " was not found!!!"));
                 }
             } catch (Exception a) {
                 getMod().newError(a);

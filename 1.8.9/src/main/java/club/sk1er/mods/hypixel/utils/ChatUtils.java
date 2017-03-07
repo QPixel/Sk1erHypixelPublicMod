@@ -1,6 +1,7 @@
 package club.sk1er.mods.hypixel.utils;
 
 import club.sk1er.mods.hypixel.C;
+import club.sk1er.mods.hypixel.commands.CommandDebug;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
@@ -23,5 +24,11 @@ public class ChatUtils {
     }
     public static void sendMesssageToServer(String message) {
         Minecraft.getMinecraft().thePlayer.sendChatMessage(message);
+    }
+
+    public static void sendDebug(String s) {
+    if(CommandDebug.chatOn) {
+        Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(C.AQUA+"[DEBUG]"+C.WHITE +s));
+    }
     }
 }
