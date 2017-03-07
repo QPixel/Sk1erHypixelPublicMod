@@ -27,7 +27,9 @@ public class HypixelQuest {
         allQuests.add(quest);
         return quest;
     }
-
+    public boolean isEnabled() {
+        return enabled;
+    }
     @Deprecated
     public static HypixelQuest fromDisplayName(String displayName) {
         for (HypixelQuest quest : allQuests) {
@@ -43,18 +45,25 @@ public class HypixelQuest {
             if (quest.getFrontEndName().equalsIgnoreCase(displayName) && quest.getGameType().equals(type))
                 return quest;
         }
-      //  ChatUtils.sendMessage("Please report this to Sk1er: Error type =  Quest.NOT_LOADED. Id: " + displayName
-        //        + " current parsed GameType: " + Sk1erPublicMod.getInstance().getCurrentGameType().getName()
-          //      + " Display: " + Sk1erPublicMod.getInstance().getCurrentGame());
         return fromDisplayName(displayName);
     }
 
 
+
     public static List<HypixelQuest> getQuestForGame(GameType type) {
-        if (type == null)
+        if (type == null) {
             return new ArrayList<>();
+        }
         List<HypixelQuest> quests = new ArrayList<>();
-        allQuests.stream().filter(t -> t.getGameType().equals(type)).forEach(quests::add);
+        for (HypixelQuest quest : allQuests) {
+            try {
+                if (quest.getGameType().equals(type)) {
+                    quests.add(quest);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         return quests;
     }
 
@@ -68,7 +77,7 @@ public class HypixelQuest {
     private long lastCompleted;
     private JSONObject quest_data;
     private GameType gameType;
-
+    private boolean enabled;
     public boolean isCompleted() {
         return completed;
     }
@@ -100,7 +109,10 @@ public class HypixelQuest {
         completed = status == 1;
         type = QuestType.valueOf(quest_data.optString("type"));
         gameType = GameType.fromDatabase(quest_data.optString("gameType"));
-
+        enabled=quest_data.optBoolean("enabled");
+        if(gameType==null) {
+            System.out.println(quests.optString("gameType") + " is not a valid gametype!!!!." + backend);
+        }
     }
 
     public boolean isActive() {
@@ -116,6 +128,18 @@ public class HypixelQuest {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "HypixelQuest{" +
+                "type=" + type +
+                ", backendName='" + backendName + '\'' +
+                ", lastCompleted=" + lastCompleted +
+                ", quest_data=" + quest_data +
+                ", gameType=" + gameType +
+                ", completed=" + completed +
+                '}';
     }
 
     public QuestType getType() {

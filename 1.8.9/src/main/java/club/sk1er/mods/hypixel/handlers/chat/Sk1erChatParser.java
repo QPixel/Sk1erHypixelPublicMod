@@ -5,7 +5,6 @@ import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
-import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -43,9 +42,10 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             return true;
         if ((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length == 2)
             return true;
-        if(raw.startsWith(" ") && raw.toLowerCase().contains("win") && (!getMod().getCurrentGameType().equals(GameType.MCGO) || !raw.toLowerCase().contains("round winner")))
+        if (raw.startsWith(" ") && raw.replace(" ", "").toLowerCase().startsWith("win") && getConfig().getBoolean(CValue.AUTO_GG) && getMod().ALLOW_AUTO_GG)
             return true;
         return false;
+
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             e.setCanceled(true);
             return;
         }
-        if(wrk.startsWith(" ") && wrk.toLowerCase().contains("win") && (!getMod().getCurrentGameType().equals(GameType.MCGO) || !wrk.toLowerCase().contains("round winner") && getConfig().getBoolean(CValue.AUTO_GG)) && getMod().ALLOW_AUTO_GG) {
+        if (wrk.startsWith(" ") && wrk.replace(" ", "").toLowerCase().startsWith("win") && getConfig().getBoolean(CValue.AUTO_GG) && getMod().ALLOW_AUTO_GG) {
             Multithreading.runAsync(() -> {
                 try {
                     Thread.sleep(2500l);
@@ -86,7 +86,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
         if (wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String message = e.message.getUnformattedText();
             String ach = message.split(":")[1].split("  ")[0].trim();
-
+            if(getConfig().getBoolean(CValue.BROADCAST_ACHEIVMENTS))
             if (color) {
                 ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach + " ~dAchievement!");
             } else {
@@ -108,7 +108,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                 else {
                     ChatUtils.sendMessage("Quest '" + name + "' was not parsed correctly!");
                     ChatUtils.sendMessage(e.message.toString());
-                    ChatUtils.sendMessage("Please send to Sk1er | type="+ getMod().getCurrentGameType().getName()+ " | " + getMod().getCurrentGame());
+                    ChatUtils.sendMessage("Please send to Sk1er | type=" + getMod().getCurrentGameType().getName() + " | " + getMod().getCurrentGame());
                 }
             } catch (Exception a) {
                 getMod().newError(a);
@@ -127,7 +127,8 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                 }
                 tmp = tmp + " " + s;
             }
-            ChatUtils.sendMesssageToServer("/gchat " + (color ? "~c[P2W ALERT]" + "~f I queued " + (tmp.startsWith("an") ? "an" : "a") + "~b" + tmp + "~f booster!" : "[P2W ALERT]" + " I queued " + (tmp.startsWith("an") ? "an" : "a") + "" + tmp + " booster!"));
+            if(getConfig().getBoolean(CValue.BROADCAST_BOOSTERS))
+                ChatUtils.sendMesssageToServer("/gchat " + (color ? "~c[P2W ALERT]" + "~f I queued " + (tmp.startsWith("an") ? "an" : "a") + "~b" + tmp + "~f booster!" : "[P2W ALERT]" + " I queued " + (tmp.startsWith("an") ? "an" : "a") + "" + tmp + " booster!"));
 
         }
         if (wrk.contains("You are now Hypixel Level") || wrk.contains("You are now level")) {
@@ -141,6 +142,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                     next = true;
                 }
             }
+            if(getConfig().getBoolean(CValue.BROADCAST_LEVEL_UP))
             if (color) {
                 ChatUtils.sendMesssageToServer("/gchat " + "~a~kP~r ~6Level Up! ~a~kP~r~7 I am now ~3Hypixel Level " + level);
             } else {
@@ -150,7 +152,8 @@ public class Sk1erChatParser extends Sk1erChatHandler {
         }
         if (wrk.contains("got lucky and found a ") && wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String tmp = wrk.split("got lucky and found a")[1];
-            ChatUtils.sendMesssageToServer("/gchat " + (color ? "/gchat " + "~a~kP~r ~dWarlords Legendary! ~a~kP~r~6 " + tmp : "/gchat " + "Warlords Legendary!  " + tmp));
+            if(getConfig().getBoolean(CValue.BROADCAST_LEGENDARIES))
+                ChatUtils.sendMesssageToServer("/gchat " + (color ? "" + "~a~kP~r ~dWarlords Legendary! ~a~kP~r~6 " + tmp : "Warlords Legendary!  " + tmp));
         }
         handleXP(e);
 

@@ -33,6 +33,7 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(AUTO_GG);
         v.add(COLORED_GUILD_CHAT);
         v.add(SHOW_JOIN_LEAVE_MESSAGES);
+        v.add(GUILD_CHAT_SHOW_RANK);
 
     }
 

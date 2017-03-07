@@ -5,7 +5,6 @@ import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
@@ -37,13 +36,7 @@ public class GuildChatHandler extends Sk1erChatHandler{
         if(getConfig().getBoolean(CValue.SHOW_GUILD_CHAT)) {
             IChatComponent message = new ChatComponentText("");
             IChatComponent old = e.message;
-            if (getConfig().getString(CValue.GUILD_CHAT_START).equalsIgnoreCase("custom")) {
-                message.appendSibling(new ChatComponentText(getHeader()));
-            } else if (getConfig().getString(CValue.GUILD_CHAT_START).equalsIgnoreCase("SIMPLE")) {
-                message.appendSibling(new ChatComponentText(EnumChatFormatting.GREEN + "G > "));
-            } else {
-                message.appendSibling(new ChatComponentText(EnumChatFormatting.DARK_GREEN + "Guild > "));
-            }
+            message.appendSibling(new ChatComponentText(getHeader()));
             String PLAYER_NAME = "";
             if (old.getUnformattedText().split(" ")[2].contains("[")) {
                 PLAYER_NAME = old.getUnformattedText().split(" ")[3];

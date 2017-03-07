@@ -48,7 +48,7 @@ public class Sk1erPublicMod {
          Quest: http://i.imgur.com/tGIXJAX.png
           */
     public static final String MODID = "Sk1er-Public";
-    public static final String VERSION = "2.3-DEV";
+    public static final String VERSION = "2.4-BETA";
     public static final String NAME = "Sk1er Public Mod";
     public boolean ALLOW_AUTO_GG = false;
     private Handlers handlers;

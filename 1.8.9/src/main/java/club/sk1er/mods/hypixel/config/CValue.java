@@ -1,6 +1,8 @@
 package club.sk1er.mods.hypixel.config;
 
 
+import club.sk1er.mods.hypixel.utils.ChatUtils;
+
 /**
  * Created by Mitchell Katz on 11/28/2016.
  */
@@ -13,7 +15,8 @@ public enum CValue {
     GUILD_CHAT_MEMBER_PREFIX("GUILD_CHAT_MEMBER_PREFIX","&2[M]&f","*", "Member prefix", "The prefix that is put before a members' name in guild chat when guild ranks are displayed"),
     GUILD_CHAT_SHOW_RANK("GUILD_CHAT_SHOW_RANK", true, "true,false","Show ranks in guild chat","Decides if rank of the user in the guild is shown in guild chat"),
     GUILD_CHAT_CUSTOM_PREFIX("GUILD_CHAT_CUSTOM_PREFIX", "&aG&6u&ci&bl&ad &2> ", "*","Custom header to guild chat messages", "When toggled on, this will show before any guild message"),
-    GUILD_CHAT_START("GUILD_CHAT","NAME","CUSTOM,DEFAULT,SIMPLE","Header to a guild chat message", "This is the first thing in the line of chat containing a guild chat message"),
+    @Deprecated
+    GUILD_CHAT_START("GUILD_CHAT","custom","custom,default,simple","Header to a guild chat message", "This is the first thing in the line of chat containing a guild chat message"),
     COLORED_GUILD_CHAT("COLORED_GUILD_CHAT",false,"true,false","Guild chat color","Should automatic broadcasts to guild chat be formatted with color"),
     PARTY_CHAT_HEADER("PARTY_CHAT_HEADER","&8P > ", "*","Header to party chat messages"),
     DISPLAY_GUILD_CHAT_BOOSTERS("DISPLAY_GUILD_CHAT_BOOSTERS",true,"true,false","Broadcast in guild chat when you queue a booster"),
@@ -53,6 +56,12 @@ public enum CValue {
     SHOW_PARTY_CHAT("SHOW_PARTY_CHAT",true,"true,false","Show party chat"),
     SHOW_DIRECT_MESSAGES("SHOW_DIRECT_MESSAGES",true,"true,false","Show direct messages"),
     SHOW_JOIN_LEAVE_MESSAGES("SHOW_JOIN_LEAVE_MESSAGES",true,"true,false","Show join leave messages"),
+    BROADCAST_LEVEL_UP("BROADCAST_LEVEL_UP",true,"true,false","Broadcast level ups in guild chat"),
+
+    BROADCAST_ACHEIVMENTS("BROADCAST_ACHEIVMENTS",true,"true,false","Broadcast achievements in guild chat"),
+
+    BROADCAST_BOOSTERS("BROADCAST_BOOSTERS",true,"true,false","Broadcast queuing boosters in guild chat"),
+    BROADCAST_LEGENDARIES("BROADCAST_LEGENDARIES",true,"true,false","Broadcast legendary weapons boosters in guild chat"),
 
     DISPLAY_SIZE("DISPLAY_SIZE", 100, "INTEGER", "The size of overlay");
 
@@ -123,6 +132,7 @@ public enum CValue {
             }
         }
         for(String s : allvals.split(",")) {
+            ChatUtils.sendMessage("'" +s+"' '" + state+"'");
             if(s.equalsIgnoreCase(state))
                 return true;
         }

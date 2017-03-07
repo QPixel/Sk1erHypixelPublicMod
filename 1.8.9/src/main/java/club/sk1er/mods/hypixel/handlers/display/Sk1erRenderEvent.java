@@ -7,7 +7,6 @@ import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.listeners.Sk1erListener;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -28,7 +27,6 @@ public class Sk1erRenderEvent extends Sk1erListener {
         super(mod);
     }
 
-    private FontRenderer renderer = null;
     private double line = .1;
     public static List<
             RenderObject> renderObjects = new ArrayList<>();
@@ -37,21 +35,15 @@ public class Sk1erRenderEvent extends Sk1erListener {
 
     @SubscribeEvent
     public void onRenderEvent(TickEvent.RenderTickEvent e) {
-        int size = renderer.FONT_HEIGHT;
-
         try {
-            renderer.FONT_HEIGHT = (int)((double)renderer.FONT_HEIGHT * (double)getConfig().getInt(CValue.DISPLAY_SIZE)/100.0);
-            line = .1;
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             for (RenderObject object : renderObjects) {
                 Minecraft.getMinecraft().fontRendererObj.drawString(object.text, object.x / res.getScaleFactor(), object.y / res.getScaleFactor(), 16777215);
-
             }
             if (getMod().isHypixel) {
+                line = .1;
                 pColor = getConfig().getString(CValue.DISPLAY_PRIMARY_COLOR).replace("&", C.COLOR_CODE_SYMBOL);
                 sColor = getConfig().getString(CValue.DISPLAY_SECONDARY_COLOR).replace("&", C.COLOR_CODE_SYMBOL);
-
-                renderer = Minecraft.getMinecraft().fontRendererObj;
                 if (Minecraft.getMinecraft().ingameGUI.getChatGUI().getChatOpen()) {
                     if (getMod().isMovingCustomDisplay) {
                         render(pColor + Sk1erPublicMod.NAME + " V." + Sk1erPublicMod.VERSION);
@@ -161,24 +153,28 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 if (getConfigBoolean(CValue.DISPLAY_QUESTS)) {
                     spacer();
                     try {
-                        GameType type = getMod().getCurrentGameType();
-                        if (type != null) {
-                            List<HypixelQuest> quests = HypixelQuest.getQuestForGame(type);
-                            if (quests != null)
-                                for (HypixelQuest quest : quests) {
-                                    render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
-                                }
+                        List<HypixelQuest> quests = HypixelQuest.getQuestForGame(GameType.SKYWARS);
+                        if (quests == null) {
+                            return;
                         }
 
-                    } catch (Exception e3) {
+                        for (HypixelQuest quest : quests) {
+                            if (quest == null) {
+                                System.out.println("Quest is null!");
+                            } else
+                                if(quest.isEnabled())
+                                render(quest.getFrontEndName(), quest.isCompleted() ? C.GREEN + "Completed" : C.RED + "Not completed");
+                        }
 
+
+                    } catch (Exception e3) {
+                        e3.printStackTrace();
                     }
                 }
             }
         } catch (Exception e2) {
             getMod().newError(e2);
         }
-        renderer.FONT_HEIGHT=size;
     }
 
     private void spacer() {
@@ -195,7 +191,9 @@ public class Sk1erRenderEvent extends Sk1erListener {
         double x = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
                 * res.getScaledWidth_double();
         double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double() + (line * 10);
-        renderer.drawString(s, (int) x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? renderer.getStringWidth(s) : 0), (int) y, 16777215);
+
+        Minecraft.getMinecraft().fontRendererObj.drawString(s, (int) x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) : 0), (int) y, 16777215);
+        // System.out.println("Rendering " + s +"X: " + x +" Y: " + y);
         line += 1.0;
     }
 

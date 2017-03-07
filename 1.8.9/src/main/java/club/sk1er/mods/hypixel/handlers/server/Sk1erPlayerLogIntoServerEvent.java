@@ -1,8 +1,10 @@
 package club.sk1er.mods.hypixel.handlers.server;
 
+import club.sk1er.mods.hypixel.C;
 import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.listeners.Sk1erListener;
+import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -33,21 +35,15 @@ public class Sk1erPlayerLogIntoServerEvent extends Sk1erListener {
 
     public void handleHypixelLogin() {
         getMod().isHypixel = true;
-
         Multithreading.runAsync(() -> {
-
             try {
                 while (true) {
                     try {
+                        Thread.sleep(100);
                         if (Minecraft.getMinecraft().thePlayer.getName() != null) {
                             break;
                         }
                     } catch (Exception e) {
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
                 getMod().getApiHandler().genKey();
@@ -56,7 +52,10 @@ public class Sk1erPlayerLogIntoServerEvent extends Sk1erListener {
                 getMod().getApiHandler().pullGuild();
                 getMod().getApiHandler().genQuests();
                 getMod().startHypixelScripts();
-
+                if (getMod().ALLOW_AUTO_GG)
+                    ChatUtils.sendMessage(C.GREEN + "AutoGG is currently " + C.BOLD + "allowed." + C.GREEN + " Approved by Plancke. If confronted by staff direct them to Sk1er or Plancke");
+                else
+                    ChatUtils.sendMessage(C.RED + "AutoGG has been remotely " + C.BOLD + " disabled" + C.RED + " all functionality is now off.");
             } catch (Exception e) {
                 getMod().newError(e);
             }

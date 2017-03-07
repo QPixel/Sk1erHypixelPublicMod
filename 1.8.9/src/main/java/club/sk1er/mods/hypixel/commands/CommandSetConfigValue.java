@@ -46,7 +46,14 @@ public class CommandSetConfigValue extends CommandBase {
             }
             a=a.trim();
             args[0] = args[0].toUpperCase();
-            if (mod.getConfig().setValue(args[0], a) || (args.length == 3 && args[2].equalsIgnoreCase("force"))) {
+            CValue value;
+            try {
+                value = CValue.valueOf(args[0]);
+            } catch (Exception e) {
+                System.out.println(args[0] + " is not a known config value!");
+                return;
+            }
+            if (value.isValidState(a) || (args.length == 3 && args[2].equalsIgnoreCase("force"))) {
                 a = a.replace("force", "").trim();
                 if (CValue.valueOf(args[0]).getAllvals().equalsIgnoreCase("double")) {
                     try {

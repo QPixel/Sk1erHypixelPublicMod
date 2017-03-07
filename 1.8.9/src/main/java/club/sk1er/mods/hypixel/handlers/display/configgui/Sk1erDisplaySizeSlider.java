@@ -24,7 +24,7 @@ public class Sk1erDisplaySizeSlider extends GuiSlider implements Sk1erConfigGuiV
     @Override
     public void updateSlider() {
         super.updateSlider();
-        Sk1erPublicMod.getInstance().getConfig().forceValue(value, (int) (sliderValue + 50));
+        Sk1erPublicMod.getInstance().getConfig().forceValue(value,  getValueInt() + 50);
         displayString = getConfigValue();
     }
 
