@@ -1,6 +1,7 @@
 package club.sk1er.mods.hypixel.handlers.scrips;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
+import club.sk1er.mods.hypixel.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ public class HypixelMinuteScrips {
     public HypixelMinuteScrips(Sk1erPublicMod mod) {
         this.mod = mod;
     }
+
     public boolean run = false;
     int time = 0;
 
@@ -45,25 +47,32 @@ public class HypixelMinuteScrips {
                         mod.setCurrentGameType(GameType.UNKNOWN);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //Removed print a NPE when scoreboard is null.
                 }
                 if (Minecraft.getMinecraft().inGameHasFocus) {
+                    Sk1erApiHandler handler = mod.getApiHandler();
                     boolean boost = false;
-                    if (time % 5 == 0) {
-                        mod.getApiHandler().refreshWatchogAndLiveCoins();
-                        if(mod.getApiHandler().hasBoostrs()) {
+                    if (time % handler.getTiming("boosters_live") ==0) {
+                        if (mod.getApiHandler().hasBoostrs()) {
                             mod.getApiHandler().pullSpecialBoosters();
-                                boost=true;
+                            boost = true;
                         }
                     }
-                    if (time % 60 == 0) {
+                    if(time %handler.getTiming("watchdog_players") == 0) {
+                        mod.getApiHandler().refreshWatchogAndPlayers();
+                    }
+                    if(time %handler.getTiming("player_profile") == 0) {
                         mod.getApiHandler().pullPlayerProfile();
+                    }
+                    if(time %handler.getTiming("coin") == 0) {
                         mod.getDataSaving().addCoins(0);
                     }
-                    if (time % 60*5 == 0) {
-                        mod.getApiHandler().pullGuild();
-                        if(!boost)
+                    if(time %handler.getTiming("boosters_check") == 0) {
+                        if (!boost)
                             mod.getApiHandler().pullSpecialBoosters();
+                    }
+                    if(time %handler.getTiming("guild") == 0) {
+                        mod.getApiHandler().pullGuild();
                     }
                 }
                 int t = (int) Math.max(0, 1000 - (System.currentTimeMillis() - l));

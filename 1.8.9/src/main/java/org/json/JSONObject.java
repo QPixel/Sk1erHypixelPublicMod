@@ -286,7 +286,7 @@ public class JSONObject {
     public static String[] getNames(JSONObject jo) {
         int length = jo.length();
         if (length == 0) {
-            return new String[] { };
+            return new String[0];
         }
         Iterator<String> iterator = jo.keys();
         String[] names = new String[length];

@@ -28,7 +28,7 @@ public class Sk1erApiHandler {
     private JSONObject WATCHDOG_STATS = new JSONObject();
     public String SK1ER_API_KEY = "";
     private JSONObject QUESTS;
-
+    private JSONObject timings = new JSONObject();
     public JSONObject getQUEST_INFO() {
         return QUEST_INFO;
     }
@@ -36,7 +36,9 @@ public class Sk1erApiHandler {
     private JSONObject QUEST_INFO;
     private HashMap<String, JSONObject> cache;
 
-
+    public int getTiming(String key) {
+        return timings.optInt(key,60);
+    }
     public JSONObject getSpecialBoosterCache() {
         return specialBoosterCache;
     }
@@ -50,7 +52,13 @@ public class Sk1erApiHandler {
         }
     }
     public boolean hasBoostrs() {
-        return  JSONObject.getNames(specialBoosterCache).length !=0;
+        try {
+            if (specialBoosterCache != null)
+                return JSONObject.getNames(specialBoosterCache).length != 0;
+            return false;
+        } catch (Exception e) {
+            return  false;
+        }
     }
 
     public Sk1erApiHandler(Sk1erPublicMod mod) {
@@ -94,6 +102,7 @@ public class Sk1erApiHandler {
     public boolean sentOutOFdate = false;
 
     public void genKey() {
+        timings=new JSONObject(rawExpectJson("http://sk1er.club/css/timing.json"));
         JSONObject gen_key = new JSONObject(rawExpectJson("http://sk1er.club/genkey?name=" + Minecraft.getMinecraft().thePlayer.getName()
                 + "&uuid=" + Minecraft.getMinecraft().thePlayer.getUniqueID().toString()
                 + "&mcver=" + Minecraft.getMinecraft().getVersion()
@@ -209,7 +218,7 @@ public class Sk1erApiHandler {
     }
 
 
-    public void refreshWatchogAndLiveCoins() {
+    public void refreshWatchogAndPlayers() {
         try {
            JSONObject st  = new JSONObject(rawExpectJson("http://sk1er.club/staff/info.php"));
             WATCHDOG_STATS=st;

@@ -47,7 +47,7 @@ public class Sk1erPlayerLogIntoServerEvent extends Sk1erListener {
                     }
                 }
                 getMod().getApiHandler().genKey();
-                getMod().getApiHandler().refreshWatchogAndLiveCoins();
+                getMod().getApiHandler().refreshWatchogAndPlayers();
                 getMod().getApiHandler().pullPlayerProfile();
                 getMod().getApiHandler().pullGuild();
                 getMod().getApiHandler().genQuests();
