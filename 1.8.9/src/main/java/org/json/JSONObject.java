@@ -216,7 +216,7 @@ public class JSONObject {
      */
 
 
-    public String[] getNames() {
+    public String[] getNamess() {
         return JSONObject.getNames(this);
     }
     public JSONObject(String baseName, Locale locale) throws JSONException {
@@ -872,7 +872,7 @@ public class JSONObject {
     }
     
     /**
-     * Get the number of keys stored in the JSONObject.
+     * Get the number of keys stored in the JSONObject.888
      *
      * @return The number of keys in the JSONObject.
      */

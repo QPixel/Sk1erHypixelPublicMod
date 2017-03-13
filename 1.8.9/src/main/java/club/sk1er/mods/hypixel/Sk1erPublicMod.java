@@ -83,6 +83,7 @@ public class Sk1erPublicMod {
 
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
+
         System.out.println("Starting Sk1er Public Mod V " + VERSION);
         this.instance = this;
         regesterEvents();
@@ -145,7 +146,7 @@ public class Sk1erPublicMod {
         Multithreading.runAsync(() -> {
             getApiHandler().genQuests();
             JSONObject quests = getApiHandler().getQUEST_INFO();
-            for (String s : quests.getNames()) {
+            for (String s :JSONObject.getNames(quests)) {
                 HypixelQuest.fromBackend(s);
             }
             for(HypixelQuest quest : HypixelQuest.getQuestForGame(GameType.GINGERBREAD)) {
@@ -178,6 +179,8 @@ public class Sk1erPublicMod {
         ClientCommandHandler.instance.registerCommand(new CommandWhatRank(this));
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat(this));
         ClientCommandHandler.instance.registerCommand(new CommandDebug(this));
+
+
     }
 
     public Sk1erConfig getConfig() {

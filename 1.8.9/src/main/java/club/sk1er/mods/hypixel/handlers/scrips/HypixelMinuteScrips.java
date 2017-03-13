@@ -40,20 +40,21 @@ public class HypixelMinuteScrips {
 
                         } catch (NullPointerException e) {
                         }
-
                     } catch (Exception e3) {
-
                         mod.setCurrentGame(parse(GAME_NAME));
-
                         mod.setCurrentGameType(GameType.UNKNOWN);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 if (Minecraft.getMinecraft().inGameHasFocus) {
+                    boolean boost = false;
                     if (time % 5 == 0) {
                         mod.getApiHandler().refreshWatchogAndLiveCoins();
-                        mod.getApiHandler().pullSpecialBoosters();
+                        if(mod.getApiHandler().hasBoostrs()) {
+                            mod.getApiHandler().pullSpecialBoosters();
+                                boost=true;
+                        }
                     }
                     if (time % 60 == 0) {
                         mod.getApiHandler().pullPlayerProfile();
@@ -61,6 +62,8 @@ public class HypixelMinuteScrips {
                     }
                     if (time % 60*5 == 0) {
                         mod.getApiHandler().pullGuild();
+                        if(!boost)
+                            mod.getApiHandler().pullSpecialBoosters();
                     }
                 }
                 int t = (int) Math.max(0, 1000 - (System.currentTimeMillis() - l));

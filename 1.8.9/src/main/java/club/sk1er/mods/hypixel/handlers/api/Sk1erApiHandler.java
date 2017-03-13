@@ -49,6 +49,9 @@ public class Sk1erApiHandler {
             QUEST_INFO = new JSONObject(rawExpectJson("http://sk1er.club/css/Quest_info.json"));
         }
     }
+    public boolean hasBoostrs() {
+        return  JSONObject.getNames(specialBoosterCache).length !=0;
+    }
 
     public Sk1erApiHandler(Sk1erPublicMod mod) {
         this.mod = mod;

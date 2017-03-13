@@ -42,8 +42,6 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             return true;
         if ((raw.endsWith("joined.") || raw.endsWith("left.")) && raw.split(" ").length == 2)
             return true;
-        if (raw.startsWith(" ") && raw.replace(" ", "").toLowerCase().startsWith("win") && getConfig().getBoolean(CValue.AUTO_GG) && getMod().ALLOW_AUTO_GG)
-            return true;
         return false;
 
     }
@@ -57,16 +55,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
             e.setCanceled(true);
             return;
         }
-        if (wrk.startsWith(" ") && wrk.replace(" ", "").toLowerCase().startsWith("win") && getConfig().getBoolean(CValue.AUTO_GG) && getMod().ALLOW_AUTO_GG) {
-            Multithreading.runAsync(() -> {
-                try {
-                    Thread.sleep(2500l);
-                    ChatUtils.sendMesssageToServer("/achat gg");
-                } catch (InterruptedException e1) {
 
-                }
-            });
-        }
 
         if (wrk.contains("Rating") && wrk.contains("(") && wrk.contains(")")) {
             String split = wrk.split("\\(")[1];

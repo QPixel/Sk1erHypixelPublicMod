@@ -4,7 +4,6 @@ import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
 
@@ -43,10 +42,8 @@ private int x,y;
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             String description = value.getDesc();
-
             super.drawGradientRect(x,y,x+fr.getStringWidth(description), y+50, 0,0);
-            //super.drawCenteredString(fr, value.getDname(), x+fr.getStringWidth(description)/2, y, 16777215);
-            super.drawCenteredString(fr, value.getDesc(), x+fr.getStringWidth(description)/2, y-10*res.getScaleFactor(), 16777215);
+            super.drawCenteredString(fr, value.getDesc(), x+fr.getStringWidth(description)/2, y-25*res.getScaleFactor(), 16777215);
 
         }
     }

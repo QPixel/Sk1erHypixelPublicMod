@@ -26,7 +26,6 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(GUILD_CHAT_OFFICER_PREFIX);
         v.add(GUILD_CHAT_MASTER_PREFIX);
         v.add(PARTY_CHAT_HEADER);
-
         v.add(SHOW_GUILD_CHAT);
         v.add(SHOW_PARTY_CHAT);
         v.add(SHOW_DIRECT_MESSAGES);
@@ -34,7 +33,10 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(COLORED_GUILD_CHAT);
         v.add(SHOW_JOIN_LEAVE_MESSAGES);
         v.add(GUILD_CHAT_SHOW_RANK);
-
+        v.add(BROADCAST_ACHEIVMENTS);
+        v.add(BROADCAST_BOOSTERS);
+        v.add(BROADCAST_LEGENDARIES);
+        v.add(BROADCAST_LEVEL_UP);
     }
 
     private ScaledResolution resolution;

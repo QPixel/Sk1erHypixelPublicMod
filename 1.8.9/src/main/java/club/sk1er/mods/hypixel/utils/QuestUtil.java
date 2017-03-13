@@ -11,7 +11,7 @@ public class QuestUtil {
 
     public static String parseFromChat(boolean daily, String name) {
         JSONObject allQuests = Sk1erPublicMod.getInstance().getApiHandler().getQuests();
-        for(String GAME_NAME : allQuests.getNames()) {
+        for(String GAME_NAME : allQuests.getNamess()) {
             JSONArray game = allQuests.getJSONArray(GAME_NAME);
             for(int i =0;i<game.length();i++) {
                 JSONObject ins=  game.getJSONObject(i);

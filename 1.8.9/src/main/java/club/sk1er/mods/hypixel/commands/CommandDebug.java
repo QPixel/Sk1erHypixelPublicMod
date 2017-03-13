@@ -9,6 +9,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Mitchell Katz on 12/4/2016.
@@ -34,6 +38,12 @@ public class CommandDebug extends CommandBase {
 
     public CommandDebug(Sk1erPublicMod mod) {
         this.mod = mod;
+    }
+
+    @Override
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+       ChatUtils.sendDebug(pos.toString());
+       return new ArrayList<>();
     }
 
     @Override

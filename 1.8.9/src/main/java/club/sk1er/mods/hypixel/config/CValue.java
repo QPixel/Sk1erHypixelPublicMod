@@ -61,7 +61,7 @@ public enum CValue {
     BROADCAST_ACHEIVMENTS("BROADCAST_ACHEIVMENTS",true,"true,false","Broadcast achievements in guild chat"),
 
     BROADCAST_BOOSTERS("BROADCAST_BOOSTERS",true,"true,false","Broadcast queuing boosters in guild chat"),
-    BROADCAST_LEGENDARIES("BROADCAST_LEGENDARIES",true,"true,false","Broadcast legendary weapons boosters in guild chat"),
+    BROADCAST_LEGENDARIES("BROADCAST_LEGENDARIES",true,"true,false","Broadcast legendary weapons in guild chat"),
 
     DISPLAY_SIZE("DISPLAY_SIZE", 100, "INTEGER", "The size of overlay");
 
