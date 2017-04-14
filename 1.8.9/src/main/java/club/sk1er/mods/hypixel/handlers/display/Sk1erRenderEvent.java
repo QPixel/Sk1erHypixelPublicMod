@@ -7,10 +7,12 @@ import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import club.sk1er.mods.hypixel.listeners.Sk1erListener;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.json.JSONObject;
+import org.lwjgl.opengl.GL11;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,16 +30,19 @@ public class Sk1erRenderEvent extends Sk1erListener {
     private double line = .1;
     private String pColor;
     private String sColor;
+    private FontRenderer renderer;
     public Sk1erRenderEvent(Sk1erPublicMod mod) {
         super(mod);
     }
 
     @SubscribeEvent
     public void onRenderEvent(TickEvent.RenderTickEvent e) {
+        if(renderer==null)
+            renderer=Minecraft.getMinecraft().fontRendererObj;
         try {
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             for (RenderObject object : renderObjects) {
-                Minecraft.getMinecraft().fontRendererObj.drawString(object.text, object.x / res.getScaleFactor(), object.y / res.getScaleFactor(), 16777215);
+               renderer.drawString(object.text, object.x / res.getScaleFactor(), object.y / res.getScaleFactor(), 16777215);
             }
             if (getMod().isHypixel) {
                 line = .1;
@@ -102,7 +107,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                         spacer();
                         for (String name : names) {
                             try {
-                                JSONObject tmp1 = tmp.getJSONObject(name);
+                                JSONObject tmp1 = tmp.optJSONObject(name);
                                 String nice_time = tmp1.getString("nice_time");
                                 if (nice_time.equalsIgnoreCase("60:00")) {
                                     render(pColor + name + " " + sColor + "starts at " + pColor + (new SimpleDateFormat("hh:mm:ss").format(new Date(tmp1.getLong("activate_time")))));
@@ -150,6 +155,7 @@ public class Sk1erRenderEvent extends Sk1erListener {
                 if (getConfigBoolean(CValue.DISPLAY_QUESTS)) {
                     spacer();
                     try {
+
                         List<HypixelQuest> quests = HypixelQuest.getQuestForGame(getMod().getCurrentGameType());
                         if (quests == null) {
                             return;
@@ -180,12 +186,24 @@ public class Sk1erRenderEvent extends Sk1erListener {
 
     private void render(String s) {
         //TODO add scale system for text
+        double mult = (double)getConfig().getInt(CValue.DISPLAY_SIZE)/100.0;
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         double x = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
-                * res.getScaledWidth_double();
-        double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double() + (line * 10);
-        Minecraft.getMinecraft().fontRendererObj.drawString(s, (int) x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? Minecraft.getMinecraft().fontRendererObj.getStringWidth(s) : 0), (int) y, 16777215);
-        line += 1.0;
+                * res.getScaledWidth_double()/mult;
+        double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double()/mult + (line * 10/mult);
+      //  System.out.println("Rendering " + s + " at " + x + "," + y);
+        int size=  renderer.FONT_HEIGHT;
+        renderer.FONT_HEIGHT=(int)((double)size*getConfig().getInt(CValue.DISPLAY_SIZE)/100.0);
+//        System.out.println(renderer.FONT_HEIGHT);
+        renderer.FONT_HEIGHT=50;
+        //GL11.glColor4f(0.5f, 0.5f, 0.5f, 1);
+        GL11.glScaled(mult,mult,0);
+        renderer.drawString(s, (int)
+                (x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ?renderer.getStringWidth(s) : 0)*mult),
+                (int) (y), 16777215,true);
+        GL11.glScaled(1/mult, 1/mult, 0);
+        line += 1.0*mult;
+        renderer.FONT_HEIGHT=size;
     }
 
 

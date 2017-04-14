@@ -12,8 +12,8 @@ public class Sk1erDisplaySizeSlider extends GuiSlider implements Sk1erConfigGuiV
     private CValue value = CValue.DISPLAY_SIZE;
 
     public Sk1erDisplaySizeSlider(int id, int xPos, int yPos, ISlider par) {
-        super(id, xPos, yPos, "", 0, 150, 5, par);
-        setValue(Sk1erPublicMod.getInstance().getConfig().getInt(value) + 50);
+        super(id, xPos, yPos, "", 50, 150, 5, par);
+        setValue(Sk1erPublicMod.getInstance().getConfig().getInt(value));
         displayString = getConfigValue();
     }
 
@@ -24,7 +24,8 @@ public class Sk1erDisplaySizeSlider extends GuiSlider implements Sk1erConfigGuiV
     @Override
     public void updateSlider() {
         super.updateSlider();
-        Sk1erPublicMod.getInstance().getConfig().forceValue(value, getValueInt() + 50);
+        Sk1erPublicMod.getInstance().getConfig().forceValue(value, getValueInt());
+//        ChatUtils.sendMessage("Setting value to " + getValueInt());
         displayString = getConfigValue();
     }
 

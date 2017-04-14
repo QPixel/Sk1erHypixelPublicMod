@@ -27,7 +27,7 @@ public class HypixelQuest {
     public HypixelQuest(String backend) {
         this.backendName = backend;
         JSONObject quests = Sk1erPublicMod.getInstance().getApiHandler().getQuestInfo();
-        quest_data = quests.getJSONObject(backend);
+        quest_data = quests.optJSONObject(backend);
         int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
         completed = status == 1;
         type = QuestType.valueOf(quest_data.optString("type"));
@@ -118,10 +118,10 @@ public class HypixelQuest {
 
     public boolean isActive() {
         JSONObject player = Sk1erPublicMod.getInstance().getApiHandler().getUser();
-        if (player.getJSONObject("player").has("quests")) {
-            JSONObject quests = player.getJSONObject("player").getJSONObject("quests");
+        if (player.optJSONObject("player").has("quests")) {
+            JSONObject quests = player.optJSONObject("player").optJSONObject("quests");
             if (quests.has(backendName)) {
-                JSONObject questInPlayer = quests.getJSONObject(backendName);
+                JSONObject questInPlayer = quests.optJSONObject(backendName);
                 if (questInPlayer.has("active")) {
                     long started = questInPlayer.getLong("started");
                     return Sk1erDateUtil.isToday(started);

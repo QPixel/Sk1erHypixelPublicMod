@@ -175,10 +175,10 @@ public class Sk1erApiHandler {
     public void pullGuild() {
         JSONObject tmp = new JSONObject(rawExpectJson("http://sk1er.club/guildmod/" + Minecraft.getMinecraft().thePlayer.getName()));
         officers.clear();
-        for (int i = 0; i < tmp.getJSONArray("officers").length(); i++) {
-            officers.add(tmp.getJSONArray("officers").getString(i));
+        for (int i = 0; i < tmp.optJSONArray("officers").length(); i++) {
+            officers.add(tmp.optJSONArray("officers").getString(i));
         }
-        guildmaster = tmp.getJSONArray("master").getString(0);
+        guildmaster = tmp.optJSONArray("master").getString(0);
     }
 
     public String getBoosters() {
@@ -186,7 +186,7 @@ public class Sk1erApiHandler {
     }
 
     public void pullSpecialBoosters() {
-        specialBoosterCache = new JSONObject(rawExpectJson("https://sk1er.club/sk1erbooster/" + getUser().getJSONObject("player").getString("uuid")));
+        specialBoosterCache = new JSONObject(rawExpectJson("https://sk1er.club/sk1erbooster/" + getUser().optJSONObject("player").getString("uuid")));
     }
 
 
@@ -242,8 +242,8 @@ public class Sk1erApiHandler {
 
     public String getPercentToNext() {
         if (user.has("player")) {
-            int cur = user.getJSONObject("player").getInt("networkExp");
-            int total = user.getJSONObject("player").getInt("networkLevel") * 2500 + 10000;
+            int cur = user.optJSONObject("player").getInt("networkExp");
+            int total = user.optJSONObject("player").getInt("networkLevel") * 2500 + 10000;
             return Math.round((double) cur / (double) total * 100.0) + "";
         } else return "";
     }
@@ -251,7 +251,7 @@ public class Sk1erApiHandler {
     public String getPrecentToGoal() {
         if (user.has("player")) {
             int total = XpToLevel(mod.getConfig().getInt(CValue.XP_LEVEL_GOAL) - 1);
-            int cur = user.getJSONObject("player").getInt("networkExp") + XpToLevel(user.getJSONObject("player").getInt("networkLevel"));
+            int cur = user.optJSONObject("player").getInt("networkExp") + XpToLevel(user.optJSONObject("player").getInt("networkLevel"));
             return Math.round((double) cur / (double) total * 10000.0) / 100.0 + "";
         } else return "";
     }

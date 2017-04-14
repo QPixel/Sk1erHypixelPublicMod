@@ -216,7 +216,7 @@ public class Utils {
                     if (cur >= max - 1) {
                         return (curent.has(s) ? curent.getInt(s) : 0);
                     } else {
-                        curent = curent.has(s) ? curent.getJSONObject(s) : new JSONObject();
+                        curent = curent.has(s) ? curent.optJSONObject(s) : new JSONObject();
                     }
                     cur++;
                 }
@@ -236,7 +236,7 @@ public class Utils {
             String o = loc.split("#")[0];
             String v = loc.split("#")[1];
             if (ins.has(o)) {
-                JSONObject tmp = ins.getJSONObject(o);
+                JSONObject tmp = ins.optJSONObject(o);
                 return tmp.has(v) ? tmp.get(v) : "";
             } else {
                 return "";
@@ -253,7 +253,7 @@ public class Utils {
         if (!player.has("player")) {
             return "ERROR - does not contain Player";
         }
-        JSONObject jo = player.getJSONObject("player");
+        JSONObject jo = player.optJSONObject("player");
         boolean s = false;
 
 

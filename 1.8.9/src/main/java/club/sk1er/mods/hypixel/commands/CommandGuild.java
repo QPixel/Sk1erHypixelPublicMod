@@ -57,7 +57,7 @@ public class CommandGuild extends CommandBase {
                     ChatUtils.sendMessage("Guild not found!");
                     return;
                 }
-                returned = returned.getJSONObject("guild");
+                returned = returned.optJSONObject("guild");
                 ChatUtils.sendMessage("Name: " + returned.getString("name"));
                 if (returned.optBoolean("canTag")) {
                     ChatUtils.sendMessage("Tag: [" + returned.getString("tag") + "]");
@@ -67,9 +67,9 @@ public class CommandGuild extends CommandBase {
                 HashMap<Long, String> officers = new HashMap<>();
                 HashMap<Long, String> members = new HashMap<>();
                 int total = 0;
-                for (int i = 0; i < returned.getJSONArray("members").length(); i++) {
+                for (int i = 0; i < returned.optJSONArray("members").length(); i++) {
                     total++;
-                    JSONObject tmp = returned.getJSONArray("members").getJSONObject(i);
+                    JSONObject tmp = returned.optJSONArray("members").optJSONObject(i);
                     if (tmp.optString("rank").toLowerCase().equalsIgnoreCase("officer")) {
                         officers.put(tmp.getLong("joined"), tmp.getString("displayname"));
                     } else if (tmp.optString("rank").toLowerCase().equalsIgnoreCase("guildmaster")) {

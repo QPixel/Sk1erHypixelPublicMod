@@ -738,7 +738,7 @@ public class JSONObject {
      * @return A JSONArray which is the value.
      * @throws JSONException if the key is not found or if the value is not a JSONArray.
      */
-    public JSONArray getJSONArray(String key) throws JSONException {
+    public JSONArray optJSONArray(String key) throws JSONException {
         Object object = this.get(key);
         if (object instanceof JSONArray) {
             return (JSONArray) object;
@@ -753,7 +753,7 @@ public class JSONObject {
      * @return A JSONObject which is the value.
      * @throws JSONException if the key is not found or if the value is not a JSONObject.
      */
-    public JSONObject getJSONObject(String key) throws JSONException {
+    public JSONObject optJSONObject(String key) throws JSONException {
         Object object = this.get(key);
         if (object instanceof JSONObject) {
             return (JSONObject) object;
@@ -986,10 +986,7 @@ public class JSONObject {
      * @param key A key string.
      * @return A JSONArray which is the value.
      */
-    public JSONArray optJSONArray(String key) {
-        Object o = this.opt(key);
-        return o instanceof JSONArray ? (JSONArray) o : null;
-    }
+
 
     public JSONArray optJSONArrayNonNull(String key) {
         JSONArray array = optJSONArray(key);
@@ -1002,10 +999,7 @@ public class JSONObject {
      * @param key A key string.
      * @return A JSONObject which is the value.
      */
-    public JSONObject optJSONObject(String key) {
-        Object object = this.opt(key);
-        return object instanceof JSONObject ? (JSONObject) object : null;
-    }
+
 
     public JSONObject optJSONObjectNonNull(String key) {
         JSONObject object = optJSONObject(key);

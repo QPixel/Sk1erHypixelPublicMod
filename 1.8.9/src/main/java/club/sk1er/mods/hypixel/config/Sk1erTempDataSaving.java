@@ -38,19 +38,19 @@ public class Sk1erTempDataSaving {
                         JSONObject object = new JSONObject(tmp);
                         xp = object.getInt("xp");
                         coins = object.getInt("coins");
-                        String[] xp_nmes = JSONObject.getNames(object.getJSONObject("game_xp"));
+                        String[] xp_nmes = JSONObject.getNames(object.optJSONObject("game_xp"));
                         if (xp_nmes != null) {
                             for (String name : xp_nmes) {
-                                xpForGame.put(name, object.getJSONObject("game_xp").getInt(name));
+                                xpForGame.put(name, object.optJSONObject("game_xp").getInt(name));
                             }
                         }
-                        for (String s : JSONObject.getNames(object.getJSONObject("quests"))) {
-                            QUEST_STATUS.put(s, object.getJSONObject("quests").getInt(s));
+                        for (String s : JSONObject.getNames(object.optJSONObject("quests"))) {
+                            QUEST_STATUS.put(s, object.optJSONObject("quests").getInt(s));
                         }
-                        String[] coin_nmes = JSONObject.getNames(object.getJSONObject("game_coin"));
+                        String[] coin_nmes = JSONObject.getNames(object.optJSONObject("game_coin"));
                         if (coin_nmes != null) {
                             for (String name : coin_nmes) {
-                                coinsForGame.put(name, object.getJSONObject("game_coin").getInt(name));
+                                coinsForGame.put(name, object.optJSONObject("game_coin").getInt(name));
                             }
                         }
                         br.close();

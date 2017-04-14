@@ -254,13 +254,6 @@ public class JSONArray implements Iterator<Object>, Iterable<Object> {
      * @throws JSONException If there is no value for the index. or if the value is not a
      *                       JSONArray
      */
-    public JSONArray getJSONArray(int index) throws JSONException {
-        Object object = this.get(index);
-        if (object instanceof JSONArray) {
-            return (JSONArray) object;
-        }
-        throw new JSONException("JSONArray[" + index + "] is not a JSONArray.");
-    }
 
     /**
      * Get the JSONObject associated with an index.
@@ -270,13 +263,6 @@ public class JSONArray implements Iterator<Object>, Iterable<Object> {
      * @throws JSONException If there is no value for the index or if the value is not a
      *                       JSONObject
      */
-    public JSONObject getJSONObject(int index) throws JSONException {
-        Object object = this.get(index);
-        if (object instanceof JSONObject) {
-            return (JSONObject) object;
-        }
-        throw new JSONException("JSONArray[" + index + "] is not a JSONObject.");
-    }
 
     /**
      * Get the long value associated with an index.

@@ -70,7 +70,7 @@ public class CommandFriends extends CommandBase {
                     // ChatUtils.sendMessage("Tying for " + i + " "+ names[i]);
                     if (i >= 0 && i <= names.length - 1) {
                         String name = names[i];
-                        JSONObject tmp = friends.getJSONObject(name);
+                        JSONObject tmp = friends.optJSONObject(name);
                         ChatUtils.sendMessage("  " + ++i + " " + tmp.getString("display"));
                         i--;
                     }

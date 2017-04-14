@@ -12,9 +12,9 @@ public class QuestUtil {
     public static String parseFromChat(boolean daily, String name) {
         JSONObject allQuests = Sk1erPublicMod.getInstance().getApiHandler().getQuests();
         for (String GAME_NAME : allQuests.getNamess()) {
-            JSONArray game = allQuests.getJSONArray(GAME_NAME);
+            JSONArray game = allQuests.optJSONArray(GAME_NAME);
             for (int i = 0; i < game.length(); i++) {
-                JSONObject ins = game.getJSONObject(i);
+                JSONObject ins = game.optJSONObject(i);
                 if (ins.getString("type").equalsIgnoreCase("daily") && daily) {
                     if (name.toLowerCase().contains(ins.getString("desc").toLowerCase())) {
                         return ins.getString("backend");
