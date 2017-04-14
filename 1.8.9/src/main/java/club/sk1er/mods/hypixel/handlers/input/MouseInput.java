@@ -36,17 +36,16 @@ public class MouseInput {
             mod.isMovingCustomDisplay = true;
         }
         if (moving && isHoldingDown) {
-            double xpres = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)+ (double) x_change / res.getScaledWidth_double();
+            double xpres = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X) + (double) x_change / res.getScaledWidth_double();
             double yVariant = 0;
-            if(res.getScaleFactor()==1) {
-                yVariant=2;
-            } else if(res.getScaleFactor()==2) {
-                yVariant=1;
+            if (res.getScaleFactor() == 1) {
+                yVariant = 2;
+            } else if (res.getScaleFactor() == 2) {
+                yVariant = 1;
             } else {
-                yVariant=.75;
+                yVariant = .75;
             }
-            double ypres = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) - (double) y_change / res.getScaledHeight_double()* (double)res.getScaleFactor()*(yVariant)
-                    ;
+            double ypres = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) - (double) y_change / res.getScaledHeight_double() * (double) res.getScaleFactor() * (yVariant);
             mod.getConfig().forceValue(CValue.CUSTOM_DISPLAY_LOCATION_X, xpres);
             mod.getConfig().forceValue(CValue.CUSTOM_DISPLAY_LOCATION_Y, ypres);
         }
@@ -65,9 +64,9 @@ public class MouseInput {
         int x = Math.abs(Mouse.getX());
         int y = Math.abs(Mouse.getY() - (res.getScaledHeight() * res.getScaleFactor()));
         double sx = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
-                * res.getScaledWidth_double() * res.getScaleFactor() +edit_width*res.getScaleFactor();
-        double sy = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y)* res.getScaleFactor() * res.getScaledHeight()+(5*res.getScaleFactor());
-        if (Math.abs(sy - y) < 10*res.getScaleFactor() && Math.abs(sx - x) < edit_width*res.getScaleFactor()) {
+                * res.getScaledWidth_double() * res.getScaleFactor() + edit_width * res.getScaleFactor();
+        double sy = mod.getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaleFactor() * res.getScaledHeight() + (5 * res.getScaleFactor());
+        if (Math.abs(sy - y) < 10 * res.getScaleFactor() && Math.abs(sx - x) < edit_width * res.getScaleFactor()) {
             return true;
         } else {
             return false;

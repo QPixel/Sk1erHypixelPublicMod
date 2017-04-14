@@ -1,6 +1,5 @@
 package club.sk1er.mods.hypixel.handlers.chat;
 
-import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
@@ -14,11 +13,11 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
  */
 public class Sk1erChatParser extends Sk1erChatHandler {
 
+    private long lastSeenLevelUp = 0;
+
     public Sk1erChatParser(Sk1erPublicMod mod) {
         super(mod);
     }
-
-    private long lastSeenLevelUp = 0;
 
     @Override
     public boolean containsTrigger(ClientChatReceivedEvent event) {
@@ -75,12 +74,12 @@ public class Sk1erChatParser extends Sk1erChatHandler {
         if (wrk.contains("Achievement Unlocked: ") && !wrk.contains("Guild") && !wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String message = e.message.getUnformattedText();
             String ach = message.split(":")[1].split("  ")[0].trim();
-            if(getConfig().getBoolean(CValue.BROADCAST_ACHEIVMENTS))
-            if (color) {
-                ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach + " ~dAchievement!");
-            } else {
-                ChatUtils.sendMesssageToServer("/gchat I unlocked the " + ach + " Achievement!");
-            }
+            if (getConfig().getBoolean(CValue.BROADCAST_ACHEIVMENTS))
+                if (color) {
+                    ChatUtils.sendMesssageToServer("/gchat ~dI unlocked the ~e" + ach + " ~dAchievement!");
+                } else {
+                    ChatUtils.sendMesssageToServer("/gchat I unlocked the " + ach + " Achievement!");
+                }
 
         }
         if (wrk.contains("Daily Quest: ") || wrk.startsWith("Weekly Quest: ") && wrk.contains("Completed!") && wrk.contains("+")) {
@@ -96,7 +95,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                     quest.complete();
                 else {
                     ChatUtils.sendMessage("Quest '" + name + "' was not parsed correctly!");
-                    getMod().newError(new Exception("Quest '"+name+ " was not found!!!"));
+                    getMod().newError(new Exception("Quest '" + name + " was not found!!!"));
                 }
             } catch (Exception a) {
                 getMod().newError(a);
@@ -115,7 +114,7 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                 }
                 tmp = tmp + " " + s;
             }
-            if(getConfig().getBoolean(CValue.BROADCAST_BOOSTERS))
+            if (getConfig().getBoolean(CValue.BROADCAST_BOOSTERS))
                 ChatUtils.sendMesssageToServer("/gchat " + (color ? "~c[P2W ALERT]" + "~f I queued " + (tmp.startsWith("an") ? "an" : "a") + "~b" + tmp + "~f booster!" : "[P2W ALERT]" + " I queued " + (tmp.startsWith("an") ? "an" : "a") + "" + tmp + " booster!"));
 
         }
@@ -130,17 +129,17 @@ public class Sk1erChatParser extends Sk1erChatHandler {
                     next = true;
                 }
             }
-            if(getConfig().getBoolean(CValue.BROADCAST_LEVEL_UP))
-            if (color) {
-                ChatUtils.sendMesssageToServer("/gchat " + "~a~kP~r ~6Level Up! ~a~kP~r~7 I am now ~3Hypixel Level " + level);
-            } else {
-                ChatUtils.sendMesssageToServer("/gchat " + "Level Up! I am now Hypixel Level " + level);
-            }
+            if (getConfig().getBoolean(CValue.BROADCAST_LEVEL_UP))
+                if (color) {
+                    ChatUtils.sendMesssageToServer("/gchat " + "~a~kP~r ~6Level Up! ~a~kP~r~7 I am now ~3Hypixel Level " + level);
+                } else {
+                    ChatUtils.sendMesssageToServer("/gchat " + "Level Up! I am now Hypixel Level " + level);
+                }
 
         }
         if (wrk.contains("got lucky and found a ") && wrk.contains(Minecraft.getMinecraft().thePlayer.getName())) {
             String tmp = wrk.split("got lucky and found a")[1];
-            if(getConfig().getBoolean(CValue.BROADCAST_LEGENDARIES))
+            if (getConfig().getBoolean(CValue.BROADCAST_LEGENDARIES))
                 ChatUtils.sendMesssageToServer("/gchat " + (color ? "" + "~a~kP~r ~dWarlords Legendary! ~a~kP~r~6 " + tmp : "Warlords Legendary!  " + tmp));
         }
         handleXP(e);

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by mitchellkatz on 3/2/17.
  */
-public class PrototypeHandler extends Sk1erGameHandler{
+public class PrototypeHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         return new ArrayList<>();

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by mitchellkatz on 2/13/17.
  */
-public class QuakecraftGameHandler extends Sk1erGameHandler{
+public class QuakecraftGameHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();
@@ -27,9 +27,9 @@ public class QuakecraftGameHandler extends Sk1erGameHandler{
 
     @Override
     public boolean isGame(String game) {
-        String[] aliases = {"quake","quakecraft","qc"};
-        for(String s : aliases) {
-            if(game.toLowerCase().equals(s)) {
+        String[] aliases = {"quake", "quakecraft", "qc"};
+        for (String s : aliases) {
+            if (game.toLowerCase().equals(s)) {
                 return true;
             }
         }
@@ -38,16 +38,16 @@ public class QuakecraftGameHandler extends Sk1erGameHandler{
 
     @Override
     public void handlePlayerStats(JSONObject player) {
-        ChatUtils.sendMessage("Coins: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#coins"));
-        ChatUtils.sendMessage("Solo kills: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills"));
-        ChatUtils.sendMessage("Solo wins: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins"));
-        ChatUtils.sendMessage("Solo kill streaks: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#killstreaks"));
-        ChatUtils.sendMessage("Solo K/D: " + Utils.buildRatio(Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills"),Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins")));
-        ChatUtils.sendMessage("Team kills: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills_teams"));
-        ChatUtils.sendMessage("Team wins: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins_teams"));
-        ChatUtils.sendMessage("Team kill streaks: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#killstreaks_teams"));
-        ChatUtils.sendMessage("Team kills: " + Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills_teams"));
-        ChatUtils.sendMessage("Team K/D: " + Utils.buildRatio(Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#kills_teams"),Utils.get(player,"player#"+ GameType.QUAKECRAFT.getDatabaseName()+"#wins_team")))  ;
+        ChatUtils.sendMessage("Coins: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#coins"));
+        ChatUtils.sendMessage("Solo kills: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#kills"));
+        ChatUtils.sendMessage("Solo wins: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#wins"));
+        ChatUtils.sendMessage("Solo kill streaks: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#killstreaks"));
+        ChatUtils.sendMessage("Solo K/D: " + Utils.buildRatio(Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#kills"), Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#wins")));
+        ChatUtils.sendMessage("Team kills: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#kills_teams"));
+        ChatUtils.sendMessage("Team wins: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#wins_teams"));
+        ChatUtils.sendMessage("Team kill streaks: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#killstreaks_teams"));
+        ChatUtils.sendMessage("Team kills: " + Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#kills_teams"));
+        ChatUtils.sendMessage("Team K/D: " + Utils.buildRatio(Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#kills_teams"), Utils.get(player, "player#" + GameType.QUAKECRAFT.getDatabaseName() + "#wins_team")));
     }
 
 

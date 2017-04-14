@@ -9,9 +9,11 @@ import java.util.Date;
 public class Sk1erDateUtil {
 
     private static SimpleDateFormat dd_mm_yy = new SimpleDateFormat("dd-mm-yy");
+
     public static boolean isToday(long date) {
         return getStandardNameForToday().equalsIgnoreCase(dd_mm_yy.format(new Date(date)));
     }
+
     public static String getStandardNameForToday() {
         return dd_mm_yy.format(new Date(System.currentTimeMillis()));
     }

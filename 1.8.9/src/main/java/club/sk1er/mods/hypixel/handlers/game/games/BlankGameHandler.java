@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Mitchell Katz on 2/21/2017.
  */
-public class BlankGameHandler extends Sk1erGameHandler{
+public class BlankGameHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         return new ArrayList<>();

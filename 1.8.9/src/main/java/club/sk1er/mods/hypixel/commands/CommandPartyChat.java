@@ -11,6 +11,12 @@ import net.minecraft.command.ICommandSender;
  * Created by Mitchell Katz on 12/4/2016.
  */
 public class CommandPartyChat extends CommandBase {
+    private Sk1erPublicMod mod;
+
+    public CommandPartyChat(Sk1erPublicMod mod) {
+        this.mod = mod;
+    }
+
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_canCommandSenderUseCommand_1_) {
         return true;
@@ -24,12 +30,6 @@ public class CommandPartyChat extends CommandBase {
     @Override
     public String getCommandUsage(ICommandSender iCommandSender) {
         return "/pc <message,toggle>";
-    }
-
-    private Sk1erPublicMod mod;
-
-    public CommandPartyChat(Sk1erPublicMod mod) {
-        this.mod = mod;
     }
 
     @Override

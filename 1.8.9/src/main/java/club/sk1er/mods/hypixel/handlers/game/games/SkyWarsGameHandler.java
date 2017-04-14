@@ -12,10 +12,11 @@ import java.util.List;
 /**
  * Created by mitchellkatz on 2/13/17.
  */
-public class SkyWarsGameHandler extends Sk1erGameHandler{
+public class SkyWarsGameHandler extends Sk1erGameHandler {
 
     public SkyWarsGameHandler() {
     }
+
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();

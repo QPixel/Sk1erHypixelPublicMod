@@ -21,49 +21,57 @@ import java.util.List;
  * Created by Mitchell Katz on 11/28/2016.
  */
 public class Sk1erApiHandler {
+    public String SK1ER_API_KEY = "";
+    public boolean sentOutOFdate = false;
     private Sk1erPublicMod mod;
     private List<String> officers = new ArrayList<String>();
     private String guildmaster = "";
-    private JSONObject USER = new JSONObject();
-    private JSONObject WATCHDOG_STATS = new JSONObject();
-    public String SK1ER_API_KEY = "";
-    private JSONObject QUESTS;
+    private JSONObject user = new JSONObject();
+    private JSONObject watchdogStats = new JSONObject();
+    private JSONObject quests;
     private JSONObject timings = new JSONObject();
-    public JSONObject getQUEST_INFO() {
-        return QUEST_INFO;
+    private JSONObject questInfo;
+    private HashMap<String, JSONObject> cache;
+    private JSONObject specialBoosterCache = new JSONObject();
+
+    public Sk1erApiHandler(Sk1erPublicMod mod) {
+        this.mod = mod;
+        cache = new HashMap<>();
     }
 
-    private JSONObject QUEST_INFO;
-    private HashMap<String, JSONObject> cache;
+    public JSONObject getQuestInfo() {
+        return questInfo;
+    }
 
     public int getTiming(String key) {
-        return timings.optInt(key,60);
+        return timings.optInt(key, 60);
     }
+
     public JSONObject getSpecialBoosterCache() {
         return specialBoosterCache;
     }
 
-    private JSONObject specialBoosterCache = new JSONObject();
-
     public void genQuests() {
-        if (QUEST_INFO == null) {
-            QUESTS = new JSONObject(rawExpectJson("http://sk1er.club/css/Quests.txt"));
-            QUEST_INFO = new JSONObject(rawExpectJson("http://sk1er.club/css/Quest_info.json"));
+        if (questInfo == null) {
+            if (!mod.getFileCache().hasCache("quests")) {
+                quests = new JSONObject(rawExpectJson("http://sk1er.club/css/Quests.txt"));
+                mod.getFileCache().addItemAndSave("quests", quests);
+            }
+            if (!mod.getFileCache().hasCache("quest_info")) {
+                questInfo = new JSONObject(rawExpectJson("http://sk1er.club/css/Quest_info.json"));
+                mod.getFileCache().addItemAndSave("quest_info", questInfo);
+            }
         }
     }
+
     public boolean hasBoostrs() {
         try {
             if (specialBoosterCache != null)
                 return JSONObject.getNames(specialBoosterCache).length != 0;
             return false;
         } catch (Exception e) {
-            return  false;
+            return false;
         }
-    }
-
-    public Sk1erApiHandler(Sk1erPublicMod mod) {
-        this.mod = mod;
-        cache = new HashMap<>();
     }
 
     public JSONObject getGuildByPlayer(String player) {
@@ -99,10 +107,8 @@ public class Sk1erApiHandler {
         }
     }
 
-    public boolean sentOutOFdate = false;
-
     public void genKey() {
-        timings=new JSONObject(rawExpectJson("http://sk1er.club/css/timing.json"));
+        timings = new JSONObject(rawExpectJson("http://sk1er.club/css/timing.json"));
         JSONObject gen_key = new JSONObject(rawExpectJson("http://sk1er.club/genkey?name=" + Minecraft.getMinecraft().thePlayer.getName()
                 + "&uuid=" + Minecraft.getMinecraft().thePlayer.getUniqueID().toString()
                 + "&mcver=" + Minecraft.getMinecraft().getVersion()
@@ -111,17 +117,12 @@ public class Sk1erApiHandler {
         ));
         if (gen_key.has("key")) {
             SK1ER_API_KEY = gen_key.getString("key");
-            mod.ALLOW_AUTO_GG=gen_key.optBoolean("autogg");
-        }
-        else {
-            ChatUtils.sendMessage("[DEBUG] " + "http://sk1er.club/genkey?name=" + Minecraft.getMinecraft().thePlayer.getName()
-                    + "&uuid=" + Minecraft.getMinecraft().thePlayer.getUniqueID().toString()
-                    + "&mcver=" + Minecraft.getMinecraft().getVersion()
-                    + "&modver=" + Sk1erPublicMod.VERSION
-                    + "&mod=PUBLIC_PRIVATE_MOD");
-            ChatUtils.sendMessage(gen_key.toString());
-            ChatUtils.sendMessage("No 'key' value returned. Possible downage of website");
-            ChatUtils.sendMessage("Plesae DM ^^ to Sk1er");
+            mod.ALLOW_AUTO_GG = gen_key.optBoolean("autogg");
+            if(gen_key.optBoolean("refresh")) {
+                mod.getFileCache().clear();
+                questInfo =null;
+                genQuests();
+            }
         }
         if (gen_key.optBoolean("update")) {
             if (!sentOutOFdate) {
@@ -146,7 +147,7 @@ public class Sk1erApiHandler {
                                 + "&mod=PUBLIC_PRIVATE_MOD"
                         ));
                         SK1ER_API_KEY = gen_key1.getString("key");
-                        mod.ALLOW_AUTO_GG=gen_key1.optBoolean("autogg");
+                        mod.ALLOW_AUTO_GG = gen_key1.optBoolean("autogg");
                         if (gen_key1.has("update") && gen_key.getBoolean("update")) {
                             if (!sentOutOFdate) {
                                 ChatUtils.sendMessage("Your version (" + Sk1erPublicMod.VERSION + ") is out of date. The new version is " + gen_key.getString("new_ver"));
@@ -193,7 +194,7 @@ public class Sk1erApiHandler {
         JSONObject USER = new JSONObject(rawExpectJson("http://sk1er.club/data/" + Minecraft.getMinecraft().thePlayer.getName() + "/" + SK1ER_API_KEY + "/main"));
         if (USER.has("success") && USER.getBoolean("success")) {
             try {
-                this.USER = USER;
+                this.user = USER;
             } catch (Exception e) {
                 mod.newError(e);
             }
@@ -220,8 +221,8 @@ public class Sk1erApiHandler {
 
     public void refreshWatchogAndPlayers() {
         try {
-           JSONObject st  = new JSONObject(rawExpectJson("http://sk1er.club/staff/info.php"));
-            WATCHDOG_STATS=st;
+            JSONObject st = new JSONObject(rawExpectJson("http://sk1er.club/staff/info.php"));
+            watchdogStats = st;
         } catch (Exception e) {
 
         }
@@ -240,17 +241,17 @@ public class Sk1erApiHandler {
     }
 
     public String getPercentToNext() {
-        if (USER.has("player")) {
-            int cur = USER.getJSONObject("player").getInt("networkExp");
-            int total = USER.getJSONObject("player").getInt("networkLevel") * 2500 + 10000;
+        if (user.has("player")) {
+            int cur = user.getJSONObject("player").getInt("networkExp");
+            int total = user.getJSONObject("player").getInt("networkLevel") * 2500 + 10000;
             return Math.round((double) cur / (double) total * 100.0) + "";
         } else return "";
     }
 
     public String getPrecentToGoal() {
-        if (USER.has("player")) {
+        if (user.has("player")) {
             int total = XpToLevel(mod.getConfig().getInt(CValue.XP_LEVEL_GOAL) - 1);
-            int cur = USER.getJSONObject("player").getInt("networkExp") + XpToLevel(USER.getJSONObject("player").getInt("networkLevel"));
+            int cur = user.getJSONObject("player").getInt("networkExp") + XpToLevel(user.getJSONObject("player").getInt("networkLevel"));
             return Math.round((double) cur / (double) total * 10000.0) / 100.0 + "";
         } else return "";
     }
@@ -297,14 +298,14 @@ public class Sk1erApiHandler {
 
 
     public JSONObject getUser() {
-        return USER;
+        return user;
     }
 
     public JSONObject getWatchdogStats() {
-        return WATCHDOG_STATS;
+        return watchdogStats;
     }
 
     public JSONObject getQuests() {
-        return QUESTS;
+        return quests;
     }
 }

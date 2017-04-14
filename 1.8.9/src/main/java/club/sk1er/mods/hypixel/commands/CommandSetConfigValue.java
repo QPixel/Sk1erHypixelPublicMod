@@ -12,6 +12,12 @@ import net.minecraft.command.ICommandSender;
  */
 public class CommandSetConfigValue extends CommandBase {
 
+    private Sk1erPublicMod mod;
+
+    public CommandSetConfigValue(Sk1erPublicMod mod) {
+        this.mod = mod;
+    }
+
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
@@ -27,12 +33,6 @@ public class CommandSetConfigValue extends CommandBase {
         return "/sk1er <gc,pc> <value>";
     }
 
-    private Sk1erPublicMod mod;
-
-    public CommandSetConfigValue(Sk1erPublicMod mod) {
-        this.mod = mod;
-    }
-
     @Override
     public void processCommand(ICommandSender sender, final String[] args) throws CommandException {
         try {
@@ -44,7 +44,7 @@ public class CommandSetConfigValue extends CommandBase {
             for (int i = 1; i < args.length; i++) {
                 a += " " + args[i];
             }
-            a=a.trim();
+            a = a.trim();
             args[0] = args[0].toUpperCase();
             CValue value;
             try {

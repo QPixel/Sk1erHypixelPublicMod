@@ -7,19 +7,20 @@ import net.minecraft.client.gui.GuiScreen;
 /**
  * Created by mitchellkatz on 2/6/17.
  */
-public class SubButtonGui extends GuiButton{
+public class SubButtonGui extends GuiButton {
 
     private GuiScreen screen;
+
     public SubButtonGui(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, GuiScreen screen) {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
-        this.screen=screen;
+        this.screen = screen;
 
     }
 
     @Override
     public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
         boolean pres = super.mousePressed(mc, mouseX, mouseY);
-        if(pres) {
+        if (pres) {
             super.playPressSound(Minecraft.getMinecraft().getSoundHandler());
             Minecraft.getMinecraft().displayGuiScreen(screen);
         }

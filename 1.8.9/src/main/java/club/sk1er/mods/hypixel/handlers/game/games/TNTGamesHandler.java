@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Mitchell Katz on 2/22/2017.
  */
-public class TNTGamesHandler extends Sk1erGameHandler{
+public class TNTGamesHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();

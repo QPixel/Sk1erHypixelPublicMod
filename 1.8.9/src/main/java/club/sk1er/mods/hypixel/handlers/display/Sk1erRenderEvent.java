@@ -23,15 +23,14 @@ import java.util.List;
  */
 public class Sk1erRenderEvent extends Sk1erListener {
 
+    public static List<
+            RenderObject> renderObjects = new ArrayList<>();
+    private double line = .1;
+    private String pColor;
+    private String sColor;
     public Sk1erRenderEvent(Sk1erPublicMod mod) {
         super(mod);
     }
-
-    private double line = .1;
-    public static List<
-            RenderObject> renderObjects = new ArrayList<>();
-    private String pColor;
-    private String sColor;
 
     @SubscribeEvent
     public void onRenderEvent(TickEvent.RenderTickEvent e) {

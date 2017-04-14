@@ -7,6 +7,10 @@ import java.util.List;
  * Created by mitchellkatz on 1/30/17.
  */
 public class Sk1erErrorReport {
+    private int id;
+    private List<String> stackTrace = new ArrayList<>();
+    private List<String> details = new ArrayList<String>();
+
     public int getId() {
         return id;
     }
@@ -15,7 +19,6 @@ public class Sk1erErrorReport {
         this.id = id;
     }
 
-    private int id;
     public List<String> getStackTrace() {
         return stackTrace;
     }
@@ -24,22 +27,20 @@ public class Sk1erErrorReport {
         this.stackTrace = stackTrace;
     }
 
-    private List<String> stackTrace = new ArrayList<>();
-
-    public void setDetails(List<String> details) {
-        this.details = details;
-    }
     public void setLine(int line, String value) {
-        if(line<details.size())
-        details.set(line+1,value);
+        if (line < details.size())
+            details.set(line + 1, value);
     }
 
     public List<String> getDetails() {
         return details;
     }
 
-    private List<String> details = new ArrayList<String>();
-    public void addLine(String name){
+    public void setDetails(List<String> details) {
+        this.details = details;
+    }
+
+    public void addLine(String name) {
         details.add(name);
     }
 

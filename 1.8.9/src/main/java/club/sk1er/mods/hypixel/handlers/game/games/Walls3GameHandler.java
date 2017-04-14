@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Mitchell Katz on 2/22/2017.
  */
-public class Walls3GameHandler extends Sk1erGameHandler{
+public class Walls3GameHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();

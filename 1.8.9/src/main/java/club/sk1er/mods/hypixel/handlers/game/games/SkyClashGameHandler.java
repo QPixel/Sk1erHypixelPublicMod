@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Mitchell Katz on 2/21/2017.
  */
-public class SkyClashGameHandler extends Sk1erGameHandler{
+public class SkyClashGameHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         List<HypixelQuest> quests = new ArrayList<>();
@@ -21,12 +21,12 @@ public class SkyClashGameHandler extends Sk1erGameHandler{
         quests.add(HypixelQuest.fromBackend("skyclash_play_points"));
         quests.add(HypixelQuest.fromBackend("skyclash_void"));
         quests.add(HypixelQuest.fromBackend("skyclash_weekly_kills"));
-return quests;
+        return quests;
     }
 
     @Override
     public boolean isGame(String game) {
-        game=game.toLowerCase();
+        game = game.toLowerCase();
         return game.equals("sc") || game.equalsIgnoreCase("skyclash") || game.startsWith("skyc");
     }
 

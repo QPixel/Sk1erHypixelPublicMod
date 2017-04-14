@@ -11,7 +11,9 @@ import java.util.List;
 public abstract class Sk1erGameHandler {
 
     public abstract List<HypixelQuest> getQuests();
+
     public abstract boolean isGame(String game);
+
     public abstract void handlePlayerStats(JSONObject player);
 
 }

@@ -15,73 +15,15 @@ import java.util.HashMap;
  */
 public class Sk1erTempDataSaving {
 
+    String lastDate = date();
     private int xp = 0, coins = 0;
-
-    public int getXp() {
-        return xp;
-    }
-
-    public int getCoins() {
-        return coins;
-    }
-
-    public HashMap<String, Integer> getXpForGame() {
-        return xpForGame;
-    }
-
-    public HashMap<String, Integer> getCoinsForGame() {
-        return coinsForGame;
-    }
-
     private HashMap<String, Integer> xpForGame = new HashMap<>();
     private HashMap<String, Integer> coinsForGame = new HashMap<>();
     private HashMap<String, Integer> QUEST_STATUS = new HashMap<>();
-
-    public int getRankedRating() {
-        return rankedRating;
-    }
-
-    public void setRankedRating(int rankedRating) {
-        this.rankedRating = rankedRating;
-    }
-
+    private File dir;
     private int rankedRating = 0;
-    String lastDate = date();
-
-    public int getXpForGame(String game) {
-        if (xpForGame.containsKey(game)) {
-            return xpForGame.get(game);
-
-        }
-        return 0;
-    }
-
-    public int getQuestStatus(String quest) {
-        if (QUEST_STATUS.containsKey(quest)) {
-            return QUEST_STATUS.get(quest);
-        } else {
-            return 0;
-        }
-    }
-
-    public void applyQuestStatus(String quest, int status) {
-        QUEST_STATUS.put(quest, status);
-        refreshCoinsAndXp(0, 0);
-    }
-
-    public int getCoinsForGame(String game) {
-        if (coinsForGame.containsKey(game)) {
-            return coinsForGame.get(game);
-        }
-        return 0;
-    }
-
-    public String getLastDate() {
-        return lastDate;
-    }
-
     public Sk1erTempDataSaving() {
-        File dir = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod");
+        dir = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod");
         if (!dir.exists()) {
 
             dir.mkdirs();
@@ -135,6 +77,66 @@ public class Sk1erTempDataSaving {
             }
         }
 
+    }
+
+    public File getDir() {
+        return dir;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public HashMap<String, Integer> getXpForGame() {
+        return xpForGame;
+    }
+
+    public HashMap<String, Integer> getCoinsForGame() {
+        return coinsForGame;
+    }
+
+    public int getRankedRating() {
+        return rankedRating;
+    }
+
+    public void setRankedRating(int rankedRating) {
+        this.rankedRating = rankedRating;
+    }
+
+    public int getXpForGame(String game) {
+        if (xpForGame.containsKey(game)) {
+            return xpForGame.get(game);
+
+        }
+        return 0;
+    }
+
+    public int getQuestStatus(String quest) {
+        if (QUEST_STATUS.containsKey(quest)) {
+            return QUEST_STATUS.get(quest);
+        } else {
+            return 0;
+        }
+    }
+
+    public void applyQuestStatus(String quest, int status) {
+        QUEST_STATUS.put(quest, status);
+        refreshCoinsAndXp(0, 0);
+    }
+
+    public int getCoinsForGame(String game) {
+        if (coinsForGame.containsKey(game)) {
+            return coinsForGame.get(game);
+        }
+        return 0;
+    }
+
+    public String getLastDate() {
+        return lastDate;
     }
 
     public String dateMM() {
@@ -203,10 +205,10 @@ public class Sk1erTempDataSaving {
             xpForGame.clear();
             coinsForGame.clear();
             refreshCoinsAndXp(coins, xp);
-            for(String s : QUEST_STATUS.keySet()) {
-                QUEST_STATUS.put(s,0);
+            for (String s : QUEST_STATUS.keySet()) {
+                QUEST_STATUS.put(s, 0);
             }
-            for(HypixelQuest quest : HypixelQuest.allQuests) {
+            for (HypixelQuest quest : HypixelQuest.allQuests) {
                 quest.setCompleted(false);
             }
         }

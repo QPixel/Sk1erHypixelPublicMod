@@ -13,7 +13,7 @@ public class Sk1erDisplaySizeSlider extends GuiSlider implements Sk1erConfigGuiV
 
     public Sk1erDisplaySizeSlider(int id, int xPos, int yPos, ISlider par) {
         super(id, xPos, yPos, "", 0, 150, 5, par);
-        setValue(Sk1erPublicMod.getInstance().getConfig().getInt(value)+50);
+        setValue(Sk1erPublicMod.getInstance().getConfig().getInt(value) + 50);
         displayString = getConfigValue();
     }
 
@@ -24,7 +24,7 @@ public class Sk1erDisplaySizeSlider extends GuiSlider implements Sk1erConfigGuiV
     @Override
     public void updateSlider() {
         super.updateSlider();
-        Sk1erPublicMod.getInstance().getConfig().forceValue(value,  getValueInt() + 50);
+        Sk1erPublicMod.getInstance().getConfig().forceValue(value, getValueInt() + 50);
         displayString = getConfigValue();
     }
 

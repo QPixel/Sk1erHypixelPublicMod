@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Mitchell Katz on 11/28/2016.
  */
-public class ChatListener extends Sk1erListener{
+public class ChatListener extends Sk1erListener {
 
     public ChatListener(Sk1erPublicMod mod) {
         super(mod);
@@ -34,8 +34,8 @@ public class ChatListener extends Sk1erListener{
             });
         }
         List<Sk1erChatHandler> chatHandlers = getMod().getHandlers().getChatHandlers();
-            for(Sk1erChatHandler handler : chatHandlers) {
-            if(handler.containsTrigger(e)) {
+        for (Sk1erChatHandler handler : chatHandlers) {
+            if (handler.containsTrigger(e)) {
                 try {
                     System.out.println("Running chat listener: " + handler.getClass().getName());
                     handler.handle(e);

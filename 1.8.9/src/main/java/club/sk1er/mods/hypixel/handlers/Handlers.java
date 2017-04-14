@@ -10,8 +10,8 @@ import java.util.List;
  * Created by Mitchell Katz on 11/28/2016.
  */
 public class Handlers {
-    private Sk1erPublicMod mod;
     List<Sk1erChatHandler> chatHandlers = new ArrayList<Sk1erChatHandler>();
+    private Sk1erPublicMod mod;
 
     public Handlers(Sk1erPublicMod mod) {
         this.mod = mod;

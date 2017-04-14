@@ -10,7 +10,7 @@ public enum GameType {
     QUAKECRAFT("Quakecraft", "Quake", 2, new QuakecraftGameHandler()),
     WALLS("Walls", "Walls", 3, new Walls2GameHandler()),
     PAINTBALL("Paintball", "Paintball", 4, new PaintballGameHandler()),
-    SURVIVAL_GAMES("Blitz Survival Games", "HungerGames", 5,new BlitzGameHandler()),
+    SURVIVAL_GAMES("Blitz Survival Games", "HungerGames", 5, new BlitzGameHandler()),
     TNTGAMES("The TNT Games", "TNTGames", 6, new TNTGamesHandler()),
     VAMPIREZ("VampireZ", "VampireZ", 7, new VampireZGameHandler()),
     WALLS3("Mega Walls", "Walls3", 13, new Walls3GameHandler()),
@@ -29,16 +29,9 @@ public enum GameType {
     SKYCLASH("SkyClash", "SkyClash", 55, new SkyClashGameHandler());
 
     private static final GameType[] v = values();
-
-    public Sk1erGameHandler getGameHandler() {
-        return gameHandler;
-    }
-
-    private Sk1erGameHandler gameHandler;
     private final String name, dbName;
     private final Integer id;
-
-
+    private Sk1erGameHandler gameHandler;
     GameType(String name, String dbName, Integer id, Sk1erGameHandler handler) {
         this.name = name;
         this.dbName = dbName;
@@ -80,10 +73,6 @@ public enum GameType {
         return null;
     }
 
-    public String getDatabaseName() {
-        return dbName;
-    }
-
     /**
      * @param dbName The key used in the database
      * @return The GameType associated with that key, or null if there isn't one.
@@ -95,6 +84,14 @@ public enum GameType {
             }
         }
         return null;
+    }
+
+    public Sk1erGameHandler getGameHandler() {
+        return gameHandler;
+    }
+
+    public String getDatabaseName() {
+        return dbName;
     }
 
     /**

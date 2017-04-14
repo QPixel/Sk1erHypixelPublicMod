@@ -12,14 +12,12 @@ import net.minecraft.util.EnumChatFormatting;
  * Created by mitchellkatz on 1/30/17.
  */
 public class HypixelMinuteScrips {
+    public boolean run = false;
+    int time = 0;
     private Sk1erPublicMod mod;
-
     public HypixelMinuteScrips(Sk1erPublicMod mod) {
         this.mod = mod;
     }
-
-    public boolean run = false;
-    int time = 0;
 
     public void run() {
 
@@ -52,26 +50,26 @@ public class HypixelMinuteScrips {
                 if (Minecraft.getMinecraft().inGameHasFocus) {
                     Sk1erApiHandler handler = mod.getApiHandler();
                     boolean boost = false;
-                    if (time % handler.getTiming("boosters_live") ==0) {
+                    if (time % handler.getTiming("boosters_live") == 0) {
                         if (mod.getApiHandler().hasBoostrs()) {
                             mod.getApiHandler().pullSpecialBoosters();
                             boost = true;
                         }
                     }
-                    if(time %handler.getTiming("watchdog_players") == 0) {
+                    if (time % handler.getTiming("watchdog_players") == 0) {
                         mod.getApiHandler().refreshWatchogAndPlayers();
                     }
-                    if(time %handler.getTiming("player_profile") == 0) {
+                    if (time % handler.getTiming("player_profile") == 0) {
                         mod.getApiHandler().pullPlayerProfile();
                     }
-                    if(time %handler.getTiming("coin") == 0) {
+                    if (time % handler.getTiming("coin") == 0) {
                         mod.getDataSaving().addCoins(0);
                     }
-                    if(time %handler.getTiming("boosters_check") == 0) {
+                    if (time % handler.getTiming("boosters_check") == 0) {
                         if (!boost)
                             mod.getApiHandler().pullSpecialBoosters();
                     }
-                    if(time %handler.getTiming("guild") == 0) {
+                    if (time % handler.getTiming("guild") == 0) {
                         mod.getApiHandler().pullGuild();
                     }
                 }

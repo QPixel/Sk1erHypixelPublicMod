@@ -18,6 +18,7 @@ import static club.sk1er.mods.hypixel.config.CValue.*;
 public class GuiDisplayConfigScreen extends GuiScreen {
     List<CValue> v;
     List<Sk1erConfigGuiValue> buttons;
+    private ScaledResolution resolution;
 
     public GuiDisplayConfigScreen() {
         v = new ArrayList<>();
@@ -42,8 +43,6 @@ public class GuiDisplayConfigScreen extends GuiScreen {
         v.add(DISPLAY_SECONDARY_COLOR);
     }
 
-    private ScaledResolution resolution;
-
     @Override
     public void initGui() {
         int rad = 30;
@@ -55,8 +54,8 @@ public class GuiDisplayConfigScreen extends GuiScreen {
                 buttonList.add(theButton);
                 buttons.add(theButton);
             } else if (value.getDefaultvalue() instanceof String) {
-                String s  = Sk1erPublicMod.getInstance().getConfig().getString(value);
-                Sk1erColorSliderGui theButton = new Sk1erColorSliderGui(value, value.ordinal(),left ? (int) (.05 * resolution.getScaledWidth_double()) : (int) (.60 * resolution.getScaledWidth_double()), rad,s,guiSlider -> {
+                String s = Sk1erPublicMod.getInstance().getConfig().getString(value);
+                Sk1erColorSliderGui theButton = new Sk1erColorSliderGui(value, value.ordinal(), left ? (int) (.05 * resolution.getScaledWidth_double()) : (int) (.60 * resolution.getScaledWidth_double()), rad, s, guiSlider -> {
                 });
                 buttonList.add(theButton);
                 buttons.add(theButton);
@@ -76,7 +75,7 @@ public class GuiDisplayConfigScreen extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-       //TODO is this needed?
+        //TODO is this needed?
     }
 
     @Override

@@ -18,6 +18,7 @@ import static club.sk1er.mods.hypixel.config.CValue.*;
 public class GuiChatConfigScreen extends GuiScreen {
     List<CValue> v;
     List<Sk1erConfigGuiValue> buttons;
+    private ScaledResolution resolution;
 
     public GuiChatConfigScreen() {
         v = new ArrayList<>();
@@ -38,8 +39,6 @@ public class GuiChatConfigScreen extends GuiScreen {
         v.add(BROADCAST_LEGENDARIES);
         v.add(BROADCAST_LEVEL_UP);
     }
-
-    private ScaledResolution resolution;
 
     @Override
     public void initGui() {

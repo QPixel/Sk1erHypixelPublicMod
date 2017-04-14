@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by mitchellkatz on 2/14/17.
  */
-public class PaintballGameHandler extends Sk1erGameHandler{
+public class PaintballGameHandler extends Sk1erGameHandler {
     @Override
     public List<HypixelQuest> getQuests() {
         return Arrays.asList(
@@ -29,13 +29,13 @@ public class PaintballGameHandler extends Sk1erGameHandler{
 
     @Override
     public void handlePlayerStats(JSONObject player) {
-        String backend =  GameType.PAINTBALL.getDatabaseName();
-        ChatUtils.sendMessage("Coins: " + Utils.get(player, "player#stats#"+backend+"#coins"));
-        ChatUtils.sendMessage("Wins: " + Utils.get(player, "player#stats#"+backend+"#wins"));
-        ChatUtils.sendMessage("Kills: " + Utils.get(player, "player#stats#"+backend+"#kills"));
-        ChatUtils.sendMessage("Deaths: " + Utils.get(player, "player#stats#"+backend+"#deaths"));
-        ChatUtils.sendMessage("K/D: " + (double) Utils.get(player, "player#stats#"+backend+"#kills") / (double) Utils.get(player, "player#stats#"+backend+"#deaths"));
-        ChatUtils.sendMessage("Kill streaks: " + Utils.get(player, "player#stats#"+backend+"#killstreaks"));
+        String backend = GameType.PAINTBALL.getDatabaseName();
+        ChatUtils.sendMessage("Coins: " + Utils.get(player, "player#stats#" + backend + "#coins"));
+        ChatUtils.sendMessage("Wins: " + Utils.get(player, "player#stats#" + backend + "#wins"));
+        ChatUtils.sendMessage("Kills: " + Utils.get(player, "player#stats#" + backend + "#kills"));
+        ChatUtils.sendMessage("Deaths: " + Utils.get(player, "player#stats#" + backend + "#deaths"));
+        ChatUtils.sendMessage("K/D: " + (double) Utils.get(player, "player#stats#" + backend + "#kills") / (double) Utils.get(player, "player#stats#" + backend + "#deaths"));
+        ChatUtils.sendMessage("Kill streaks: " + Utils.get(player, "player#stats#" + backend + "#killstreaks"));
 
     }
 }

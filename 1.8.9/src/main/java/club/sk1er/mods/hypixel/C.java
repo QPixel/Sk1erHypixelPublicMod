@@ -28,6 +28,7 @@ public class C {
     public static final String UNDERLINE = COLOR_CODE_SYMBOL + "n";
     public static final String ITALIC = COLOR_CODE_SYMBOL + "o";
     public static final String RESET = COLOR_CODE_SYMBOL + "r";
+
     C() {
     }
 

@@ -9,11 +9,16 @@ import club.sk1er.mods.hypixel.config.Sk1erConfig;
  */
 public abstract class Sk1erListener {
 
+    private Sk1erPublicMod mod;
+
+    public Sk1erListener(Sk1erPublicMod mod) {
+        this.mod = mod;
+
+    }
+
     public Sk1erPublicMod getMod() {
         return mod;
     }
-
-    private Sk1erPublicMod mod;
 
     public boolean getConfigBoolean(CValue value) {
         return getConfig().getBoolean(value);
@@ -21,9 +26,5 @@ public abstract class Sk1erListener {
 
     public Sk1erConfig getConfig() {
         return mod.getConfig();
-    }
-    public Sk1erListener(Sk1erPublicMod mod) {
-        this.mod = mod;
-
     }
 }

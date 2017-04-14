@@ -21,6 +21,12 @@ import java.nio.charset.StandardCharsets;
  * Created by Mitchell Katz on 12/4/2016.
  */
 public class CommandErrorReport extends CommandBase {
+    private Sk1erPublicMod mod;
+
+    public CommandErrorReport(Sk1erPublicMod mod) {
+        this.mod = mod;
+    }
+
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_canCommandSenderUseCommand_1_) {
         return true;
@@ -34,12 +40,6 @@ public class CommandErrorReport extends CommandBase {
     @Override
     public String getCommandUsage(ICommandSender iCommandSender) {
         return "/errorreport [error]";
-    }
-
-    private Sk1erPublicMod mod;
-
-    public CommandErrorReport(Sk1erPublicMod mod) {
-        this.mod = mod;
     }
 
     @Override
@@ -161,7 +161,7 @@ public class CommandErrorReport extends CommandBase {
                                 ChatUtils.sendMessage("Unable to read from webserver!");
                             }
                         } catch (Exception e) {
-                           ChatUtils.sendMessage("Published :)");
+                            ChatUtils.sendMessage("Published :)");
                         }
                     });
 

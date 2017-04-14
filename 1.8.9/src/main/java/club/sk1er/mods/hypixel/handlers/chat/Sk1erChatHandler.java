@@ -7,16 +7,21 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 /**
  * Created by Mitchell Katz on 11/28/2016.
  */
-public abstract  class Sk1erChatHandler {
+public abstract class Sk1erChatHandler {
     private Sk1erPublicMod mod;
+
+    public Sk1erChatHandler(Sk1erPublicMod mod) {
+        this.mod = mod;
+    }
+
     public Sk1erPublicMod getMod() {
         return mod;
     }
+
     public abstract void handle(ClientChatReceivedEvent event);
+
     public abstract boolean containsTrigger(ClientChatReceivedEvent event);
-    public Sk1erChatHandler(Sk1erPublicMod mod) {
-        this.mod=mod;
-    }
+
     public Sk1erConfig getConfig() {
         return mod.getConfig();
     }

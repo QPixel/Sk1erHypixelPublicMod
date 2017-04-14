@@ -23,7 +23,7 @@ public class ArcadeGameHandler extends Sk1erGameHandler {
 
     @Override
     public boolean isGame(String game) {
-        game=game.toLowerCase();
+        game = game.toLowerCase();
         return game.contains("arcade") || game.contains("arcade games") || game.contains("hypixel says");
     }
 

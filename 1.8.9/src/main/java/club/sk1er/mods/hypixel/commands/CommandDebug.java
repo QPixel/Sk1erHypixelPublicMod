@@ -18,7 +18,13 @@ import java.util.List;
  * Created by Mitchell Katz on 12/4/2016.
  */
 public class CommandDebug extends CommandBase {
-    public static boolean chatOn =false;
+    public static boolean chatOn = false;
+    private Sk1erPublicMod mod;
+
+    public CommandDebug(Sk1erPublicMod mod) {
+        this.mod = mod;
+    }
+
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender p_canCommandSenderUseCommand_1_) {
         return true;
@@ -34,16 +40,10 @@ public class CommandDebug extends CommandBase {
         return "/debug [args]";
     }
 
-    private Sk1erPublicMod mod;
-
-    public CommandDebug(Sk1erPublicMod mod) {
-        this.mod = mod;
-    }
-
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-       ChatUtils.sendDebug(pos.toString());
-       return new ArrayList<>();
+        ChatUtils.sendDebug(pos.toString());
+        return new ArrayList<>();
     }
 
     @Override
@@ -62,12 +62,12 @@ public class CommandDebug extends CommandBase {
                 Sk1erRenderEvent.renderObjects.clear();
             } else if (a[0].equals("simulatelogin")) {
                 new Sk1erPlayerLogIntoServerEvent(mod).handleHypixelLogin();
-            } else if(a[0].equals("quests")) {
-                for(HypixelQuest quest : HypixelQuest.allQuests) {
+            } else if (a[0].equals("quests")) {
+                for (HypixelQuest quest : HypixelQuest.allQuests) {
                     ChatUtils.sendMessage(quest.getFrontEndName() + " => " + quest.getGameType() + " " + quest.getBackendName() + " " + quest.isCompleted());
                 }
-            } else if(a[0].equals("chat")) {
-                chatOn=!chatOn;
+            } else if (a[0].equals("chat")) {
+                chatOn = !chatOn;
                 ChatUtils.sendMessage("Debug chat enabled");
             }
 

@@ -17,6 +17,10 @@ public class FriendsChatHandler extends Sk1erChatHandler {
 
     private long time = 0l;
 
+    public FriendsChatHandler(Sk1erPublicMod mod) {
+        super(mod);
+    }
+
     @Override
     public void handle(ClientChatReceivedEvent e) {
         String wrk = e.message.getUnformattedText();
@@ -52,8 +56,8 @@ public class FriendsChatHandler extends Sk1erChatHandler {
                 }
                 newMessage.appendSibling(message(playername));
                 newMessage.appendSibling(party(playername));
-                newMessage.appendSibling(remove(playername,e.message.getFormattedText().split(" ")[0]));
-                e.message=newMessage;
+                newMessage.appendSibling(remove(playername, e.message.getFormattedText().split(" ")[0]));
+                e.message = newMessage;
             } else if (wrk.endsWith("is currently offline")) {
                 String[] tmp = wrk.split(" ");
                 String playername = tmp[0];
@@ -93,23 +97,19 @@ public class FriendsChatHandler extends Sk1erChatHandler {
     }
 
     public IChatComponent remove(String playername, String raw) {
-    raw=raw.replace(C.COLOR_CODE_SYMBOL,"");
+        raw = raw.replace(C.COLOR_CODE_SYMBOL, "");
         IChatComponent comp = new ChatComponentText(EnumChatFormatting.RED + " [Remove]");
         String finalRaw = raw;
         ChatStyle style = new ChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/friend remove " + playername) {
             @Override
             public Action getAction() {
-                if(finalRaw.startsWith("7") || finalRaw.startsWith("a") || finalRaw.startsWith("b"))
-                return Action.RUN_COMMAND;
+                if (finalRaw.startsWith("7") || finalRaw.startsWith("a") || finalRaw.startsWith("b"))
+                    return Action.RUN_COMMAND;
                 else return Action.SUGGEST_COMMAND;
             }
         });
         comp.setChatStyle(style);
         return comp;
-    }
-
-    public FriendsChatHandler(Sk1erPublicMod mod) {
-        super(mod);
     }
 
 }

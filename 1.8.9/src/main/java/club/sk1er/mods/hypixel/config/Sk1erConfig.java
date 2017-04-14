@@ -11,14 +11,16 @@ import java.util.EnumMap;
  */
 public class Sk1erConfig {
 
-    private JSONObject config;
     File configFile;
+    private JSONObject config;
     private EnumMap<CValue, Object> map;
+
     public Sk1erConfig(File f) {
-        this.configFile=f;
+        this.configFile = f;
     }
+
     public void init() {
-        map=new EnumMap<>(CValue.class);
+        map = new EnumMap<>(CValue.class);
         config = new JSONObject();
         if (!configFile.exists()) {
             System.out.println("Generating new config file! - " + configFile.getAbsolutePath());
@@ -62,31 +64,36 @@ public class Sk1erConfig {
         }
 
     }
+
     public void forceValue(CValue value, Object value1) {
-        config.put(value.getName(),value1);
-        map.put(value,value1);
+        config.put(value.getName(), value1);
+        map.put(value, value1);
         save();
     }
+
     public boolean getBoolean(CValue value) {
-        if(map.get(value) instanceof Boolean)
-            return (boolean)map.get(value);
+        if (map.get(value) instanceof Boolean)
+            return (boolean) map.get(value);
         else {
             forceValue(value, value.getDefaultvalue());
             return (boolean) value.getDefaultvalue();
         }
     }
+
     public double getDouble(CValue value) {
         Object v = map.get(value);
-        if(v instanceof Double ) {
-            return (double)v;
-        } else if(v instanceof Integer) {
-            return Double.valueOf(v+"");
+        if (v instanceof Double) {
+            return (double) v;
+        } else if (v instanceof Integer) {
+            return Double.valueOf(v + "");
         }
         return -1;
     }
+
     public String getString(CValue value) {
         return ((String) map.get(value));
     }
+
     public void save() {
         Multithreading.runAsync(() -> {
             try {

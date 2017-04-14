@@ -16,6 +16,27 @@ public class HypixelQuest {
 
 
     public static List<HypixelQuest> allQuests = new ArrayList<>();
+    private QuestType type;
+    private String backendName;
+    private long lastCompleted;
+    private JSONObject quest_data;
+    private GameType gameType;
+    private boolean enabled;
+    private boolean completed = false;
+
+    public HypixelQuest(String backend) {
+        this.backendName = backend;
+        JSONObject quests = Sk1erPublicMod.getInstance().getApiHandler().getQuestInfo();
+        quest_data = quests.getJSONObject(backend);
+        int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
+        completed = status == 1;
+        type = QuestType.valueOf(quest_data.optString("type"));
+        gameType = GameType.fromDatabase(quest_data.optString("gameType"));
+        enabled = quest_data.optBoolean("enabled");
+        if (gameType == null) {
+            System.out.println(quests.optString("gameType") + " is not a valid gametype!!!!." + backend);
+        }
+    }
 
     public static HypixelQuest fromBackend(String name) {
         for (HypixelQuest quest : allQuests) {
@@ -27,9 +48,7 @@ public class HypixelQuest {
         allQuests.add(quest);
         return quest;
     }
-    public boolean isEnabled() {
-        return enabled;
-    }
+
     @Deprecated
     public static HypixelQuest fromDisplayName(String displayName) {
         for (HypixelQuest quest : allQuests) {
@@ -48,8 +67,6 @@ public class HypixelQuest {
         return fromDisplayName(displayName);
     }
 
-
-
     public static List<HypixelQuest> getQuestForGame(GameType type) {
         if (type == null) {
             return new ArrayList<>();
@@ -60,26 +77,27 @@ public class HypixelQuest {
                 if (quest.getGameType().equals(type)) {
                     quests.add(quest);
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return quests;
     }
 
-    private QuestType type;
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     public String getBackendName() {
         return backendName;
     }
 
-    private String backendName;
-    private long lastCompleted;
-    private JSONObject quest_data;
-    private GameType gameType;
-    private boolean enabled;
     public boolean isCompleted() {
         return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public void complete() {
@@ -90,29 +108,12 @@ public class HypixelQuest {
 
     }
 
-    private boolean completed = false;
-
     public boolean isDaily() {
         return type.equals(QuestType.DAILY);
     }
 
     public String getFrontEndName() {
         return quest_data.optString("displayName");
-    }
-
-
-    public HypixelQuest(String backend) {
-        this.backendName = backend;
-        JSONObject quests = Sk1erPublicMod.getInstance().getApiHandler().getQUEST_INFO();
-        quest_data = quests.getJSONObject(backend);
-        int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
-        completed = status == 1;
-        type = QuestType.valueOf(quest_data.optString("type"));
-        gameType = GameType.fromDatabase(quest_data.optString("gameType"));
-        enabled=quest_data.optBoolean("enabled");
-        if(gameType==null) {
-            System.out.println(quests.optString("gameType") + " is not a valid gametype!!!!." + backend);
-        }
     }
 
     public boolean isActive() {
@@ -148,9 +149,5 @@ public class HypixelQuest {
 
     public GameType getGameType() {
         return gameType;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 }

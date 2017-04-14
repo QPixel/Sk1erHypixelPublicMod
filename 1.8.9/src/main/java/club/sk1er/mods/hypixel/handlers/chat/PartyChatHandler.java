@@ -12,18 +12,20 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 /**
  * Created by mitchellkatz on 12/5/16.
  */
-public class PartyChatHandler extends Sk1erChatHandler{
+public class PartyChatHandler extends Sk1erChatHandler {
+    public PartyChatHandler(Sk1erPublicMod mod) {
+        super(mod);
+    }
+
     @Override
     public boolean containsTrigger(ClientChatReceivedEvent event) {
         return event.message.getUnformattedText().startsWith("Party > ");
     }
-    public PartyChatHandler(Sk1erPublicMod mod) {
-        super(mod);
-    }
+
     @Override
     public void handle(ClientChatReceivedEvent e) {
         e.setCanceled(true);
-        if(getConfig().getBoolean(CValue.SHOW_PARTY_CHAT)) {
+        if (getConfig().getBoolean(CValue.SHOW_PARTY_CHAT)) {
             IChatComponent message = new ChatComponentText("");
             IChatComponent old = e.message;
             message.appendText(getConfig().getString(CValue.PARTY_CHAT_HEADER).replace("&", C.COLOR_CODE_SYMBOL));
@@ -35,7 +37,7 @@ public class PartyChatHandler extends Sk1erChatHandler{
                 if (!es.getChatStyle().isEmpty()) {
                     ClickEvent tmp = es.getChatStyle().getChatClickEvent();
                     IChatComponent component = new ChatComponentText("");
-                    component.appendText(es.getFormattedText().replace("~",C.COLOR_CODE_SYMBOL));
+                    component.appendText(es.getFormattedText().replace("~", C.COLOR_CODE_SYMBOL));
                     component.getChatStyle().setChatClickEvent(tmp);
                     message.appendSibling(component);
                 } else {

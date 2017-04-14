@@ -4,6 +4,7 @@ import club.sk1er.html.Utils;
 import club.sk1er.mods.hypixel.commands.*;
 import club.sk1er.mods.hypixel.config.Sk1erConfig;
 import club.sk1er.mods.hypixel.config.Sk1erTempDataSaving;
+import club.sk1er.mods.hypixel.config.WebsiteFileCache;
 import club.sk1er.mods.hypixel.handlers.Handlers;
 import club.sk1er.mods.hypixel.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.hypixel.handlers.display.Sk1erRenderEvent;
@@ -50,27 +51,35 @@ public class Sk1erPublicMod {
     public static final String MODID = "Sk1er-Public";
     public static final String VERSION = "1.0-Pre2";
     public static final String NAME = "Sk1er Public Mod";
+    private static Sk1erPublicMod instance;
     public boolean ALLOW_AUTO_GG = false;
-    private Handlers handlers;
     public boolean isMovingCustomDisplay = false;
-    private Sk1erApiHandler apiHandler;
     public boolean isHypixel = false;
+    private Handlers handlers;
+    private Sk1erApiHandler apiHandler;
     private Sk1erConfig config;
     private GameType currentGameType;
-    public HashMap<String, Sk1erErrorReport> getErrors() {
-        return errors;
-    }
     private HashMap<String, Sk1erErrorReport> errors;
-    public static Sk1erPublicMod getInstance() {
-        return instance;
-    }
-    private static Sk1erPublicMod instance;
-    public Sk1erTempDataSaving getDataSaving() {
-        return dataSaving;
-    }
     private Sk1erTempDataSaving dataSaving;
     private HypixelMinuteScrips scrips;
     private String currentGame = "";
+    private WebsiteFileCache fileCache;
+
+    public static Sk1erPublicMod getInstance() {
+        return instance;
+    }
+
+    public WebsiteFileCache getFileCache() {
+        return fileCache;
+    }
+
+    public HashMap<String, Sk1erErrorReport> getErrors() {
+        return errors;
+    }
+
+    public Sk1erTempDataSaving getDataSaving() {
+        return dataSaving;
+    }
 
     public String getCurrentGame() {
         return currentGame;
@@ -86,7 +95,7 @@ public class Sk1erPublicMod {
 
         System.out.println("Starting Sk1er Public Mod V " + VERSION);
         this.instance = this;
-        regesterEvents();
+        registerEventsAndCommands();
         setupConfig(event.getSuggestedConfigurationFile());
         getInfo();
         registerHanders();
@@ -142,19 +151,16 @@ public class Sk1erPublicMod {
         handlers = new Handlers(this);
         apiHandler = new Sk1erApiHandler(this);
         dataSaving = new Sk1erTempDataSaving();
+        fileCache = new WebsiteFileCache(this);
         Utils.init();
         Multithreading.runAsync(() -> {
             getApiHandler().genQuests();
-            JSONObject quests = getApiHandler().getQUEST_INFO();
-            for (String s :JSONObject.getNames(quests)) {
+            JSONObject quests = getApiHandler().getQuestInfo();
+            for (String s : JSONObject.getNames(quests)) {
                 HypixelQuest.fromBackend(s);
             }
-            for(HypixelQuest quest : HypixelQuest.getQuestForGame(GameType.GINGERBREAD)) {
-                System.out.println(quest.toString());
-            }
-
         });
-            }
+    }
 
     public Sk1erApiHandler getApiHandler() {
         return apiHandler;
@@ -163,7 +169,7 @@ public class Sk1erPublicMod {
     public void getInfo() {
     }
 
-    public void regesterEvents() {
+    public void registerEventsAndCommands() {
         MinecraftForge.EVENT_BUS.register(new ChatListener(this));
         MinecraftForge.EVENT_BUS.register(new MouseInput(this));
         MinecraftForge.EVENT_BUS.register(new Sk1erRenderEvent(this));
