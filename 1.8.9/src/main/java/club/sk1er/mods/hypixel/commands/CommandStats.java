@@ -5,7 +5,6 @@ import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
 import net.hypixel.api.GameType;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
@@ -14,23 +13,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandStats extends CommandBase {
+public class CommandStats extends Sk1erCommand{
 
-    private Sk1erPublicMod mod;
 
     public CommandStats(Sk1erPublicMod mod) {
-        this.mod = mod;
+        super(mod,"stats","/stats <name> [game]");
     }
 
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "stats";
-    }
 
     @Override
     public void processCommand(final ICommandSender sender, final String[] args) throws CommandException {
@@ -42,12 +31,11 @@ public class CommandStats extends CommandBase {
                 }
                 if (args.length == 1) {
                     String playername = args[0];
-                    JSONObject raw = mod.getApiHandler().pullPlayerProfile(playername);
+                    JSONObject raw = getMod().getApiHandler().pullPlayerProfile(playername);
                     if (!raw.optBoolean("success")) {
                         ChatUtils.sendMessage("Player '" + playername + "' could not be found!");
                         return;
                     }
-//                ChatUtils.sendMessage(raw.toString());
                     ChatUtils.sendMessage("Loading stats for: " + Utils.getFormatedName(raw));
                     ChatUtils.sendMessage("Network Level: " + ((Utils.get(raw, "player#networkLevel")) + 1));
                     ChatUtils.sendMessage("Karma: " + Utils.get(raw, "player#karma"));
@@ -57,7 +45,6 @@ public class CommandStats extends CommandBase {
                     ChatUtils.sendMessage("Total coins: " + Utils.get(raw, "player#coins"));
                     ChatUtils.sendMessage("Total kills: " + Utils.get(raw, "player#kills"));
                     ChatUtils.sendMessage("Friends: " + Utils.get(raw, "player#friends"));
-                    return;
                 } else {
                     String game = args[1];
                     GameType g = GameType.fromRealPersonName(game);
@@ -72,7 +59,7 @@ public class CommandStats extends CommandBase {
                         return;
                     }
                     String playername = args[0];
-                    JSONObject raw = mod.getApiHandler().pullPlayerProfile(playername);
+                    JSONObject raw = getMod().getApiHandler().pullPlayerProfile(playername);
                     if (!raw.optBoolean("success")) {
                         ChatUtils.sendMessage("Player '" + playername + "' could not be found!");
                         return;
@@ -87,7 +74,7 @@ public class CommandStats extends CommandBase {
 
                 }
             } catch (Exception e) {
-                mod.newError(e);
+                getMod().newError(e);
             }
         });
     }
@@ -106,10 +93,6 @@ public class CommandStats extends CommandBase {
         return toReturn;
     }
 
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/stats <player> [game]";
-    }
 
 
 }

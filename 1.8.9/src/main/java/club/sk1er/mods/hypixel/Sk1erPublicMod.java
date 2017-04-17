@@ -182,10 +182,9 @@ public class Sk1erPublicMod {
         ClientCommandHandler.instance.registerCommand(new CommandGuild(this));
         ClientCommandHandler.instance.registerCommand(new CommandFriends(this));
         ClientCommandHandler.instance.registerCommand(new CommandToday(this));
-        ClientCommandHandler.instance.registerCommand(new CommandWhatRank(this));
+        ClientCommandHandler.instance.registerCommand(new CommandClassicStats(this));
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat(this));
         ClientCommandHandler.instance.registerCommand(new CommandDebug(this));
-
 
     }
 
@@ -195,11 +194,11 @@ public class Sk1erPublicMod {
 
     public void startHypixelScripts() {
         Multithreading.runAsync(() -> {
-            if (scrips != null) {
-                scrips.stop();
+            if (scrips == null) {
+                scrips = new HypixelMinuteScrips(this);
+                scrips.run();
             }
-            scrips = new HypixelMinuteScrips(this);
-            scrips.run();
+
 
         });
     }

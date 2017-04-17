@@ -4,7 +4,6 @@ import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erErrorReport;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import org.json.JSONObject;
@@ -20,26 +19,10 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by Mitchell Katz on 12/4/2016.
  */
-public class CommandErrorReport extends CommandBase {
-    private Sk1erPublicMod mod;
+public class CommandErrorReport extends Sk1erCommand {
 
     public CommandErrorReport(Sk1erPublicMod mod) {
-        this.mod = mod;
-    }
-
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender p_canCommandSenderUseCommand_1_) {
-        return true;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "errorreport";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender iCommandSender) {
-        return "/errorreport [error]";
+        super(mod, "errorreport", "/errorreport <id> <action>");
     }
 
     @Override
@@ -48,7 +31,7 @@ public class CommandErrorReport extends CommandBase {
             ChatUtils.sendMessage(getCommandUsage(iCommandSender));
         } else {
             if (a.length == 1) {
-                Sk1erErrorReport report = mod.getErrors().get(a[0]);
+                Sk1erErrorReport report = getMod().getErrors().get(a[0]);
                 if (report == null) {
                     ChatUtils.sendMessage("That report could not be found!");
                 } else {
@@ -60,7 +43,7 @@ public class CommandErrorReport extends CommandBase {
                     ChatUtils.sendMessage(mes + " publish - Publishes the report and possible suggestion from the webserver");
                 }
             } else {
-                Sk1erErrorReport report = mod.getErrors().get(a[0]);
+                Sk1erErrorReport report = getMod().getErrors().get(a[0]);
                 if (a[1].equalsIgnoreCase("preview")) {
 
                     ChatUtils.sendMessage("Error id: " + a[0]);
@@ -123,7 +106,7 @@ public class CommandErrorReport extends CommandBase {
 
                             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
                             int postDataLength = postData.length;
-                            String request = "http://sk1er.club/moderror/" + mod.getApiHandler().SK1ER_API_KEY;
+                            String request = "http://sk1er.club/moderror/" + getMod().getApiHandler().SK1ER_API_KEY;
                             URL url = new URL(request);
                             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                             conn.setDoOutput(true);

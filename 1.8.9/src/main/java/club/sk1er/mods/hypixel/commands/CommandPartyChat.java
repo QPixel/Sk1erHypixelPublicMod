@@ -3,18 +3,16 @@ package club.sk1er.mods.hypixel.commands;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.config.CValue;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
 /**
  * Created by Mitchell Katz on 12/4/2016.
  */
-public class CommandPartyChat extends CommandBase {
-    private Sk1erPublicMod mod;
+public class CommandPartyChat extends Sk1erCommand {
 
     public CommandPartyChat(Sk1erPublicMod mod) {
-        this.mod = mod;
+        super(mod,"pc","/pc <message,toggle>");
     }
 
     @Override
@@ -40,9 +38,9 @@ public class CommandPartyChat extends CommandBase {
             } else {
                 if (a[0].equalsIgnoreCase("toggle")) {
                     //Toggle off guild chat
-                    boolean gchat = mod.getConfig().getBoolean(CValue.SHOW_PARTY_CHAT);
-                    mod.getConfig().forceValue(CValue.SHOW_PARTY_CHAT, !gchat);
-                    mod.getConfig().save();
+                    boolean gchat = getMod().getConfig().getBoolean(CValue.SHOW_PARTY_CHAT);
+                    getMod().getConfig().forceValue(CValue.SHOW_PARTY_CHAT, !gchat);
+                    getMod().getConfig().save();
                     ChatUtils.sendMessage("Party chat is now " + (gchat ? "hidden" : "shown"));
                 } else {
                     String s = "";
@@ -53,7 +51,7 @@ public class CommandPartyChat extends CommandBase {
                 }
             }
         } catch (Exception e) {
-            mod.newError(e);
+            getMod().newError(e);
         }
 
     }

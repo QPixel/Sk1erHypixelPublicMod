@@ -3,7 +3,6 @@ package club.sk1er.mods.hypixel.commands;
 import club.sk1er.mods.hypixel.Multithreading;
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
 import club.sk1er.mods.hypixel.utils.ChatUtils;
-import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import org.json.JSONObject;
@@ -13,27 +12,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class CommandGuild extends CommandBase {
+public class CommandGuild extends Sk1erCommand {
 
-    private Sk1erPublicMod mod;
 
     public CommandGuild(Sk1erPublicMod mod) {
-        this.mod = mod;
-    }
-
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return true;
-    }
-
-    @Override
-    public String getCommandName() {
-        return "getguild";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "/getguild <name,player> [name,player]";
+        super(mod,"getguild", "/getguild <player,name> <name>");
     }
 
     @Override
@@ -46,9 +29,9 @@ public class CommandGuild extends CommandBase {
                 }
                 JSONObject returned;
                 if (args[0].equalsIgnoreCase("player")) {
-                    returned = mod.getApiHandler().getGuildByPlayer(args[1]);
+                    returned = getMod().getApiHandler().getGuildByPlayer(args[1]);
                 } else if (args[0].equalsIgnoreCase("name")) {
-                    returned = mod.getApiHandler().getGuildByName(args[1]);
+                    returned = getMod().getApiHandler().getGuildByName(args[1]);
                 } else {
                     ChatUtils.sendMessage(getCommandUsage(sender));
                     return;
@@ -96,7 +79,7 @@ public class CommandGuild extends CommandBase {
 
 
             } catch (Exception e) {
-                mod.newError(e);
+                getMod().newError(e);
             }
         });
 
