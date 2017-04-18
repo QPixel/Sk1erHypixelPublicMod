@@ -22,6 +22,7 @@ public class WebsiteFileCache {
             dir.mkdirs();
         refresh();
     }
+
     public boolean hasCache(String key) {
         return cache.containsKey(key);
     }
@@ -30,6 +31,7 @@ public class WebsiteFileCache {
         cache.clear();
         saveCache();
     }
+
     public void refresh() {
         cache.clear();
         String[] names = dir.list();

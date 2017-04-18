@@ -118,9 +118,9 @@ public class Sk1erApiHandler {
         if (gen_key.has("key")) {
             SK1ER_API_KEY = gen_key.getString("key");
             mod.ALLOW_AUTO_GG = gen_key.optBoolean("autogg");
-            if(gen_key.optBoolean("refresh")) {
+            if (gen_key.optBoolean("refresh")) {
                 mod.getFileCache().clear();
-                questInfo =null;
+                questInfo = null;
                 genQuests();
             }
         }

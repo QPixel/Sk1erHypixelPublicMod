@@ -185,6 +185,7 @@ public class Sk1erPublicMod {
         ClientCommandHandler.instance.registerCommand(new CommandClassicStats(this));
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat(this));
         ClientCommandHandler.instance.registerCommand(new CommandDebug(this));
+        ClientCommandHandler.instance.registerCommand(new CommandResetDisplay(this));
 
     }
 

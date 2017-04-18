@@ -63,7 +63,7 @@ public class CommandSetConfigValue extends Sk1erCommand {
                     ChatUtils.sendMessage("Value: " + a + " is not applicable to " + args[0]);
                     ChatUtils.sendMessage("The possible values are: " + v.getAllvals().replace(",", ", ").replace("*", "*anything"));
                 } catch (Exception e) {
-                    ChatUtils.sendMessage("Value '"+a+"' was not found!");
+                    ChatUtils.sendMessage("Value '" + a + "' was not found!");
                 }
             }
         } catch (Exception e) {

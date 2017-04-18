@@ -13,7 +13,7 @@ public class CommandFriends extends Sk1erCommand {
 
 
     public CommandFriends(Sk1erPublicMod mod) {
-        super(mod, "getfriends","/getfriends [username]");
+        super(mod, "getfriends", "/getfriends [username]");
     }
 
 

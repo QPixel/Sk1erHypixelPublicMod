@@ -13,11 +13,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandStats extends Sk1erCommand{
+public class CommandStats extends Sk1erCommand {
 
 
     public CommandStats(Sk1erPublicMod mod) {
-        super(mod,"stats","/stats <name> [game]");
+        super(mod, "stats", "/stats <name> [game]");
     }
 
 
@@ -92,7 +92,6 @@ public class CommandStats extends Sk1erCommand{
         }
         return toReturn;
     }
-
 
 
 }

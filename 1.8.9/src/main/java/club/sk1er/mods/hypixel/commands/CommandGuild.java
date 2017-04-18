@@ -16,7 +16,7 @@ public class CommandGuild extends Sk1erCommand {
 
 
     public CommandGuild(Sk1erPublicMod mod) {
-        super(mod,"getguild", "/getguild <player,name> <name>");
+        super(mod, "getguild", "/getguild <player,name> <name>");
     }
 
     @Override

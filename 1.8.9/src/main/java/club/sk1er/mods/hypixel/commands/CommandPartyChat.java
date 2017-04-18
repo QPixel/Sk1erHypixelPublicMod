@@ -12,7 +12,7 @@ import net.minecraft.command.ICommandSender;
 public class CommandPartyChat extends Sk1erCommand {
 
     public CommandPartyChat(Sk1erPublicMod mod) {
-        super(mod,"pc","/pc <message,toggle>");
+        super(mod, "pc", "/pc <message,toggle>");
     }
 
     @Override

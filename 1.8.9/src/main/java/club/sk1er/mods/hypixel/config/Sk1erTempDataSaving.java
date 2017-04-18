@@ -1,7 +1,6 @@
 package club.sk1er.mods.hypixel.config;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
-import club.sk1er.mods.hypixel.handlers.quest.HypixelQuest;
 import net.minecraft.client.Minecraft;
 import org.json.JSONObject;
 
@@ -19,13 +18,14 @@ public class Sk1erTempDataSaving {
     private int xp = 0, coins = 0;
     private HashMap<String, Integer> xpForGame = new HashMap<>();
     private HashMap<String, Integer> coinsForGame = new HashMap<>();
-    private HashMap<String, Integer> QUEST_STATUS = new HashMap<>();
+    private HashMap<String, Integer> questStatus = new HashMap<>();
+    private JSONObject weekly = new JSONObject().put("quests", new JSONObject());
     private File dir;
     private int rankedRating = 0;
+
     public Sk1erTempDataSaving() {
         dir = new File(Minecraft.getMinecraft().mcDataDir.getAbsolutePath() + "/sk1ermod");
         if (!dir.exists()) {
-
             dir.mkdirs();
         } else {
             File f = new File(dir.getAbsolutePath() + "/" + date() + ".txt");
@@ -45,7 +45,7 @@ public class Sk1erTempDataSaving {
                             }
                         }
                         for (String s : JSONObject.getNames(object.optJSONObject("quests"))) {
-                            QUEST_STATUS.put(s, object.optJSONObject("quests").getInt(s));
+                            questStatus.put(s, object.optJSONObject("quests").getInt(s));
                         }
                         String[] coin_nmes = JSONObject.getNames(object.optJSONObject("game_coin"));
                         if (coin_nmes != null) {
@@ -75,12 +75,35 @@ public class Sk1erTempDataSaving {
 
                 }
             }
+            File f3 = new File(dir.getAbsolutePath() + "/" + osc() + ".json");
+            if (f3.exists()) {
+                try {
+                    FileReader fr = new FileReader(f3);
+                    BufferedReader br = new BufferedReader(fr);
+                    StringBuilder builder = new StringBuilder();
+                    String line = null;
+                    while ((line = br.readLine()) != null)
+                        builder.append(line);
+                    String done = builder.toString();
+                    weekly = new JSONObject(done);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
 
+    public JSONObject getWeekly() {
+        return weekly;
+    }
+
     public File getDir() {
         return dir;
+    }
+
+    private String osc() {
+        return "Week-" + weeklyOsc();
     }
 
     public int getXp() {
@@ -116,15 +139,11 @@ public class Sk1erTempDataSaving {
     }
 
     public int getQuestStatus(String quest) {
-        if (QUEST_STATUS.containsKey(quest)) {
-            return QUEST_STATUS.get(quest);
-        } else {
-            return 0;
-        }
+        return questStatus.getOrDefault(quest, 0);
     }
 
     public void applyQuestStatus(String quest, int status) {
-        QUEST_STATUS.put(quest, status);
+        questStatus.put(quest, status);
         refreshCoinsAndXp(0, 0);
     }
 
@@ -142,6 +161,7 @@ public class Sk1erTempDataSaving {
     public String dateMM() {
         return new SimpleDateFormat("MM-YY").format(new Date(System.currentTimeMillis()));
     }
+
 
     public String date() {
         return new SimpleDateFormat("dd-MM-yy").format(new Date(System.currentTimeMillis()));
@@ -175,8 +195,8 @@ public class Sk1erTempDataSaving {
                     coinThing.put(string, coinsForGame.get(string));
                 }
                 JSONObject quest = new JSONObject();
-                for (String quests : QUEST_STATUS.keySet()) {
-                    quest.put(quests, QUEST_STATUS.get(quests));
+                for (String quests : questStatus.keySet()) {
+                    quest.put(quests, questStatus.get(quests));
                 }
                 object.put("quests", quest);
                 object.put("game_coin", coinThing);
@@ -198,6 +218,17 @@ public class Sk1erTempDataSaving {
             } catch (Exception e) {
 
             }
+            File f3 = new File(dir.getAbsolutePath() + "/" + osc() + ".json");
+            try {
+                f3.createNewFile();
+                FileWriter fw = new FileWriter(f3);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(weekly.toString());
+                bw.close();
+                fw.close();
+            } catch (IOException e) {
+
+            }
         } else {
             this.coins = coins;
             this.xp = xp;
@@ -205,13 +236,18 @@ public class Sk1erTempDataSaving {
             xpForGame.clear();
             coinsForGame.clear();
             refreshCoinsAndXp(coins, xp);
-            for (String s : QUEST_STATUS.keySet()) {
-                QUEST_STATUS.put(s, 0);
+            for (String s : questStatus.keySet()) {
+                questStatus.put(s, 0);
             }
-            for (HypixelQuest quest : HypixelQuest.allQuests) {
-                quest.setCompleted(false);
-            }
+
         }
+    }
+
+    public String weeklyOsc() {
+        long delta = Math.abs(System.currentTimeMillis() - 1417237200000L);
+        long oscillation = delta / 604800000L;
+
+        return oscillation % 2 == 0 ? "a" : "b";
     }
 
     public void addCoins(int amount) {

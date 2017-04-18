@@ -16,10 +16,11 @@ public abstract class Sk1erCommand extends CommandBase {
     private Sk1erPublicMod mod;
     private String name;
     private String usage;
-    public Sk1erCommand(Sk1erPublicMod mod, String name,String usage) {
+
+    public Sk1erCommand(Sk1erPublicMod mod, String name, String usage) {
         this.mod = mod;
         this.name = name;
-        this.usage=usage;
+        this.usage = usage;
     }
 
     public Sk1erPublicMod getMod() {

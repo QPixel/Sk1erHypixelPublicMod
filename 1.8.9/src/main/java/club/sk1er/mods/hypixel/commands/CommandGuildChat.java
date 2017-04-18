@@ -12,7 +12,7 @@ import net.minecraft.command.ICommandSender;
 public class CommandGuildChat extends Sk1erCommand {
 
     public CommandGuildChat(Sk1erPublicMod mod) {
-        super(mod, "gc","/gc <message,toggle>");
+        super(mod, "gc", "/gc <message,toggle>");
     }
 
     @Override

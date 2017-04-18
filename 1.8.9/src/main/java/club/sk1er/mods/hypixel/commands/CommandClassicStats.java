@@ -8,7 +8,7 @@ import net.minecraft.command.ICommandSender;
 /**
  * Created by mitchellkatz on 4/17/17.
  */
-public class CommandClassicStats extends Sk1erCommand{
+public class CommandClassicStats extends Sk1erCommand {
 
     public CommandClassicStats(Sk1erPublicMod mod) {
         super(mod, "classicstats", "/classicstats <name>");
@@ -16,8 +16,8 @@ public class CommandClassicStats extends Sk1erCommand{
 
     @Override
     public void processCommand(ICommandSender iCommandSender, String[] a) throws CommandException {
-        if(a.length==1)
-        ChatUtils.sendMesssageToServer("/stats " + a[0]);
+        if (a.length == 1)
+            ChatUtils.sendMesssageToServer("/stats " + a[0]);
         else ChatUtils.sendMessage(getCommandUsage(iCommandSender));
     }
 }

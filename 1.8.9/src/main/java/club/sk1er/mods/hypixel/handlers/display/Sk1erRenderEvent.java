@@ -31,18 +31,19 @@ public class Sk1erRenderEvent extends Sk1erListener {
     private String pColor;
     private String sColor;
     private FontRenderer renderer;
+
     public Sk1erRenderEvent(Sk1erPublicMod mod) {
         super(mod);
     }
 
     @SubscribeEvent
     public void onRenderEvent(TickEvent.RenderTickEvent e) {
-        if(renderer==null)
-            renderer=Minecraft.getMinecraft().fontRendererObj;
+        if (renderer == null)
+            renderer = Minecraft.getMinecraft().fontRendererObj;
         try {
             ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
             for (RenderObject object : renderObjects) {
-               renderer.drawString(object.text, object.x / res.getScaleFactor(), object.y / res.getScaleFactor(), 16777215);
+                renderer.drawString(object.text, object.x / res.getScaleFactor(), object.y / res.getScaleFactor(), 16777215);
             }
             if (getMod().isHypixel) {
                 line = .1;
@@ -185,21 +186,21 @@ public class Sk1erRenderEvent extends Sk1erListener {
     }
 
     private void render(String s) {
-        double mult = (double)getConfig().getInt(CValue.DISPLAY_SIZE)/100.0;
+        double mult = (double) getConfig().getInt(CValue.DISPLAY_SIZE) / 100.0;
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
         double x = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_X)
-                * res.getScaledWidth_double()/mult;
-        double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double()/mult + (line * 10/mult);
-        int size=  renderer.FONT_HEIGHT;
-        renderer.FONT_HEIGHT=(int)((double)size*getConfig().getInt(CValue.DISPLAY_SIZE)/100.0);
-        renderer.FONT_HEIGHT=50;
-        GL11.glScaled(mult,mult,0);
+                * res.getScaledWidth_double() / mult;
+        double y = getConfig().getDouble(CValue.CUSTOM_DISPLAY_LOCATION_Y) * res.getScaledHeight_double() / mult + (line * 10 / mult);
+        int size = renderer.FONT_HEIGHT;
+        renderer.FONT_HEIGHT = (int) ((double) size * getConfig().getInt(CValue.DISPLAY_SIZE) / 100.0);
+        renderer.FONT_HEIGHT = 50;
+        GL11.glScaled(mult, mult, 0);
         renderer.drawString(s, (int)
-                (x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ?renderer.getStringWidth(s) : 0)*mult),
-                (int) (y), 16777215,true);
-        GL11.glScaled(1/mult, 1/mult, 0);
-        line += 1.0*mult;
-        renderer.FONT_HEIGHT=size;
+                        (x - (getConfig().getString(CValue.DISPLAY_LOCATION_ALIGN).equalsIgnoreCase("RIGHT") ? renderer.getStringWidth(s) : 0) * mult),
+                (int) (y), 16777215, true);
+        GL11.glScaled(1 / mult, 1 / mult, 0);
+        line += 1.0 * mult;
+        renderer.FONT_HEIGHT = size;
     }
 
 

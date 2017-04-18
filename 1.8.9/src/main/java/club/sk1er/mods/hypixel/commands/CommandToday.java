@@ -15,7 +15,7 @@ import java.util.List;
 public class CommandToday extends Sk1erCommand {
 
     public CommandToday(Sk1erPublicMod mod) {
-        super(mod, "today","/today");
+        super(mod, "today", "/today");
     }
 
     @Override

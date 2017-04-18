@@ -25,17 +25,7 @@ public class HypixelQuest {
     private boolean completed = false;
 
     public HypixelQuest(String backend) {
-        this.backendName = backend;
-        JSONObject quests = Sk1erPublicMod.getInstance().getApiHandler().getQuestInfo();
-        quest_data = quests.optJSONObject(backend);
-        int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
-        completed = status == 1;
-        type = QuestType.valueOf(quest_data.optString("type"));
-        gameType = GameType.fromDatabase(quest_data.optString("gameType"));
-        enabled = quest_data.optBoolean("enabled");
-        if (gameType == null) {
-            System.out.println(quests.optString("gameType") + " is not a valid gametype!!!!." + backend);
-        }
+        refresh(backend);
     }
 
     public static HypixelQuest fromBackend(String name) {
@@ -84,6 +74,28 @@ public class HypixelQuest {
         return quests;
     }
 
+    private void refresh(String backend) {
+        this.backendName = backend;
+        JSONObject quests = Sk1erPublicMod.getInstance().getApiHandler().getQuestInfo();
+        quest_data = quests.optJSONObject(backend);
+        if (isDaily()) {
+            int status = Sk1erPublicMod.getInstance().getDataSaving().getQuestStatus(backend);
+            completed = status == 1;
+        } else {
+            completed = Sk1erPublicMod.getInstance().getDataSaving().getWeekly().optJSONObject("quests").has(backend);
+        }
+        type = QuestType.valueOf(quest_data.optString("type"));
+        gameType = GameType.fromDatabase(quest_data.optString("gameType"));
+        enabled = quest_data.optBoolean("enabled");
+        if (gameType == null) {
+            System.out.println(quests.optString("gameType") + " is not a valid gametype!!!!." + backend);
+        }
+    }
+
+    public void refresh() {
+        refresh(this.backendName);
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -96,8 +108,8 @@ public class HypixelQuest {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setCompleted() {
+        this.completed = false;
     }
 
     public void complete() {
