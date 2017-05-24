@@ -140,8 +140,11 @@ public enum CValue {
         }
         return false;
     }
-
     public String getDname() {
         return dname;
+    }
+
+    public String getCategory() {
+        return "general";
     }
 }

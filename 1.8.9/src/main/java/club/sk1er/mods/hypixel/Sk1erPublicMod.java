@@ -28,10 +28,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-@Mod(modid = Sk1erPublicMod.MODID, version = Sk1erPublicMod.VERSION)
+@Mod(modid = Sk1erPublicMod.MODID, version = Sk1erPublicMod.VERSION, guiFactory = "club.sk1er.mods.hypixel.config.Sk1erGuiFactory")
 public class Sk1erPublicMod {
 
     /*
@@ -92,9 +93,8 @@ public class Sk1erPublicMod {
 
     @EventHandler
     public void init(FMLPreInitializationEvent event) {
-
         System.out.println("Starting Sk1er Public Mod V " + VERSION);
-        this.instance = this;
+        instance = this;
         registerEventsAndCommands();
         setupConfig(event.getSuggestedConfigurationFile());
         getInfo();
@@ -102,6 +102,7 @@ public class Sk1erPublicMod {
         registerItems();
         errors = new HashMap<>();
         System.out.println("Finished Sk1er Public Mod V " + VERSION);
+
     }
 
     public void newError(Sk1erErrorReport report) {
@@ -128,9 +129,7 @@ public class Sk1erPublicMod {
         e.printStackTrace(stream);
         Sk1erErrorReport report = new Sk1erErrorReport();
         List<String> trace = new ArrayList<String>();
-        for (String tmp : baos.toString().split("\n")) {
-            trace.add(tmp);
-        }
+        trace.addAll(Arrays.asList(baos.toString().split("\n")));
         report.setStackTrace(trace);
         newError(report);
     }

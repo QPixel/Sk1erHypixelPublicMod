@@ -9,7 +9,7 @@ import net.minecraft.command.ICommandSender;
 /**
  * Created by mitchellkatz on 4/18/17.
  */
-public class CommandResetDisplay extends Sk1erCommand{
+public class CommandResetDisplay extends Sk1erCommand {
 
     public CommandResetDisplay(Sk1erPublicMod mod) {
         super(mod, "resetdisplay", "/resetdisplay");

@@ -32,6 +32,7 @@ public enum GameType {
     private final String name, dbName;
     private final Integer id;
     private Sk1erGameHandler gameHandler;
+
     GameType(String name, String dbName, Integer id, Sk1erGameHandler handler) {
         this.name = name;
         this.dbName = dbName;

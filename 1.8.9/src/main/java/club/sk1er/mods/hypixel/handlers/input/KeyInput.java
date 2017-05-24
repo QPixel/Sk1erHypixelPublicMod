@@ -1,8 +1,6 @@
 package club.sk1er.mods.hypixel.handlers.input;
 
 import club.sk1er.mods.hypixel.Sk1erPublicMod;
-import club.sk1er.mods.hypixel.handlers.display.configgui.Sk1erDisplayMasterScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -22,7 +20,7 @@ public class KeyInput {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         if (config.isPressed()) {
-            Minecraft.getMinecraft().displayGuiScreen(new Sk1erDisplayMasterScreen());
+//            Minecraft.getMinecraft().displayGuiScreen(new Sk1erDisplayMasterScreen());
         }
     }
 }

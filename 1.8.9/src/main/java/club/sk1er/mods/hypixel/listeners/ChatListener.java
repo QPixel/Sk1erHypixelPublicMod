@@ -35,14 +35,12 @@ public class ChatListener extends Sk1erListener {
         }
         List<Sk1erChatHandler> chatHandlers = getMod().getHandlers().getChatHandlers();
         for (Sk1erChatHandler handler : chatHandlers) {
-            if (handler.containsTrigger(e)) {
-                try {
-                    System.out.println("Running chat listener: " + handler.getClass().getName());
-                    handler.handle(e);
-                } catch (Exception e1) {
-                    getMod().newError(e1);
-                }
+            try {
+                handler.handle(e);
+            } catch (Exception e1) {
+                getMod().newError(e1);
             }
+
         }
     }
 }
