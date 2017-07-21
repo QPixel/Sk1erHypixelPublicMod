@@ -1,9 +1,12 @@
 package club.sk1er.mods.publicmod;
 
 import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
+import club.sk1er.mods.publicmod.handlers.KeyInput;
 import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
+import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -21,13 +24,19 @@ public class Sk1erPublicMod {
     private static Sk1erPublicMod instance;
     private Sk1erTempDataSaving dataSaving;
     private Sk1erMod sk1erMod;
+    private Sk1erChatHandler chatHandler;
     private String uuid;
     private String name;
     private GameType currentGame = GameType.UNKNOWN;
     private Sk1erApiHandler apiHandler;
+    private KeyInput keyInput;
 
     public static Sk1erPublicMod getInstance() {
         return instance;
+    }
+
+    public Sk1erChatHandler getChatHandler() {
+        return chatHandler;
     }
 
     public Sk1erApiHandler getApiHandler() {
@@ -50,6 +59,12 @@ public class Sk1erPublicMod {
         name = Minecraft.getMinecraft().getSession().getProfile().getName();
         uuid = Minecraft.getMinecraft().getSession().getPlayerID().replace("-", "");
         apiHandler = new Sk1erApiHandler(sk1erMod, this);
+        chatHandler = new Sk1erChatHandler(this);
+
+        keyInput = new KeyInput(this);
+        //'Register Events
+        MinecraftForge.EVENT_BUS.register(chatHandler);
+        MinecraftForge.EVENT_BUS.register(keyInput);
     }
 
     public void isHypixel() {

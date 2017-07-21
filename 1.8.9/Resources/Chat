@@ -17,3 +17,6 @@ Friend request from Sk1er
 Regex:
 Friend request from ?(?<rank>.+?(?=])])? (?<player>.+)?
 
+Click one: ?(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])
+
+
