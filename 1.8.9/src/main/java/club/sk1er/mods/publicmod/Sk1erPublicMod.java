@@ -1,0 +1,56 @@
+package club.sk1er.mods.publicmod;
+
+import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
+import net.hypixel.api.GameType;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+@Mod(modid = Sk1erPublicMod.MODID, version = Sk1erPublicMod.VERSION, name = Sk1erPublicMod.NAME)
+public class Sk1erPublicMod {
+
+
+    /*
+    Quest: http://i.imgur.com/tGIXJAX.png
+     */
+    public static final String MODID = "Sk1er-Public";
+    public static final String VERSION = "1.0";
+    public static final String NAME = "Sk1er Public Mod";
+    private static Sk1erPublicMod instance;
+    private Sk1erTempDataSaving dataSaving;
+    private Sk1erMod sk1erMod;
+    private String uuid;
+    private String name;
+    private GameType currentGame = GameType.UNKNOWN;
+
+    public static Sk1erPublicMod getInstance() {
+        return instance;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @EventHandler
+    public void init(FMLPreInitializationEvent event) {
+        instance = this;
+        sk1erMod = new Sk1erMod(MODID, VERSION, NAME);
+        sk1erMod.checkStatus();
+        name = Minecraft.getMinecraft().getSession().getProfile().getName();
+        uuid = Minecraft.getMinecraft().getSession().getPlayerID().replace("-", "");
+    }
+
+    public void isHypixel() {
+
+    }
+
+
+    public GameType getCurrentGame() {
+        return currentGame;
+    }
+}

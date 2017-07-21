@@ -1,50 +1,41 @@
 package net.hypixel.api;
 
-import club.sk1er.mods.hypixel.handlers.game.Sk1erGameHandler;
-import club.sk1er.mods.hypixel.handlers.game.games.*;
 
-/**
- * Created by Mitchell Katz on 12/8/2016.
- */
 public enum GameType {
-    QUAKECRAFT("Quakecraft", "Quake", 2, new QuakecraftGameHandler()),
-    WALLS("Walls", "Walls", 3, new Walls2GameHandler()),
-    PAINTBALL("Paintball", "Paintball", 4, new PaintballGameHandler()),
-    SURVIVAL_GAMES("Blitz Survival Games", "HungerGames", 5, new BlitzGameHandler()),
-    TNTGAMES("The TNT Games", "TNTGames", 6, new TNTGamesHandler()),
-    VAMPIREZ("VampireZ", "VampireZ", 7, new VampireZGameHandler()),
-    WALLS3("Mega Walls", "Walls3", 13, new Walls3GameHandler()),
-    ARCADE("Arcade", "Arcade", 14, new ArcadeGameHandler()),
-    ARENA("Arena Brawl", "Arena", 17, new ArenaGameHandler()),
-    MCGO("Cops and Crims", "MCGO", 21, new CVCGameHandler()),
-    UHC("UHC Champions", "UHC", 20, new UHCGameHandler()),
-    BATTLEGROUND("Warlords", "Battleground", 23, new WarlordsGameHandler()),
-    SUPER_SMASH("Smash Heroes", "SuperSmash", 24, new SmashHeroesGameHandler()),
-    GINGERBREAD("Turbo Kart Racers", "GingerBread", 25, new TKRGameHandler()),
-    HOUSING("Housing", "Housing", 26, new BlankGameHandler()),
-    SKYWARS("SkyWars", "SkyWars", 51, new SkyWarsGameHandler()),
-    TRUE_COMBAT("Crazy Walls", "TrueCombat", 52, new CrazyWallsGameHandler()),
-    SPEED_UHC("Speed UHC", "SpeedUHC", 54, new SpeedUHCGameHandler()),
-    UNKNOWN("Unknown", "null", 51, new BlankGameHandler()),
-    SKYCLASH("SkyClash", "SkyClash", 55, new SkyClashGameHandler());
+    QUAKECRAFT("Quakecraft", "Quake", 2),
+    WALLS("Walls", "Walls", 3),
+    PAINTBALL("Paintball", "Paintball", 4),
+    SURVIVAL_GAMES("Blitz Survival Games", "HungerGames", 5),
+    TNTGAMES("The TNT Games", "TNTGames", 6),
+    VAMPIREZ("VampireZ", "VampireZ", 7),
+    WALLS3("Mega Walls", "Walls3", 13),
+    ARCADE("Arcade", "Arcade", 14),
+    ARENA("Arena Brawl", "Arena", 17),
+    MCGO("Cops and Crims", "MCGO", 21),
+    UHC("UHC Champions", "UHC", 20),
+    BATTLEGROUND("Warlords", "Battleground", 23),
+    SUPER_SMASH("Smash Heroes", "SuperSmash", 24),
+    GINGERBREAD("Turbo Kart Racers", "GingerBread", 99999),
+    TURBO_KART_RACERS("Turbo Kart Racers", "GingerBread", 25),
+    SKYWARS("SkyWars", "SkyWars", 51),
+    TRUE_COMBAT("Crazy Walls", "TrueCombat", 52),
+    SKYCLASH("SkyClash", "SkyClash", 55),
+    LEGACY("Classic Games", "Legacy", 56),
+    SPEED_UHC("Speed UHC", "SpeedUHC", 54),
+    UNKNOWN("Unknown", "ERROR", -1),
+    BEDWARS("Bedwars", "Bedwars", 57);
 
     private static final GameType[] v = values();
-    private final String name, dbName;
+
+    private final String name;
+    private final String dbName;
     private final Integer id;
-    private Sk1erGameHandler gameHandler;
-
-    GameType(String name, String dbName, Integer id, Sk1erGameHandler handler) {
-        this.name = name;
-        this.dbName = dbName;
-        this.id = id;
-        this.gameHandler = handler;
-    }
-
 
     GameType(String name, String dbName, Integer id) {
         this.name = name;
         this.dbName = dbName;
         this.id = id;
+
     }
 
     /**
@@ -60,15 +51,10 @@ public enum GameType {
         return null;
     }
 
-    public static GameType fromRealPersonName(String name) {
-        for (GameType g : v) {
-            if (g.getGameHandler() != null) {
-                if (g.getGameHandler().isGame(name)) {
-                    return g;
-                }
-            } else {
-                if (g.getName().equalsIgnoreCase(name))
-                    return g;
+    public static GameType fromRealName(String id) {
+        for (GameType gameType : v) {
+            if (gameType.name.equalsIgnoreCase(id)) {
+                return gameType;
             }
         }
         return null;
@@ -84,14 +70,18 @@ public enum GameType {
                 return gameType;
             }
         }
-        return null;
+        return GameType.UNKNOWN;
     }
 
-    public Sk1erGameHandler getGameHandler() {
-        return gameHandler;
+    public static GameType parse(String mostRecentGameType) {
+        try {
+            return valueOf(mostRecentGameType);
+        } catch (Exception e) {
+            return fromDatabase(mostRecentGameType);
+        }
     }
 
-    public String getDatabaseName() {
+    public String getDbName() {
         return dbName;
     }
 
