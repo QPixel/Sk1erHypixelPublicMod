@@ -1,6 +1,7 @@
 package club.sk1er.mods.publicmod;
 
 import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
+import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
@@ -23,16 +24,21 @@ public class Sk1erPublicMod {
     private String uuid;
     private String name;
     private GameType currentGame = GameType.UNKNOWN;
+    private Sk1erApiHandler apiHandler;
 
     public static Sk1erPublicMod getInstance() {
         return instance;
+    }
+
+    public Sk1erApiHandler getApiHandler() {
+        return apiHandler;
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    public String getName() {
+    public String getPlayerName() {
         return name;
     }
 
@@ -43,6 +49,7 @@ public class Sk1erPublicMod {
         sk1erMod.checkStatus();
         name = Minecraft.getMinecraft().getSession().getProfile().getName();
         uuid = Minecraft.getMinecraft().getSession().getPlayerID().replace("-", "");
+        apiHandler = new Sk1erApiHandler(sk1erMod, this);
     }
 
     public void isHypixel() {

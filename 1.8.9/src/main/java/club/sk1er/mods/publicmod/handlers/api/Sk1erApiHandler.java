@@ -1,7 +1,9 @@
 package club.sk1er.mods.publicmod.handlers.api;
 
+import club.sk1er.mods.publicmod.C;
 import club.sk1er.mods.publicmod.Sk1erMod;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -19,10 +21,37 @@ public class Sk1erApiHandler {
     private Map<String, JsonObject> friendCache = new HashMap<>();
     private Map<String, JsonObject> guildNameCache = new HashMap<>();
     private Map<String, JsonObject> guildPlayerCache = new HashMap<>();
+    private JsonObject playerGuild;
+    private HashMap<String, String> guildPlayerPrefixes = new HashMap<>();
+    private String guildMemberPrefix = C.GREEN + "[M]";
+    private String guildOfficerPrefix = C.RED + "[O]";
+    private String guildMasterPrefix = C.GOLD + "[GM]";
 
     public Sk1erApiHandler(Sk1erMod sk1erMod, Sk1erPublicMod mod) {
         this.sk1erMod = sk1erMod;
         this.mod = mod;
+    }
+
+    public void fetchPlayerGuild() {
+        playerGuild = getGuildPlayer(mod.getPlayerName());
+        guildPlayerPrefixes.clear();
+        if (playerGuild.has("guild") && playerGuild.get("guild").getAsJsonObject().has("members")) {
+            JsonArray members = playerGuild.get("guild").getAsJsonObject().get("members").getAsJsonArray();
+            for (int i = 0; i < members.size(); i++) {
+                JsonObject object = members.get(i).getAsJsonObject();
+                if (object.has("rank") && object.get("rank").getAsString().equalsIgnoreCase("member")) {
+                    if (object.get("rank").getAsString().equalsIgnoreCase("officer")) {
+                        guildPlayerPrefixes.put(object.get("name").getAsString().toLowerCase(), guildOfficerPrefix);
+                    } else {
+                        guildPlayerPrefixes.put(object.get("name").getAsString().toLowerCase(), guildMasterPrefix);
+                    }
+                }
+            }
+        }
+    }
+
+    public String getPrefixForUser(String player) {
+        return guildPlayerPrefixes.getOrDefault(player.toLowerCase(), guildMemberPrefix);
     }
 
     public String getKey() {

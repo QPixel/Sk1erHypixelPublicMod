@@ -1,0 +1,19 @@
+Guild:
+Guild > [MVP+] Sk1er: My message
+Guild > Sk1er: My message
+Regex:
+Guild > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)
+
+Party:
+Party > [MVP+] Sk1er: My message
+Party > Sk1er: My message
+Regex:
+Party > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)
+
+
+Friend request
+Friend request from [MVP+] Sk1er
+Friend request from Sk1er
+Regex:
+Friend request from ?(?<rank>.+?(?=])])? (?<player>.+)?
+
