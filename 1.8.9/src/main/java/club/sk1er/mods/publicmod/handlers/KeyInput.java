@@ -19,7 +19,7 @@ public class KeyInput {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent ignored) {
-        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
             //Modifier key down
             if (Keyboard.isKeyDown(Keyboard.KEY_P)) {
                 if (System.currentTimeMillis() - mod.getChatHandler().getRecentPartyTime() < 1000 * 60) {

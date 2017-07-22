@@ -6,10 +6,15 @@ import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.scoreboard.ScoreObjective;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import java.util.concurrent.TimeUnit;
 
 @Mod(modid = Sk1erPublicMod.MODID, version = Sk1erPublicMod.VERSION, name = Sk1erPublicMod.NAME)
 public class Sk1erPublicMod {
@@ -30,6 +35,8 @@ public class Sk1erPublicMod {
     private GameType currentGame = GameType.UNKNOWN;
     private Sk1erApiHandler apiHandler;
     private KeyInput keyInput;
+    private boolean isHypixel = false;
+    private boolean tasksStarted = false;
 
     public static Sk1erPublicMod getInstance() {
         return instance;
@@ -67,12 +74,48 @@ public class Sk1erPublicMod {
         MinecraftForge.EVENT_BUS.register(keyInput);
     }
 
-    public void isHypixel() {
-
+    public boolean isHypixel() {
+        return isHypixel;
     }
-
 
     public GameType getCurrentGame() {
         return currentGame;
+    }
+
+    public void joinedHypixel() {
+        isHypixel = true;
+        Multithreading.runAsync(() -> {
+            apiHandler.fetchPlayerGuild();
+            apiHandler.fetchQuests();
+            apiHandler.refreshPersonalBoosters();
+            apiHandler.refreshPlayerData();
+
+        });
+    }
+
+    private void startTasks() {
+        if (!tasksStarted) {
+            tasksStarted = true;
+            //Game detection
+            Multithreading.schedule(() -> {
+                if (isHypixel()) {
+                    try {
+                        Scoreboard scoreboard = Minecraft.getMinecraft().thePlayer.getWorldScoreboard();
+                        if (scoreboard != null) {
+                            ScoreObjective objectiveInDisplaySlot = scoreboard.getObjectiveInDisplaySlot(1);
+                            if (objectiveInDisplaySlot != null) {
+                                String GAME_NAME = EnumChatFormatting.getTextWithoutFormattingCodes(objectiveInDisplaySlot.getDisplayName());
+                                GameType type = GameType.parse(GAME_NAME);
+                                if (!currentGame.equals(GameType.UNKNOWN) && !type.equals(GameType.UNKNOWN)) {
+                                    this.currentGame = type;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            }, 1, 1, TimeUnit.SECONDS);
+
+        }
     }
 }

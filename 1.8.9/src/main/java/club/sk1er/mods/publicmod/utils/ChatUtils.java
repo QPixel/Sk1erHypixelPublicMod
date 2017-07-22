@@ -30,7 +30,7 @@ public class ChatUtils {
 
     public static void sendDebug(String s) {
 //        if (CommandDebug.chatOn) {
-            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(C.AQUA + "[DEBUG]" + C.WHITE + s));
+        Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(C.AQUA + "[DEBUG]" + C.WHITE + s));
 //        }
     }
 }

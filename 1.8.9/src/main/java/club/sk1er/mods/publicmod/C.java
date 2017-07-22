@@ -30,5 +30,4 @@ public class C {
     public static final String RESET = COLOR_CODE_SYMBOL + "r";
 
 
-
 }

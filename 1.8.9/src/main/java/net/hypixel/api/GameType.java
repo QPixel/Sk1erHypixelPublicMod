@@ -22,8 +22,8 @@ public enum GameType {
     SKYCLASH("SkyClash", "SkyClash", 55),
     LEGACY("Classic Games", "Legacy", 56),
     SPEED_UHC("Speed UHC", "SpeedUHC", 54),
-    UNKNOWN("Unknown", "ERROR", -1),
-    BEDWARS("Bedwars", "Bedwars", 57);
+    BEDWARS("Bedwars", "Bedwars", 57),
+    UNKNOWN("Unknown", "ERROR", -1);
 
     private static final GameType[] v = values();
 

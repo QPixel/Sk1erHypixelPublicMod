@@ -65,9 +65,6 @@ public class PublicModConfig {
                     JsonObject tmp = config.get(aClass.getName()).getAsJsonObject();
                     if (tmp.has(field.getName())) {
                         JsonElement jsonElement = tmp.get(field.getName());
-
-
-//                        field.set(object, configBasedValue);
                         if (field.getType().isAssignableFrom(int.class)) {
                             field.set(object, jsonElement.getAsInt());
                         } else if (field.getType().isAssignableFrom(String.class)) {

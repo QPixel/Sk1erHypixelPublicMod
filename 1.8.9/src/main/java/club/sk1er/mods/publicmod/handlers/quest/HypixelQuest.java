@@ -1,6 +1,8 @@
 package club.sk1er.mods.publicmod.handlers.quest;
 
+import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
+import club.sk1er.mods.publicmod.utils.Sk1erDateUtil;
 import com.google.gson.JsonObject;
 import net.hypixel.api.GameType;
 
@@ -127,17 +129,17 @@ public class HypixelQuest {
     }
 
     public boolean isActive() {
-//        JsonObject player = Sk1erPublicMod.getInstance().getApiHandler().getUser();
-//        if (player.optJSONObject("player").has("quests")) {
-//            JSONObject quests = player.optJSONObject("player").optJSONObject("quests");
-//            if (quests.has(backendName)) {
-//                JSONObject questInPlayer = quests.optJSONObject(backendName);
-//                if (questInPlayer.has("active")) {
-//                    long started = questInPlayer.getLong("started");
-//                    return Sk1erDateUtil.isToday(started);
-//                }
-//            }
-//        }
+        JsonObject player = Sk1erPublicMod.getInstance().getApiHandler().getThePlayerData();
+        if (player.get("player").getAsJsonObject().has("quests")) {
+            JsonObject quests = player.get("player").getAsJsonObject().get("quests").getAsJsonObject();
+            if (quests.has(backendName)) {
+                JsonObject questInPlayer = quests.get(backendName).getAsJsonObject();
+                if (questInPlayer.has("active")) {
+                    long started = questInPlayer.get("started").getAsLong();
+                    return Sk1erDateUtil.isToday(started);
+                }
+            }
+        }
         return false;
     }
 

@@ -44,7 +44,6 @@ public class Sk1erChatHandler {
     }
 
 
-
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
         IChatComponent message = event.message;
@@ -90,7 +89,7 @@ public class Sk1erChatHandler {
             newComponent.appendText(C.WHITE + ":");
             for (String s : textmessage.split(" ")) {
                 if (s.contains("\\.") && !s.endsWith(".")) {
-                    ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~",C.COLOR_CODE_SYMBOL));
+                    ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
                     ChatStyle style = new ChatStyle();
                     ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? "" : "http://" + s));
                     style.setChatClickEvent(clickEvent);
@@ -100,7 +99,7 @@ public class Sk1erChatHandler {
                     tmpText.setChatStyle(style);
                     newComponent.appendSibling(tmpText);
 
-                } else newComponent.appendText(" " + s.replace("~",C.COLOR_CODE_SYMBOL));
+                } else newComponent.appendText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
             }
             message.message = newComponent;
 
@@ -138,6 +137,7 @@ public class Sk1erChatHandler {
     public void setRecentFriend(String recentFriend) {
         this.recentFriend = recentFriend;
     }
+
     public String getRecentPartyInvite() {
         return recentPartyInvite;
     }
@@ -146,15 +146,15 @@ public class Sk1erChatHandler {
         return recentFriendTime;
     }
 
+    public void setRecentFriendTime(long recentFriendTime) {
+        this.recentFriendTime = recentFriendTime;
+    }
+
     public long getRecentPartyTime() {
         return recentPartyTime;
     }
 
     public void setRecentPartyTime(long recentPartyTime) {
         this.recentPartyTime = recentPartyTime;
-    }
-
-    public void setRecentFriendTime(long recentFriendTime) {
-        this.recentFriendTime = recentFriendTime;
     }
 }

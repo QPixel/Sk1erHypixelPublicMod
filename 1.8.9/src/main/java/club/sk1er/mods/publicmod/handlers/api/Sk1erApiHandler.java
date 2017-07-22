@@ -3,11 +3,15 @@ package club.sk1er.mods.publicmod.handlers.api;
 import club.sk1er.mods.publicmod.C;
 import club.sk1er.mods.publicmod.Sk1erMod;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
+import club.sk1er.mods.publicmod.handlers.quest.HypixelQuest;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by mitchellkatz on 7/20/17.
@@ -26,10 +30,22 @@ public class Sk1erApiHandler {
     private String guildMemberPrefix = C.GREEN + "[M]";
     private String guildOfficerPrefix = C.RED + "[O]";
     private String guildMasterPrefix = C.GOLD + "[GM]";
+    private JsonObject quests;
 
     public Sk1erApiHandler(Sk1erMod sk1erMod, Sk1erPublicMod mod) {
         this.sk1erMod = sk1erMod;
         this.mod = mod;
+    }
+
+    public void fetchQuests() {
+        quests = sk1erMod.getJson("http://sk1er.club/css/Quest_info.json");
+        Set<Map.Entry<String, JsonElement>> entries = quests.entrySet();
+        Iterator<Map.Entry<String, JsonElement>> iterator = entries.iterator();
+        HypixelQuest.allQuests.clear();
+        while (iterator.hasNext()) {
+            Map.Entry<String, JsonElement> next = iterator.next();
+            HypixelQuest.allQuests.add(new HypixelQuest(next.getKey()));
+        }
     }
 
     public void fetchPlayerGuild() {
@@ -106,4 +122,7 @@ public class Sk1erApiHandler {
     }
 
 
+    public JsonObject getQuests() {
+        return quests;
+    }
 }

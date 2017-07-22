@@ -22,7 +22,8 @@ public abstract class Sk1erCommand extends CommandBase {
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
         return new ArrayList<>();
     }
-    public void sendMessage(String message){
+
+    public void sendMessage(String message) {
         ChatUtils.sendMessage(message);
     }
 }
