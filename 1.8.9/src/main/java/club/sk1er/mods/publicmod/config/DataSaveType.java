@@ -12,7 +12,7 @@ public enum DataSaveType {
     RUNTIME(null),
     DAILY("/sk1ermod/daily/"),
     WEEKLY("/sk1ermod/weekly/"),
-    PERM("/sk1ermod");
+    PERM("/sk1ermod/");
 
     private String mcDataDir = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
     private String path;

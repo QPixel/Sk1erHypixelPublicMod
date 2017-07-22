@@ -1,11 +1,16 @@
 package club.sk1er.mods.publicmod;
 
+import club.sk1er.mods.publicmod.config.DataSaveType;
 import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
+import club.sk1er.mods.publicmod.display.DisplayConfig;
+import club.sk1er.mods.publicmod.display.DisplayElement;
+import club.sk1er.mods.publicmod.display.gui.DisplayGuiConfig;
 import club.sk1er.mods.publicmod.handlers.KeyInput;
 import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumChatFormatting;
@@ -14,6 +19,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
+import java.io.File;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -38,6 +45,7 @@ public class Sk1erPublicMod {
     private Sk1erApiHandler apiHandler;
     private KeyInput keyInput;
     private boolean isHypixel = false;
+    private DisplayConfig displayConfig;
     private boolean tasksStarted = false;
 
     public static Sk1erPublicMod getInstance() {
@@ -70,6 +78,7 @@ public class Sk1erPublicMod {
         apiHandler = new Sk1erApiHandler(sk1erMod, this);
         chatHandler = new Sk1erChatHandler(this);
         keyInput = new KeyInput(this);
+        displayConfig = new DisplayConfig(new File(DataSaveType.PERM.getPath() +"displayconfig.json"));
         //'Register Events
         MinecraftForge.EVENT_BUS.register(chatHandler);
         MinecraftForge.EVENT_BUS.register(keyInput);
@@ -77,6 +86,7 @@ public class Sk1erPublicMod {
         //Start background tasks
         Multithreading.runAsync(() -> {
             apiHandler.fetchTimings();
+            apiHandler.fetchQuests();
             startTasks();
         });
     }
@@ -151,5 +161,17 @@ public class Sk1erPublicMod {
     public void leaveHypixel() {
         //TODO
 
+    }
+
+    public List<DisplayElement> getDisplayElements() {
+        return displayConfig.getElements();
+    }
+
+    public void saveDisplayConfig() {
+
+    }
+
+    public GuiScreen getConfigGuiInstance() {
+        return new DisplayGuiConfig(this);
     }
 }
