@@ -1,4 +1,4 @@
-package club.sk1er.mods.publicmod.handlers;
+package club.sk1er.mods.publicmod.handlers.server;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -19,8 +19,14 @@ public class PlayerJoinLeaveServer {
     @SubscribeEvent
     public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         if (!FMLClientHandler.instance().getClient().isSingleplayer())
-            if (FMLClientHandler.instance().getClient().getCurrentServerData().serverIP.contains(".publicmod.net") || FMLClientHandler.instance().getClient().getCurrentServerData().serverName.equalsIgnoreCase("HYPIXEL")) {
+            if (FMLClientHandler.instance().getClient().getCurrentServerData().serverIP.toLowerCase().contains("hypixel.net") || FMLClientHandler.instance().getClient().getCurrentServerData().serverName.equalsIgnoreCase("HYPIXEL")) {
                 mod.joinedHypixel();
             }
     }
+    @SubscribeEvent
+    public void onLeave(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)  {
+        if(mod.isHypixel())
+            mod.leaveHypixel();
+    }
+
 }

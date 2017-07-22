@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Mod(modid = Sk1erPublicMod.MODID, version = Sk1erPublicMod.VERSION, name = Sk1erPublicMod.NAME)
 public class Sk1erPublicMod {
@@ -27,6 +28,7 @@ public class Sk1erPublicMod {
     public static final String VERSION = "1.0";
     public static final String NAME = "Sk1er Public Mod";
     private static Sk1erPublicMod instance;
+    private AtomicInteger seconds = new AtomicInteger();
     private Sk1erTempDataSaving dataSaving;
     private Sk1erMod sk1erMod;
     private Sk1erChatHandler chatHandler;
@@ -67,11 +69,16 @@ public class Sk1erPublicMod {
         uuid = Minecraft.getMinecraft().getSession().getPlayerID().replace("-", "");
         apiHandler = new Sk1erApiHandler(sk1erMod, this);
         chatHandler = new Sk1erChatHandler(this);
-
         keyInput = new KeyInput(this);
         //'Register Events
         MinecraftForge.EVENT_BUS.register(chatHandler);
         MinecraftForge.EVENT_BUS.register(keyInput);
+
+        //Start background tasks
+        Multithreading.runAsync(() -> {
+            apiHandler.fetchTimings();
+            startTasks();
+        });
     }
 
     public boolean isHypixel() {
@@ -113,9 +120,36 @@ public class Sk1erPublicMod {
                         }
                     } catch (Exception e) {
                     }
+                    int time = seconds.incrementAndGet();
+                    boolean fetchedBoosters = false;
+                    if (time % apiHandler.getTiming("boosters_live") == 0) {
+                        if (getApiHandler().hasBoostrs()) {
+                            getApiHandler().refreshPersonalBoosters();
+                            fetchedBoosters = true;
+                        }
+                    }
+                    if (time % apiHandler.getTiming("watchdog_players") == 0) {
+                        getApiHandler().refreshWatchdogStats();
+                    }
+                    if (time % apiHandler.getTiming("player_profile") == 0) {
+                        getApiHandler().refreshPlayerData();
+                    }
+                    if (time % apiHandler.getTiming("boosters_check") == 0) {
+                        if (!fetchedBoosters)
+                            getApiHandler().refreshPersonalBoosters();
+                    }
+                    if (time % apiHandler.getTiming("guild") == 0) {
+                        getApiHandler().fetchPlayerGuild();
+                    }
+
                 }
             }, 1, 1, TimeUnit.SECONDS);
 
         }
+    }
+
+    public void leaveHypixel() {
+        //TODO
+
     }
 }

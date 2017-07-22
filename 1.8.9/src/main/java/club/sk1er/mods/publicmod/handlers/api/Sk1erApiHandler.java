@@ -20,8 +20,8 @@ public class Sk1erApiHandler {
 
     private Sk1erMod sk1erMod;
     private Sk1erPublicMod mod;
-    private JsonObject personalBoosters;
-    private JsonObject thePlayerData;
+    private JsonObject personalBoosters = new JsonObject();
+    private JsonObject thePlayerData = new JsonObject();
     private Map<String, JsonObject> friendCache = new HashMap<>();
     private Map<String, JsonObject> guildNameCache = new HashMap<>();
     private Map<String, JsonObject> guildPlayerCache = new HashMap<>();
@@ -30,7 +30,9 @@ public class Sk1erApiHandler {
     private String guildMemberPrefix = C.GREEN + "[M]";
     private String guildOfficerPrefix = C.RED + "[O]";
     private String guildMasterPrefix = C.GOLD + "[GM]";
-    private JsonObject quests;
+    private JsonObject quests = new JsonObject();
+    private JsonObject timings = new JsonObject();
+    private JsonObject watchdogStats = new JsonObject();
 
     public Sk1erApiHandler(Sk1erMod sk1erMod, Sk1erPublicMod mod) {
         this.sk1erMod = sk1erMod;
@@ -46,6 +48,15 @@ public class Sk1erApiHandler {
             Map.Entry<String, JsonElement> next = iterator.next();
             HypixelQuest.allQuests.add(new HypixelQuest(next.getKey()));
         }
+    }
+
+    public void fetchTimings() {
+        timings = sk1erMod.getJson("http://sk1er.club/css/timing.json");
+    }
+
+    public void refreshWatchdogStats() {
+        //No need for .php anymore.
+        watchdogStats = sk1erMod.getJson("http://sk1er.club/staff/");
     }
 
     public void fetchPlayerGuild() {
@@ -80,6 +91,10 @@ public class Sk1erApiHandler {
 
     public JsonObject getPersonalBoosters() {
         return personalBoosters;
+    }
+
+    public int getTiming(String key) {
+        return timings.has(key) ? timings.get(key).getAsInt() : 60;
     }
 
     public void refreshPersonalBoosters() {
@@ -124,5 +139,9 @@ public class Sk1erApiHandler {
 
     public JsonObject getQuests() {
         return quests;
+    }
+
+    public boolean hasBoostrs() {
+        return personalBoosters.entrySet().size() != 0;
     }
 }
