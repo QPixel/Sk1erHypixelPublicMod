@@ -20,7 +20,9 @@ public class PlayerJoinLeaveServer {
     public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event) {
         if (!FMLClientHandler.instance().getClient().isSingleplayer())
             if (FMLClientHandler.instance().getClient().getCurrentServerData().serverIP.toLowerCase().contains("hypixel.net") || FMLClientHandler.instance().getClient().getCurrentServerData().serverName.equalsIgnoreCase("HYPIXEL")) {
+                System.out.println("Joined 'Hypixel'");
                 mod.joinedHypixel();
+
             }
     }
     @SubscribeEvent

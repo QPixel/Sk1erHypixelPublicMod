@@ -2,6 +2,8 @@ package club.sk1er.mods.publicmod.display.gui.screens;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.DisplayElement;
+import club.sk1er.mods.publicmod.display.ElementRenderer;
+import club.sk1er.mods.publicmod.display.ResolutionUtil;
 import club.sk1er.mods.publicmod.display.displayitems.DisplayItemType;
 import club.sk1er.mods.publicmod.display.displayitems.IDisplayItem;
 import com.google.gson.JsonObject;
@@ -94,6 +96,14 @@ public class AddItemScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
         textField.drawTextBox();
+        ScaledResolution current = ResolutionUtil.current();
+        double startX = current.getScaledWidth_double() / 6.0;
+        int y = 50;
+        ElementRenderer.draw((int) startX, y-10, "All display items");
+        for (DisplayItemType type : DisplayItemType.values()) {
+            ElementRenderer.draw((int) startX, y, type.getName());
+            y += 10;
+        }
     }
 
     @Override

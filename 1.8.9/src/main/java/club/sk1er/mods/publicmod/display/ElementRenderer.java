@@ -125,4 +125,8 @@ public class ElementRenderer {
 
         }
     }
+
+    public static int width(String string) {
+        return Minecraft.getMinecraft().fontRendererObj.getStringWidth(string);
+    }
 }

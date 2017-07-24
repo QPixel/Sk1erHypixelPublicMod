@@ -12,6 +12,8 @@ public interface IDisplayItem {
 
     static IDisplayItem parse(DisplayItemType type, int ord, JsonObject item) {
         switch (type) {
+            case PLAYER_COUNT:
+                return new PlayerCountDisplay(item,ord);
             default:
                 throw new IllegalArgumentException("No defined case for " + type);
         }

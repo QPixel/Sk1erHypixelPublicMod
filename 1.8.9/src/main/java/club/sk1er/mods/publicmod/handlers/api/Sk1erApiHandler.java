@@ -144,4 +144,8 @@ public class Sk1erApiHandler {
     public boolean hasBoostrs() {
         return personalBoosters.entrySet().size() != 0;
     }
+
+    public JsonObject getWatchdogStats() {
+        return watchdogStats;
+    }
 }

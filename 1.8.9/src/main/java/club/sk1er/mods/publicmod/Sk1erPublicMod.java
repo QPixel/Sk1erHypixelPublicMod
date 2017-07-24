@@ -1,9 +1,12 @@
 package club.sk1er.mods.publicmod;
 
+import club.sk1er.mods.publicmod.commands.CommandTest;
 import club.sk1er.mods.publicmod.config.DataSaveType;
+import club.sk1er.mods.publicmod.config.PublicModConfig;
 import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
 import club.sk1er.mods.publicmod.display.DisplayConfig;
 import club.sk1er.mods.publicmod.display.DisplayElement;
+import club.sk1er.mods.publicmod.display.ElementRenderer;
 import club.sk1er.mods.publicmod.display.gui.DisplayGuiConfig;
 import club.sk1er.mods.publicmod.handlers.KeyInput;
 import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
@@ -14,6 +17,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -47,6 +51,7 @@ public class Sk1erPublicMod {
     private boolean isHypixel = false;
     private DisplayConfig displayConfig;
     private boolean tasksStarted = false;
+    private PublicModConfig config;
 
     public static Sk1erPublicMod getInstance() {
         return instance;
@@ -78,17 +83,31 @@ public class Sk1erPublicMod {
         apiHandler = new Sk1erApiHandler(sk1erMod, this);
         chatHandler = new Sk1erChatHandler(this);
         keyInput = new KeyInput(this);
-        displayConfig = new DisplayConfig(new File(DataSaveType.PERM.getPath() +"displayconfig.json"));
-        //'Register Events
-        MinecraftForge.EVENT_BUS.register(chatHandler);
-        MinecraftForge.EVENT_BUS.register(keyInput);
+        displayConfig = new DisplayConfig(new File(DataSaveType.PERM.getPath() + "displayconfig.json"));
+        config = new PublicModConfig(new File(DataSaveType.PERM.getPath() + "modconfig.json"));
 
+        //'Register Events
+        registerConfigAndEvent(chatHandler);
+        registerConfigAndEvent(keyInput);
+        registerConfigAndEvent(new ElementRenderer(this));
+        registerConfigAndEvent(apiHandler);
+
+        ClientCommandHandler.instance.registerCommand(new CommandTest());
         //Start background tasks
         Multithreading.runAsync(() -> {
             apiHandler.fetchTimings();
             apiHandler.fetchQuests();
             startTasks();
         });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            config.save();
+            saveDisplayConfig();
+        }));
+    }
+
+    private void registerConfigAndEvent(Object o) {
+        MinecraftForge.EVENT_BUS.register(o);
+        config.register(o);
     }
 
     public boolean isHypixel() {
@@ -168,7 +187,7 @@ public class Sk1erPublicMod {
     }
 
     public void saveDisplayConfig() {
-
+        displayConfig.saveConfig();
     }
 
     public GuiScreen getConfigGuiInstance() {
