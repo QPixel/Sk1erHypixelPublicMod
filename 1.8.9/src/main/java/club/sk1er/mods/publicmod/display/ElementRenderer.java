@@ -82,6 +82,10 @@ public class ElementRenderer {
         return clicks.size();
     }
 
+    public static int width(String string) {
+        return Minecraft.getMinecraft().fontRendererObj.getStringWidth(string);
+    }
+
     @SubscribeEvent
     public void tick(TickEvent.ClientTickEvent event) {
         if (display) {
@@ -96,9 +100,7 @@ public class ElementRenderer {
         if (!this.minecraft.inGameHasFocus || this.minecraft.gameSettings.showDebugInfo) {
             return;
         }
-
-        if (mod.isHypixel())
-            renderElements();
+         renderElements();
     }
 
     private void renderElements() {
@@ -124,9 +126,5 @@ public class ElementRenderer {
         } catch (Exception e) {
 
         }
-    }
-
-    public static int width(String string) {
-        return Minecraft.getMinecraft().fontRendererObj.getStringWidth(string);
     }
 }

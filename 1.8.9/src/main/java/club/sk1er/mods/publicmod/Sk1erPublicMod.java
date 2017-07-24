@@ -39,13 +39,14 @@ public class Sk1erPublicMod {
     public static final String VERSION = "1.0";
     public static final String NAME = "Sk1er Public Mod";
     private static Sk1erPublicMod instance;
+    public final boolean DEV = true;
+    private GameType currentGame = GameType.UNKNOWN;
     private AtomicInteger seconds = new AtomicInteger();
     private Sk1erTempDataSaving dataSaving;
     private Sk1erMod sk1erMod;
     private Sk1erChatHandler chatHandler;
     private String uuid;
     private String name;
-    private GameType currentGame = GameType.UNKNOWN;
     private Sk1erApiHandler apiHandler;
     private KeyInput keyInput;
     private boolean isHypixel = false;
@@ -151,23 +152,23 @@ public class Sk1erPublicMod {
                     }
                     int time = seconds.incrementAndGet();
                     boolean fetchedBoosters = false;
-                    if (time % apiHandler.getTiming("boosters_live") == 0) {
+                    if (time % apiHandler.getTiming("boosters_live") == 0 || DEV) {
                         if (getApiHandler().hasBoostrs()) {
                             getApiHandler().refreshPersonalBoosters();
                             fetchedBoosters = true;
                         }
                     }
-                    if (time % apiHandler.getTiming("watchdog_players") == 0) {
+                    if (time % apiHandler.getTiming("watchdog_players") == 0 || DEV) {
                         getApiHandler().refreshWatchdogStats();
                     }
-                    if (time % apiHandler.getTiming("player_profile") == 0) {
+                    if (time % apiHandler.getTiming("player_profile") == 0 || DEV) {
                         getApiHandler().refreshPlayerData();
                     }
-                    if (time % apiHandler.getTiming("boosters_check") == 0) {
+                    if (time % apiHandler.getTiming("boosters_check") == 0 || DEV) {
                         if (!fetchedBoosters)
                             getApiHandler().refreshPersonalBoosters();
                     }
-                    if (time % apiHandler.getTiming("guild") == 0) {
+                    if (time % apiHandler.getTiming("guild") == 0 || DEV) {
                         getApiHandler().fetchPlayerGuild();
                     }
 

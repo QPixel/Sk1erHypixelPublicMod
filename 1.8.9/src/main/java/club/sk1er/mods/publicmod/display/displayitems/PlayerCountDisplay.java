@@ -28,7 +28,7 @@ public class PlayerCountDisplay implements IDisplayItem {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
         String string = "Player count: " + (watchdogStats.has("players") ? watchdogStats.get("players").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
-        return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
+        return new Dimension(ElementRenderer.width(string) , 10);
     }
 
     @Override

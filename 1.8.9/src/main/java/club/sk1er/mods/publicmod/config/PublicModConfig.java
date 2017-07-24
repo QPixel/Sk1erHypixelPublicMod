@@ -4,9 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +21,42 @@ public class PublicModConfig {
     public PublicModConfig(File configFile) {
         this.file = configFile;
         try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            StringBuilder builder = new StringBuilder();
-            String line = null;
-            while ((line = br.readLine()) != null)
-                builder.append(line);
+            if (configFile.exists()) {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                StringBuilder builder = new StringBuilder();
+                String line = null;
+                while ((line = br.readLine()) != null)
+                    builder.append(line);
 
-            String done = builder.toString();
-            config = new JsonParser().parse(done).getAsJsonObject();
+                String done = builder.toString();
+                config = new JsonParser().parse(done).getAsJsonObject();
+            } else {
+                config = new JsonObject();
+saveFile();
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void saveFile() {
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(config.toString());
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+
         }
     }
 
     public void save() {
         for (Object o : configObjects)
             saveToJsonFromRamObject(o);
+        saveFile();
 
     }
 
