@@ -26,4 +26,9 @@ public abstract class Sk1erCommand extends CommandBase {
     public void sendMessage(String message) {
         ChatUtils.sendMessage(message);
     }
+
+    @Override
+    public String getCommandUsage(ICommandSender sender) {
+        return "/" + getCommandName();
+    }
 }

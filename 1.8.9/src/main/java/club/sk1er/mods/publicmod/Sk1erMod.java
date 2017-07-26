@@ -127,6 +127,7 @@ public class Sk1erMod {
     }
 
     public String rawWithAgent(String url) {
+        System.out.println("Fetching: " + url);
         try {
             URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();

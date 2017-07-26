@@ -1,5 +1,6 @@
 package club.sk1er.mods.publicmod;
 
+import club.sk1er.mods.publicmod.commands.CommandLoginHypixel;
 import club.sk1er.mods.publicmod.commands.CommandTest;
 import club.sk1er.mods.publicmod.config.DataSaveType;
 import club.sk1er.mods.publicmod.config.PublicModConfig;
@@ -11,6 +12,7 @@ import club.sk1er.mods.publicmod.display.gui.DisplayGuiConfig;
 import club.sk1er.mods.publicmod.handlers.KeyInput;
 import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
+import club.sk1er.mods.publicmod.handlers.server.PlayerJoinLeaveServer;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -91,9 +93,11 @@ public class Sk1erPublicMod {
         registerConfigAndEvent(chatHandler);
         registerConfigAndEvent(keyInput);
         registerConfigAndEvent(new ElementRenderer(this));
+        registerConfigAndEvent(new PlayerJoinLeaveServer(this));
         registerConfigAndEvent(apiHandler);
 
         ClientCommandHandler.instance.registerCommand(new CommandTest());
+        ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
         //Start background tasks
         Multithreading.runAsync(() -> {
             apiHandler.fetchTimings();

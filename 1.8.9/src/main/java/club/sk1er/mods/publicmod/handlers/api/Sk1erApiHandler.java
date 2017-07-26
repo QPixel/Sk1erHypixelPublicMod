@@ -3,6 +3,7 @@ package club.sk1er.mods.publicmod.handlers.api;
 import club.sk1er.mods.publicmod.C;
 import club.sk1er.mods.publicmod.Sk1erMod;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
+import club.sk1er.mods.publicmod.config.ConfigOpt;
 import club.sk1er.mods.publicmod.handlers.quest.HypixelQuest;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -27,8 +28,11 @@ public class Sk1erApiHandler {
     private Map<String, JsonObject> guildPlayerCache = new HashMap<>();
     private JsonObject playerGuild;
     private HashMap<String, String> guildPlayerPrefixes = new HashMap<>();
+    @ConfigOpt
     private String guildMemberPrefix = C.GREEN + "[M]";
+    @ConfigOpt
     private String guildOfficerPrefix = C.RED + "[O]";
+    @ConfigOpt
     private String guildMasterPrefix = C.GOLD + "[GM]";
     private JsonObject quests = new JsonObject();
     private JsonObject timings = new JsonObject();
