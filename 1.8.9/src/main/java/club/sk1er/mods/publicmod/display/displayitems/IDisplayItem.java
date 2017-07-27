@@ -13,7 +13,13 @@ public interface IDisplayItem {
     static IDisplayItem parse(DisplayItemType type, int ord, JsonObject item) {
         switch (type) {
             case PLAYER_COUNT:
-                return new PlayerCountDisplay(item,ord);
+                return new PlayerCountDisplay(item, ord);
+            case WATCHDOG_DAY:
+                return new WatchdogDayStats(ord, item);
+            case WATCHDOG_MIN:
+                return new WatchdogMinuteStats(ord, item);
+            case WATCHDOG_TOTAL:
+                return new WatchdogTotalStats(ord, item);
             default:
                 throw new IllegalArgumentException("No defined case for " + type);
         }

@@ -82,6 +82,11 @@ public class Sk1erMod {
                     + "&mod=" + modid
             )).getAsJsonObject();
             updateMessage.clear();
+            if (en.entrySet().size() == 0) {
+                enabled=true;
+                return;
+
+            }
             enabled = en.get("enabled").getAsBoolean();
             hasUpdate = en.get("update").getAsBoolean();
             apIKey = en.get("key").getAsString();

@@ -2,7 +2,6 @@ package club.sk1er.mods.publicmod.display;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -34,6 +33,10 @@ public class ElementRenderer {
 
     public static double getCurrentScale() {
         return currentScale;
+    }
+
+    public static void setCurrentScale(double currentScale) {
+        ElementRenderer.currentScale = currentScale;
     }
 
     public static int getColor(int index) {
@@ -74,6 +77,10 @@ public class ElementRenderer {
         return color;
     }
 
+    public static void setColor(int color) {
+        ElementRenderer.color = color;
+    }
+
     public static int getCPS() {
         Iterator<Long> iterator = clicks.iterator();
         while (iterator.hasNext())
@@ -98,9 +105,10 @@ public class ElementRenderer {
     @SubscribeEvent
     public void onRenderTick(final TickEvent.RenderTickEvent event) {
         if (!this.minecraft.inGameHasFocus || this.minecraft.gameSettings.showDebugInfo) {
+            setCurrentScale(1.0);
             return;
         }
-         renderElements();
+        renderElements();
     }
 
     private void renderElements() {
@@ -111,8 +119,6 @@ public class ElementRenderer {
                 clicks.add(System.currentTimeMillis());
             }
         }
-
-        EntityRenderer entityRenderer = Minecraft.getMinecraft().entityRenderer;
 
         try {
             List<DisplayElement> elementList = mod.getDisplayElements();

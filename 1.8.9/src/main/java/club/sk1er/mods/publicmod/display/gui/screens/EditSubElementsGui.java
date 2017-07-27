@@ -8,7 +8,6 @@ import club.sk1er.mods.publicmod.display.displayitems.IDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -25,8 +24,6 @@ public class EditSubElementsGui extends GuiScreen {
     private DisplayElement element;
     private Sk1erPublicMod mod;
     private boolean addingElement = false;
-    private GuiTextField textField;
-    private GuiTextField timeField;
 
     public EditSubElementsGui(DisplayElement element, Sk1erPublicMod mod) {
         this.element = element;
@@ -44,7 +41,7 @@ public class EditSubElementsGui extends GuiScreen {
         if (current != null ? !current.equals(that.current) : that.current != null) return false;
         if (element != null ? !element.equals(that.element) : that.element != null) return false;
         if (mod != null ? !mod.equals(that.mod) : that.mod != null) return false;
-        return textField != null ? textField.equals(that.textField) : that.textField == null;
+        return true;
     }
 
     @Override
@@ -53,7 +50,6 @@ public class EditSubElementsGui extends GuiScreen {
         result = 31 * result + (element != null ? element.hashCode() : 0);
         result = 31 * result + (mod != null ? mod.hashCode() : 0);
         result = 31 * result + (addingElement ? 1 : 0);
-        result = 31 * result + (textField != null ? textField.hashCode() : 0);
         return result;
     }
 
@@ -156,7 +152,6 @@ public class EditSubElementsGui extends GuiScreen {
         });
 
 
-
         int width = Math.max(Minecraft.getMinecraft().fontRendererObj.getStringWidth("New Coords Display") + 10, resolution.getScaledWidth() / 9);
 //
 //
@@ -182,8 +177,6 @@ public class EditSubElementsGui extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-        textField.drawTextBox();
-        timeField.drawTextBox();
 
         ScaledResolution resolution = ResolutionUtil.current();
         drawHorizontalLine(40, resolution.getScaledWidth() / 2, 40, ElementRenderer.getColor(6));
@@ -222,23 +215,17 @@ public class EditSubElementsGui extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
-        textField.textboxKeyTyped(typedChar, keyCode);
-        timeField.textboxKeyTyped(typedChar, keyCode);
 
     }
 
     @Override
     public void updateScreen() {
         super.updateScreen();
-        textField.updateCursorCounter();
-        timeField.updateCursorCounter();
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        textField.mouseClicked(mouseX, mouseY, mouseButton);
-        timeField.mouseClicked(mouseX, mouseY, mouseButton);
         int line = 0;
         int startX = 50;
         int startY = 50;
@@ -248,8 +235,6 @@ public class EditSubElementsGui extends GuiScreen {
             if (button.isMouseOver())
                 return;
 
-        if (mouseX >= textField.xPosition && mouseX < textField.xPosition + textField.width && mouseY >= textField.yPosition && mouseY < textField.yPosition + textField.height)
-            return;
 
 
         for (IDisplayItem iDisplayItem : element.getDisplayItems()) {

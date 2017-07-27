@@ -6,7 +6,6 @@ import club.sk1er.mods.publicmod.display.displayitems.IDisplayItem;
 import club.sk1er.mods.publicmod.display.gui.buttons.EditElement;
 import club.sk1er.mods.publicmod.display.gui.screens.EditSubElementsGui;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
@@ -70,6 +69,7 @@ public class DisplayGuiConfig extends GuiScreen {
         List<DisplayElement> elementList = mod.getDisplayElements();
         for (DisplayElement element : elementList) {
             try {
+
                 element.drawForConfig();
             } catch (Exception e) {
 
@@ -84,7 +84,7 @@ public class DisplayGuiConfig extends GuiScreen {
             //TODO outline the object. Cords of the cords are above. Ideally, it is expanded by 5 in all directions
             //Left top right bottom
 
-            Gui.drawRect((int) x1, (int) y1, (int) x2, (int) y2, Color.WHITE.getRGB());
+
             currentElement.drawForConfig();
 //
         }

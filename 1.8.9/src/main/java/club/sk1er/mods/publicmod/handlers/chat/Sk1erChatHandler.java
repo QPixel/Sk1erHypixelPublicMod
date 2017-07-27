@@ -3,6 +3,7 @@ package club.sk1er.mods.publicmod.handlers.chat;
 import club.sk1er.mods.publicmod.C;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.config.ConfigOpt;
+import club.sk1er.mods.publicmod.utils.ChatUtils;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -12,6 +13,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,9 +23,9 @@ import java.util.regex.Pattern;
  */
 public class Sk1erChatHandler {
 
-    public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\w{1,16}): (?<message>.*)");
-    public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
+    public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
     public Pattern partyPattern = Pattern.compile("Party > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)");
+    public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
     public Pattern friendPattern = Pattern.compile("Friend request from ?(?<rank>.+?(?=])])? (?<player>.+)?");
     public Pattern friendButtonPattern = Pattern.compile("Click one: ?(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
     @ConfigOpt
@@ -32,7 +35,7 @@ public class Sk1erChatHandler {
 
     private Sk1erPublicMod mod;
     @ConfigOpt
-    private String partyPrefix = "Party > ";
+    private String partyPrefix = "Party >";
     @ConfigOpt
     private String recentFriend = "";
     private String recentPartyInvite = "";
@@ -44,36 +47,90 @@ public class Sk1erChatHandler {
     }
 
 
+/*
+Caused by: java.util.ConcurrentModificationException
+	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
+	at java.util.ArrayList$Itr.next(ArrayList.java:851)
+	at club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler.onRecieve(Sk1erChatHandler.java:59)
+	at
+
+ */
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
         IChatComponent message = event.message;
-        String text = message.getUnformattedText();
-        applyForGuildOrParty(event, guildChatParrern, true);
-        applyForGuildOrParty(event, partyPattern, false);
-        Matcher friendMatcher = friendPattern.matcher(text);
+        //Make ones per line
+        IChatComponent component = message;
+
+        boolean newNext = false;
+        List<IChatComponent> lines = new ArrayList<>();
+        List<IChatComponent> siblings = message.getSiblings();
+        for (int i =0;i<siblings.size();i++) {
+            IChatComponent next = siblings.get(i);
+            if (next.getUnformattedText().startsWith("\n"))
+                newNext = true;
+
+            if (newNext) {
+                lines.add(component);
+                component = next;
+                newNext = false;
+            }
+
+            if (next.getUnformattedText().trim().endsWith("\n")) {
+                newNext = true;
+            }
+            component.appendSibling(next);
+        }
+        Object[] objects = lines.toArray();
+        for (int i = 0; i < objects.length; i++) {
+            IChatComponent object = (IChatComponent) objects[i];
+            objects[i] = process(object);
+        }
+        IChatComponent finalComp = null;
+        for (Object o : objects) {
+            if (finalComp == null) {
+                finalComp = (IChatComponent) o;
+                continue;
+            }
+            finalComp.appendSibling(((IChatComponent) o));
+        }
+        event.message = finalComp;
+    }/* -------------------------------------------\n |
+        Friend request from: |Sk1er\n
+        |[Accept] | - | [DENY] | - | [IGNORE] - | \wn
+        -------------------------------------------
+    */
+
+    public IChatComponent process(IChatComponent component) {
+        applyForGuildOrParty(component, guildChatParrern, true);
+        applyForGuildOrParty(component, partyPattern, false);
+        Matcher friendMatcher = friendPattern.matcher(component.getUnformattedText());
         if (friendMatcher.matches()) {
-            event.message = new ChatComponentText(C.GREEN + C.OBFUSCATED + "@" + C.RESET + C.BLUE + ">>>"
-                    + C.YELLOW + " Friend request from " + friendMatcher.group("player"));
             this.recentFriend = friendMatcher.group("player");
             this.recentFriendTime = System.currentTimeMillis();
+            return new ChatComponentText(C.GREEN + C.OBFUSCATED + "@@" + C.RESET + C.BLUE + " >>>>"
+                    + C.YELLOW + " Friend request from " + friendMatcher.group("player") + C.BLUE + " <<<< " + C.GREEN + C.OBFUSCATED + "@@");
 
         }
-        if (friendButtonPattern.matcher(text).matches()) {
-            event.message.appendText("\n" + C.GREEN + "Shift + F to accept " + C.DARK_GRAY + "- " + C.RED + "Shift + D to Deny " + C.DARK_GRAY + "- " + C.GRAY + "Shift + I to ignore friend request from " + recentFriend);
+        if (component.getUnformattedText().endsWith("[ACCEPT] - [DENY] - [IGNORE]")) {
+            component.appendText("\n" + C.GREEN + "Alt + F to accept " + C.DARK_GRAY + "- " + C.RED + "Alt + D to Deny " + C.DARK_GRAY + "- " + C.GRAY + "Alt + I to ignore friend request from " + recentFriend);
         }
-        Matcher inviteMatcher = partyInvitePattern.matcher(text);
+        Matcher inviteMatcher = partyInvitePattern.matcher(component.getUnformattedText());
         if (inviteMatcher.matches()) {
             this.recentPartyInvite = inviteMatcher.group("player");
             this.recentPartyTime = System.currentTimeMillis();
+            ChatUtils.sendMessage("Recent Party: " + recentPartyInvite);
         }
-
+        if (component.getUnformattedText().equals("Click here to join! You have 60 seconds to accept.")) {
+            component.appendText("\n" + C.GREEN + "Alt + P to accept party invite from " + C.RED + recentPartyInvite);
+        }
+        return component;
     }
 
 
-    public void applyForGuildOrParty(ClientChatReceivedEvent message, Pattern pattern, boolean guild) {
-        String text = message.message.getUnformattedText();
+    public IChatComponent applyForGuildOrParty(IChatComponent message, Pattern pattern, boolean guild) {
+        String text = message.getUnformattedText();
         Matcher matcher = pattern.matcher(text);
-        Matcher colorMatcher = pattern.matcher(message.message.getFormattedText());
+        Matcher colorMatcher = pattern.matcher(message.getFormattedText());
         if (matcher.matches()) {
             String player = matcher.group("player");
             String rank = matcher.group("rank");
@@ -83,9 +140,12 @@ public class Sk1erChatHandler {
             if (showGuildPrefix && guild) {
                 newComponent.appendText(prefix);
             }
+            //TODO make mater color matcher
+
             if (rank != null)
-                newComponent.appendText(" " + colorMatcher.group("rank"));
-            newComponent.appendText(" " + colorMatcher.group("player"));
+                newComponent.appendText("" + matcher.group("rank"));
+//            else newComponent.appendText(" ");
+            newComponent.appendText(" " + matcher.group("player"));
             newComponent.appendText(C.WHITE + ":");
             for (String s : textmessage.split(" ")) {
                 if (s.contains("\\.") && !s.endsWith(".")) {
@@ -101,9 +161,10 @@ public class Sk1erChatHandler {
 
                 } else newComponent.appendText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
             }
-            message.message = newComponent;
+            return newComponent;
 
         }
+        return message;
     }
 
     public String getGuildPrefix() {

@@ -3,6 +3,7 @@ package club.sk1er.mods.publicmod.display;
 import club.sk1er.mods.publicmod.display.displayitems.IDisplayItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -36,19 +37,6 @@ public class DisplayElement {
                 ", scale=" + scale +
                 ", color=" + color +
                 '}';
-    }
-
-    public void draw() {
-        ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-        int x = (int) (xloc * resolution.getScaledWidth_double());
-        int y = (int) (yloc * resolution.getScaledHeight_double());
-        for (IDisplayItem iDisplayItem : displayItems) {
-            Dimension d = iDisplayItem.draw(x, y, false);
-            y += d.getHeight();
-        }
-//        System.out.println("Prev X:" + prevX + " Prev Y: " + prevY);
-
-
     }
 
     private void render(double x, double y, String string) {
@@ -103,25 +91,45 @@ public class DisplayElement {
     }
 
     public void drawForConfig() {
-
+        GlStateManager.scale(getScale(), getScale(), 0);
+        ElementRenderer.setCurrentScale(getScale());
+        ElementRenderer.setColor(getColor());
         this.prevX = 0;
         this.prevY = 0;
         ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
-        int addy = 0;
+        double addy = 0;
         int x = (int) (xloc * resolution.getScaledWidth_double());
-        int y = (int) (yloc * resolution.getScaledHeight_double());
+        double y = (int) (yloc * resolution.getScaledHeight_double());
         for (IDisplayItem iDisplayItem : displayItems) {
-            Dimension d = iDisplayItem.draw(x, y, true);
-            y += d.getHeight();
-            addy += d.getHeight();
+            Dimension d = iDisplayItem.draw(x, (int) y, true);
+            y += d.getHeight() * scale;
+            addy += d.getHeight() * scale;
             prevX = (int) Math.max(d.getWidth(), prevX);
         }
         this.prevY = addy;
+        GlStateManager.scale(1.0 / getScale(), 1.0 / getScale(), 0);
 //        System.out.println("Prev X:" + prevX + " Prev Y: " + prevY);
 
     }
 
+    public void draw() {
+        ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+        int x = (int) (xloc * resolution.getScaledWidth_double());
+        double y = (int) (yloc * resolution.getScaledHeight_double());
+        for (IDisplayItem iDisplayItem : displayItems) {
+            Dimension d = iDisplayItem.draw(x, (int) y, false);
+            y += d.getHeight() * scale;
+        }
+//        System.out.println("Prev X:" + prevX + " Prev Y: " + prevY);
+
+
+    }
+
     public void renderEditView() {
+        GL11.glPushMatrix();
+        GL11.glPopMatrix();
+        ElementRenderer.setCurrentScale(1.0);
+        ElementRenderer.setColor(getColor());
         ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
         int x = (int) (.8 * resolution.getScaledWidth_double());
         int y = (int) (.2 * resolution.getScaledHeight_double());
