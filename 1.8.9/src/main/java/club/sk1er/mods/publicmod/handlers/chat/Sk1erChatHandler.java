@@ -6,10 +6,7 @@ import club.sk1er.mods.publicmod.config.ConfigOpt;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -47,53 +44,56 @@ public class Sk1erChatHandler {
     }
 
 
-/*
-Caused by: java.util.ConcurrentModificationException
-	at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
-	at java.util.ArrayList$Itr.next(ArrayList.java:851)
-	at club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler.onRecieve(Sk1erChatHandler.java:59)
-	at
+    /*
+    Caused by: java.util.ConcurrentModificationException
+        at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
+        at java.util.ArrayList$Itr.next(ArrayList.java:851)
+        at club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler.onRecieve(Sk1erChatHandler.java:59)
+        at
 
- */
+     */
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
-        IChatComponent message = event.message;
-        //Make ones per line
-        IChatComponent component = message;
+        if (event.message instanceof ChatComponentTranslation) {
+            ChatUtils.sendMessage("Processing component");
+            ChatComponentTranslation message = (ChatComponentTranslation) event.message;
+            IChatComponent component = message.createCopy();
+            boolean newNext = false;
+            List<IChatComponent> lines = new ArrayList<>();
+            for (IChatComponent next : message) {
+                if (next.getUnformattedText().startsWith("\n")) {
+                    newNext = true;
+                }
+                if (newNext) {
+                    lines.add(component);
+                    component = next;
+                    newNext = false;
+                }
 
-        boolean newNext = false;
-        List<IChatComponent> lines = new ArrayList<>();
-        List<IChatComponent> siblings = message.getSiblings();
-        for (int i =0;i<siblings.size();i++) {
-            IChatComponent next = siblings.get(i);
-            if (next.getUnformattedText().startsWith("\n"))
-                newNext = true;
-
-            if (newNext) {
-                lines.add(component);
-                component = next;
-                newNext = false;
+                if (next.getUnformattedText().trim().endsWith("\n")) {
+                    newNext = true;
+                }
+                component.appendSibling(next);
             }
-
-            if (next.getUnformattedText().trim().endsWith("\n")) {
-                newNext = true;
+            Object[] objects = lines.toArray();
+            for (int i = 0; i < objects.length; i++) {
+                IChatComponent object = (IChatComponent) objects[i];
+                objects[i] = process(object);
             }
-            component.appendSibling(next);
-        }
-        Object[] objects = lines.toArray();
-        for (int i = 0; i < objects.length; i++) {
-            IChatComponent object = (IChatComponent) objects[i];
-            objects[i] = process(object);
-        }
-        IChatComponent finalComp = null;
-        for (Object o : objects) {
-            if (finalComp == null) {
-                finalComp = (IChatComponent) o;
-                continue;
+            IChatComponent finalComp = null;
+            for (Object o : objects) {
+                if (finalComp == null) {
+                    finalComp = (IChatComponent) o;
+                    continue;
+                }
+                finalComp.appendSibling(((IChatComponent) o));
             }
-            finalComp.appendSibling(((IChatComponent) o));
+            ChatUtils.sendRawMessage(finalComp);
+//            event.message = finalComp;
         }
-        event.message = finalComp;
+//        IChatComponent message = event.message.createCopy();
+//        //Make ones per line
+//
     }/* -------------------------------------------\n |
         Friend request from: |Sk1er\n
         |[Accept] | - | [DENY] | - | [IGNORE] - | \wn
