@@ -10,8 +10,6 @@ import net.minecraft.util.*;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,43 +52,18 @@ public class Sk1erChatHandler {
      */
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
-        if (event.message instanceof ChatComponentTranslation) {
-            ChatUtils.sendMessage("Processing component");
-            ChatComponentTranslation message = (ChatComponentTranslation) event.message;
-            IChatComponent component = message.createCopy();
-            boolean newNext = false;
-            List<IChatComponent> lines = new ArrayList<>();
-            for (IChatComponent next : message) {
-                if (next.getUnformattedText().startsWith("\n")) {
-                    newNext = true;
-                }
-                if (newNext) {
-                    lines.add(component);
-                    component = next;
-                    newNext = false;
-                }
-
-                if (next.getUnformattedText().trim().endsWith("\n")) {
-                    newNext = true;
-                }
-                component.appendSibling(next);
-            }
-            Object[] objects = lines.toArray();
-            for (int i = 0; i < objects.length; i++) {
-                IChatComponent object = (IChatComponent) objects[i];
-                objects[i] = process(object);
-            }
-            IChatComponent finalComp = null;
-            for (Object o : objects) {
-                if (finalComp == null) {
-                    finalComp = (IChatComponent) o;
-                    continue;
-                }
-                finalComp.appendSibling(((IChatComponent) o));
-            }
-            ChatUtils.sendRawMessage(finalComp);
-//            event.message = finalComp;
+        String unformattedText = event.message.getUnformattedText();
+        ChatComponentText base = new ChatComponentText("");
+        for(String s : unformattedText.split("\n")) {
+            IChatComponent component = new ChatComponentText(s);
+            IChatComponent copy = component.createCopy();
+            component = process(component);
+            if(component.equals(copy))
+                base.appendSibling(component);
+            else base.appendSibling(copy);
         }
+        event.message=base;
+
 //        IChatComponent message = event.message.createCopy();
 //        //Make ones per line
 //
