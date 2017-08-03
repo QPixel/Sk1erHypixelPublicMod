@@ -6,7 +6,10 @@ import club.sk1er.mods.publicmod.config.ConfigOpt;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -19,6 +22,7 @@ import java.util.regex.Pattern;
 public class Sk1erChatHandler {
 
     public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
+    public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyPattern = Pattern.compile("Party > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)");
     public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
     public Pattern friendPattern = Pattern.compile("Friend request from ?(?<rank>.+?(?=])])? (?<player>.+)?");
@@ -52,18 +56,7 @@ public class Sk1erChatHandler {
      */
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
-        String unformattedText = event.message.getUnformattedText();
-        ChatComponentText base = new ChatComponentText("");
-        for(String s : unformattedText.split("\n")) {
-            IChatComponent component = new ChatComponentText(s);
-            IChatComponent copy = component.createCopy();
-            component = process(component);
-            if(component.equals(copy))
-                base.appendSibling(component);
-            else base.appendSibling(copy);
-        }
-        event.message=base;
-
+        event.message = process(event.message);
 //        IChatComponent message = event.message.createCopy();
 //        //Make ones per line
 //
@@ -74,8 +67,9 @@ public class Sk1erChatHandler {
     */
 
     public IChatComponent process(IChatComponent component) {
-        applyForGuildOrParty(component, guildChatParrern, true);
-        applyForGuildOrParty(component, partyPattern, false);
+        ChatUtils.sendMessage("Processing component: '" + component.getFormattedText() + "'");
+        component = applyGuild(component);
+//        applyGuild(component, partyPattern, false);
         Matcher friendMatcher = friendPattern.matcher(component.getUnformattedText());
         if (friendMatcher.matches()) {
             this.recentFriend = friendMatcher.group("player");
@@ -100,25 +94,31 @@ public class Sk1erChatHandler {
     }
 
 
-    public IChatComponent applyForGuildOrParty(IChatComponent message, Pattern pattern, boolean guild) {
+    public IChatComponent applyGuild(IChatComponent message) {
         String text = message.getUnformattedText();
-        Matcher matcher = pattern.matcher(text);
-        Matcher colorMatcher = pattern.matcher(message.getFormattedText());
+        ChatUtils.sendMessage("Testing guild for text: '" + text + "'");
+        Matcher matcher = guildChatParrern.matcher(text);
+        String formattedText = message.getFormattedText();
+        for (int i = 0; i < 50; i++) {
+            System.out.println(" \"" + formattedText + "\" ");
+        }
+        Matcher colorMatcher = guildColorPattenr.matcher(formattedText);
         if (matcher.matches()) {
+            ChatUtils.sendMessage("Guild chat matches");
             String player = matcher.group("player");
             String rank = matcher.group("rank");
             String textmessage = matcher.group("message");
             String prefix = mod.getApiHandler().getPrefixForUser(player);
-            IChatComponent newComponent = new ChatComponentText(guild ? guildPrefix : partyPrefix);
-            if (showGuildPrefix && guild) {
+            IChatComponent newComponent = new ChatComponentText(guildPrefix);
+            if (showGuildPrefix) {
                 newComponent.appendText(prefix);
             }
             //TODO make mater color matcher
 
             if (rank != null)
-                newComponent.appendText("" + matcher.group("rank"));
+                newComponent.appendText("" + colorMatcher.group("rank"));
 //            else newComponent.appendText(" ");
-            newComponent.appendText(" " + matcher.group("player"));
+            newComponent.appendText(" " + colorMatcher.group("player"));
             newComponent.appendText(C.WHITE + ":");
             for (String s : textmessage.split(" ")) {
                 if (s.contains("\\.") && !s.endsWith(".")) {
@@ -136,7 +136,7 @@ public class Sk1erChatHandler {
             }
             return newComponent;
 
-        }
+        } else ChatUtils.sendMessage("Doesn't match guild regex!");
         return message;
     }
 
