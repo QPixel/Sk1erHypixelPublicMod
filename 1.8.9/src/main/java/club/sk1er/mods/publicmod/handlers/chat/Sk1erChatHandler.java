@@ -25,13 +25,15 @@ public class Sk1erChatHandler {
     public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyPattern = Pattern.compile("Party > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)");
     public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
-    public Pattern friendPattern = Pattern.compile("Friend request from ?(?<rank>.+?(?=])])? (?<player>.+)?");
-    public Pattern friendButtonPattern = Pattern.compile("Click one: ?(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
+    public Pattern friendPattern = Pattern.compile("--+\\\\nFriend request from ((?<rank>\\[.+] )?(?<player>\\w+)).*");
+    public Pattern friendButtonPattern = Pattern.compile("(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
     @ConfigOpt
     private String guildPrefix = C.GREEN + "G" + C.GOLD + "u" + C.RED + "i" + C.AQUA + "l" + C.GREEN + "d" + C.WHITE + " " + C.DARK_GREEN + "> ";
     @ConfigOpt
     private boolean showGuildPrefix = true;
 
+    @ConfigOpt
+    private boolean showRankPrefix = true;
     private Sk1erPublicMod mod;
     @ConfigOpt
     private String partyPrefix = "Party >";
@@ -64,47 +66,49 @@ public class Sk1erChatHandler {
         Friend request from: |Sk1er\n
         |[Accept] | - | [DENY] | - | [IGNORE] - | \wn
         -------------------------------------------
+    */ /*
+    nfo	[CHAT] ----------------------------------------------------
+Friend request from MiniiShadyy
+[ACCEPT] - [DENY] - [IGNORE]
     */
 
     public IChatComponent process(IChatComponent component) {
-        ChatUtils.sendMessage("Processing component: '" + component.getFormattedText() + "'");
         component = applyGuild(component);
 //        applyGuild(component, partyPattern, false);
-        Matcher friendMatcher = friendPattern.matcher(component.getUnformattedText());
-        if (friendMatcher.matches()) {
+        String unformattedText = EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText());
+        Matcher friendMatcher = friendPattern.matcher(unformattedText.replace("\n", "\\n"));
+        if (friendMatcher.find()) {
             this.recentFriend = friendMatcher.group("player");
             this.recentFriendTime = System.currentTimeMillis();
-            return new ChatComponentText(C.GREEN + C.OBFUSCATED + "@@" + C.RESET + C.BLUE + " >>>>"
-                    + C.YELLOW + " Friend request from " + friendMatcher.group("player") + C.BLUE + " <<<< " + C.GREEN + C.OBFUSCATED + "@@");
+            ChatUtils.sendMessage("Friend request from " + recentFriend);
+//            ChatComponentText text = new ChatComponentText(C.GREEN + C.OBFUSCATED + "@@" + C.RESET + C.BLUE + " >>>>"
+//                    + C.YELLOW + " Friend request from " + friendMatcher.group("player") + C.BLUE + " <<<< " + C.GREEN + C.OBFUSCATED + "@@");
 
-        }
-        if (component.getUnformattedText().endsWith("[ACCEPT] - [DENY] - [IGNORE]")) {
             component.appendText("\n" + C.GREEN + "Alt + F to accept " + C.DARK_GRAY + "- " + C.RED + "Alt + D to Deny " + C.DARK_GRAY + "- " + C.GRAY + "Alt + I to ignore friend request from " + recentFriend);
+            return component;
         }
-        Matcher inviteMatcher = partyInvitePattern.matcher(component.getUnformattedText());
-        if (inviteMatcher.matches()) {
+
+        Matcher inviteMatcher = partyInvitePattern.matcher(unformattedText);
+        if (inviteMatcher.find()) {
             this.recentPartyInvite = inviteMatcher.group("player");
             this.recentPartyTime = System.currentTimeMillis();
             ChatUtils.sendMessage("Recent Party: " + recentPartyInvite);
-        }
-        if (component.getUnformattedText().equals("Click here to join! You have 60 seconds to accept.")) {
             component.appendText("\n" + C.GREEN + "Alt + P to accept party invite from " + C.RED + recentPartyInvite);
         }
+
         return component;
     }
+/*\
+sUbScRiBe tO mE Pz!
 
+ */
 
     public IChatComponent applyGuild(IChatComponent message) {
-        String text = message.getUnformattedText();
-        ChatUtils.sendMessage("Testing guild for text: '" + text + "'");
+        String text = EnumChatFormatting.getTextWithoutFormattingCodes(message.getUnformattedText());
         Matcher matcher = guildChatParrern.matcher(text);
         String formattedText = message.getFormattedText();
-        for (int i = 0; i < 50; i++) {
-            System.out.println(" \"" + formattedText + "\" ");
-        }
         Matcher colorMatcher = guildColorPattenr.matcher(formattedText);
-        if (matcher.matches()) {
-            ChatUtils.sendMessage("Guild chat matches");
+        if (matcher.find()) {
             String player = matcher.group("player");
             String rank = matcher.group("rank");
             String textmessage = matcher.group("message");
@@ -115,10 +119,12 @@ public class Sk1erChatHandler {
             }
             //TODO make mater color matcher
 
-            if (rank != null)
-                newComponent.appendText("" + colorMatcher.group("rank"));
+            boolean matches = colorMatcher.matches();
+            if (rank != null && showRankPrefix) {
+                newComponent.appendText(" " + (matches ? colorMatcher.group("rank") : matcher.group("rank")) + "");
+            }
 //            else newComponent.appendText(" ");
-            newComponent.appendText(" " + colorMatcher.group("player"));
+            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
             newComponent.appendText(C.WHITE + ":");
             for (String s : textmessage.split(" ")) {
                 if (s.contains("\\.") && !s.endsWith(".")) {
@@ -136,7 +142,7 @@ public class Sk1erChatHandler {
             }
             return newComponent;
 
-        } else ChatUtils.sendMessage("Doesn't match guild regex!");
+        }
         return message;
     }
 
