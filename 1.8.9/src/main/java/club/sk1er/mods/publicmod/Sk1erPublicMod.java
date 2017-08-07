@@ -1,5 +1,6 @@
 package club.sk1er.mods.publicmod;
 
+import club.sk1er.mods.publicmod.commands.CommandGuildChat;
 import club.sk1er.mods.publicmod.commands.CommandLoginHypixel;
 import club.sk1er.mods.publicmod.commands.CommandTest;
 import club.sk1er.mods.publicmod.config.DataSaveType;
@@ -97,6 +98,8 @@ public class Sk1erPublicMod {
         registerConfigAndEvent(apiHandler);
 
         ClientCommandHandler.instance.registerCommand(new CommandTest());
+
+        ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
         ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
         //Start background tasks
         Multithreading.runAsync(() -> {

@@ -31,4 +31,7 @@ public abstract class Sk1erCommand extends CommandBase {
     public String getCommandUsage(ICommandSender sender) {
         return "/" + getCommandName();
     }
+    public String getCommandUsage() {
+        return getCommandUsage(null);
+    }
 }

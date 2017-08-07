@@ -31,7 +31,8 @@ public class Sk1erChatHandler {
     private String guildPrefix = C.GREEN + "G" + C.GOLD + "u" + C.RED + "i" + C.AQUA + "l" + C.GREEN + "d" + C.WHITE + " " + C.DARK_GREEN + "> ";
     @ConfigOpt
     private boolean showGuildPrefix = true;
-
+    @ConfigOpt
+    private boolean showGuildChat = true;
     @ConfigOpt
     private boolean showRankPrefix = true;
     private Sk1erPublicMod mod;
@@ -48,17 +49,27 @@ public class Sk1erChatHandler {
     }
 
 
-    /*
-    Caused by: java.util.ConcurrentModificationException
-        at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
-        at java.util.ArrayList$Itr.next(ArrayList.java:851)
-        at club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler.onRecieve(Sk1erChatHandler.java:59)
-        at
+    public boolean isShowGuildChat() {
+        return showGuildChat;
+    }
 
-     */
+    public void setShowGuildChat(boolean showGuildChat) {
+        this.showGuildChat = showGuildChat;
+    }
+
+    /*
+        Caused by: java.util.ConcurrentModificationException
+            at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:901)
+            at java.util.ArrayList$Itr.next(ArrayList.java:851)
+            at club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler.onRecieve(Sk1erChatHandler.java:59)
+            at
+
+         */
     @SubscribeEvent
     public void onRecieve(ClientChatReceivedEvent event) {
         event.message = process(event.message);
+        if (event.message.getUnformattedText().isEmpty())
+            event.setCanceled(true);
 //        IChatComponent message = event.message.createCopy();
 //        //Make ones per line
 //
@@ -109,6 +120,8 @@ sUbScRiBe tO mE Pz!
         String formattedText = message.getFormattedText();
         Matcher colorMatcher = guildColorPattenr.matcher(formattedText);
         if (matcher.find()) {
+            if (!showGuildChat)
+                return new ChatComponentText("");
             String player = matcher.group("player");
             String rank = matcher.group("rank");
             String textmessage = matcher.group("message");
@@ -118,7 +131,7 @@ sUbScRiBe tO mE Pz!
                 newComponent.appendText(prefix);
             }
             //TODO make mater color matcher
-
+//TODO implement color propagation
             boolean matches = colorMatcher.matches();
             if (rank != null && showRankPrefix) {
                 newComponent.appendText(" " + (matches ? colorMatcher.group("rank") : matcher.group("rank")) + "");
@@ -127,7 +140,7 @@ sUbScRiBe tO mE Pz!
             newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
             newComponent.appendText(C.WHITE + ":");
             for (String s : textmessage.split(" ")) {
-                if (s.contains("\\.") && !s.endsWith(".")) {
+                if (s.contains(".") && !s.endsWith(".")) {
                     ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
                     ChatStyle style = new ChatStyle();
                     ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? "" : "http://" + s));
