@@ -23,18 +23,22 @@ public class Sk1erChatHandler {
 
     public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
     public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
-    public Pattern partyPattern = Pattern.compile("Party > ?(?<rank>.+?(?=])])? ?(?<player>.+?(?=:))?: (?<message>.+)");
+    public Pattern partyChatPattern = Pattern.compile("Party > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
     public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
     public Pattern friendPattern = Pattern.compile("--+\\\\nFriend request from ((?<rank>\\[.+] )?(?<player>\\w+)).*");
     public Pattern friendButtonPattern = Pattern.compile("(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
     @ConfigOpt
     private String guildPrefix = C.GREEN + "G" + C.GOLD + "u" + C.RED + "i" + C.AQUA + "l" + C.GREEN + "d" + C.WHITE + " " + C.DARK_GREEN + "> ";
     @ConfigOpt
+    private String partyChatPrefix = C.BLUE + "P > ";
+    @ConfigOpt
     private boolean showGuildPrefix = true;
     @ConfigOpt
     private boolean showGuildChat = true;
     @ConfigOpt
     private boolean showRankPrefix = true;
+    @ConfigOpt
+    private boolean showPartyChat = true;
     private Sk1erPublicMod mod;
     @ConfigOpt
     private String partyPrefix = "Party >";
@@ -48,6 +52,13 @@ public class Sk1erChatHandler {
         this.mod = mod;
     }
 
+    public boolean isShowPartyChat() {
+        return showPartyChat;
+    }
+
+    public void setShowPartyChat(boolean showPartyChat) {
+        this.showPartyChat = showPartyChat;
+    }
 
     public boolean isShowGuildChat() {
         return showGuildChat;
@@ -85,16 +96,14 @@ Friend request from MiniiShadyy
 
     public IChatComponent process(IChatComponent component) {
         component = applyGuild(component);
-//        applyGuild(component, partyPattern, false);
+        component = applyParty(component);
+
         String unformattedText = EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText());
         Matcher friendMatcher = friendPattern.matcher(unformattedText.replace("\n", "\\n"));
         if (friendMatcher.find()) {
             this.recentFriend = friendMatcher.group("player");
             this.recentFriendTime = System.currentTimeMillis();
             ChatUtils.sendMessage("Friend request from " + recentFriend);
-//            ChatComponentText text = new ChatComponentText(C.GREEN + C.OBFUSCATED + "@@" + C.RESET + C.BLUE + " >>>>"
-//                    + C.YELLOW + " Friend request from " + friendMatcher.group("player") + C.BLUE + " <<<< " + C.GREEN + C.OBFUSCATED + "@@");
-
             component.appendText("\n" + C.GREEN + "Alt + F to accept " + C.DARK_GRAY + "- " + C.RED + "Alt + D to Deny " + C.DARK_GRAY + "- " + C.GRAY + "Alt + I to ignore friend request from " + recentFriend);
             return component;
         }
@@ -158,6 +167,49 @@ sUbScRiBe tO mE Pz!
         }
         return message;
     }
+
+
+    public IChatComponent applyParty(IChatComponent message) {
+        String text = EnumChatFormatting.getTextWithoutFormattingCodes(message.getUnformattedText());
+        Matcher matcher = partyChatPattern.matcher(text);
+        String formattedText = message.getFormattedText();
+        Matcher colorMatcher = partyChatPattern.matcher(formattedText);
+        if (matcher.find()) {
+            if (!showPartyChat)
+                return new ChatComponentText("");
+            String player = matcher.group("player");
+            String rank = matcher.group("rank");
+            String textmessage = matcher.group("message");
+            IChatComponent newComponent = new ChatComponentText(partyPrefix);
+            //TODO make mater color matcher
+//TODO implement color propagation
+            boolean matches = colorMatcher.matches();
+            if (rank != null && showRankPrefix) {
+                newComponent.appendText(" " + (matches ? colorMatcher.group("rank") : matcher.group("rank")) + "");
+            }
+//            else newComponent.appendText(" ");
+            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
+            newComponent.appendText(C.WHITE + ":");
+            for (String s : textmessage.split(" ")) {
+                if (s.contains(".") && !s.endsWith(".")) {
+                    ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+                    ChatStyle style = new ChatStyle();
+                    ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? "" : "http://" + s));
+                    style.setChatClickEvent(clickEvent);
+                    HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Open URL: " + (s.startsWith("http") ? "" : "http://" + s)));
+                    style.setChatHoverEvent(hoverEvent);
+                    style.setColor(EnumChatFormatting.AQUA);
+                    tmpText.setChatStyle(style);
+                    newComponent.appendSibling(tmpText);
+
+                } else newComponent.appendText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+            }
+            return newComponent;
+
+        }
+        return message;
+    }
+
 
     public String getGuildPrefix() {
         return guildPrefix;

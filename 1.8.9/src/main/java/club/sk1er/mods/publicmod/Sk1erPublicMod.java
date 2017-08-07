@@ -2,6 +2,7 @@ package club.sk1er.mods.publicmod;
 
 import club.sk1er.mods.publicmod.commands.CommandGuildChat;
 import club.sk1er.mods.publicmod.commands.CommandLoginHypixel;
+import club.sk1er.mods.publicmod.commands.CommandPartyChat;
 import club.sk1er.mods.publicmod.commands.CommandTest;
 import club.sk1er.mods.publicmod.config.DataSaveType;
 import club.sk1er.mods.publicmod.config.PublicModConfig;
@@ -42,7 +43,7 @@ public class Sk1erPublicMod {
     public static final String VERSION = "1.0";
     public static final String NAME = "Sk1er Public Mod";
     private static Sk1erPublicMod instance;
-    public final boolean DEV = true;
+    public final boolean DEV = false;
     private GameType currentGame = GameType.UNKNOWN;
     private AtomicInteger seconds = new AtomicInteger();
     private Sk1erTempDataSaving dataSaving;
@@ -101,6 +102,8 @@ public class Sk1erPublicMod {
 
         ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
         ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
+        ClientCommandHandler.instance.registerCommand(new CommandPartyChat());
+
         //Start background tasks
         Multithreading.runAsync(() -> {
             apiHandler.fetchTimings();
