@@ -131,7 +131,7 @@ public class Sk1erApiHandler {
         return json;
     }
 
-    public JsonObject getGuildNmae(String name) {
+    public JsonObject getGuildByName(String name) {
         if (guildNameCache.containsKey(name.toLowerCase())) {
             return guildNameCache.get(name.toLowerCase());
         }

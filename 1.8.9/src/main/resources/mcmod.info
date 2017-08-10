@@ -8,7 +8,8 @@
   "url": "",
   "updateUrl": "",
   "authorList": ["Sk1er"],
-  "credits": "A huge thanks to AgentKid and Plancke for helping me on a log of the backend stuff for my website that allows this to run",
+  "credits": "A huge thanks to AgentKid and Plancke for helping me on a log of the backend stuff for my website that allows this to run
+  Also to Semx11 and 2Pi for help on parsing chat components.",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
