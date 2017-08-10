@@ -28,13 +28,13 @@ public class CommandGuildChat extends Sk1erCommand {
             String trim = builder.toString().trim();
             if (trim.equalsIgnoreCase("toggle")) {
                 Sk1erPublicMod.getInstance().getChatHandler().setShowGuildChat(!Sk1erPublicMod.getInstance().getChatHandler().isShowGuildPrefix());
-                ChatUtils.sendMesssageToServer("Toggled guild chat " + (Sk1erPublicMod.getInstance().getChatHandler().isShowGuildChat() ? "on" : "off")+"! ");
+                ChatUtils.sendMessage("Toggled guild chat " + (Sk1erPublicMod.getInstance().getChatHandler().isShowGuildChat() ? "on" : "off")+"! ");
             } else {
                 if(!Sk1erPublicMod.getInstance().getChatHandler().isShowGuildChat()) {
                     Sk1erPublicMod.getInstance().getChatHandler().setShowGuildChat(true);
-                    ChatUtils.sendMesssageToServer("Toggled guild chat on!");
+                    ChatUtils.sendMessage("Toggled guild chat on!");
                 }
-                ChatUtils.sendMesssageToServer(trim);
+                ChatUtils.sendMesssageToServer("/gc " + trim);
             }
         }
 

@@ -28,13 +28,13 @@ public class CommandPartyChat extends Sk1erCommand {
             String trim = builder.toString().trim();
             if (trim.equalsIgnoreCase("toggle") || trim.equalsIgnoreCase("t")) {
                 Sk1erPublicMod.getInstance().getChatHandler().setShowPartyChat(!Sk1erPublicMod.getInstance().getChatHandler().isShowPartyChat());
-                ChatUtils.sendMesssageToServer("Toggled party chat " + (Sk1erPublicMod.getInstance().getChatHandler().isShowPartyChat() ? "on" : "off") + "! ");
+                ChatUtils.sendMessage("Toggled party chat " + (Sk1erPublicMod.getInstance().getChatHandler().isShowPartyChat() ? "on" : "off") + "! ");
             } else {
                 if (!Sk1erPublicMod.getInstance().getChatHandler().isShowPartyChat()) {
                     Sk1erPublicMod.getInstance().getChatHandler().setShowPartyChat(true);
-                    ChatUtils.sendMesssageToServer("Toggled party chat  on!");
+                    ChatUtils.sendMessage("Toggled party chat  on!");
                 }
-                ChatUtils.sendMesssageToServer(trim);
+                ChatUtils.sendMesssageToServer("/pc " + trim);
             }
         }
 

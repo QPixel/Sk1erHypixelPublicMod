@@ -7,6 +7,9 @@ public enum DisplayItemType {
     WATCHDOG_TOTAL("Total watchdog bans"),
     WATCHDOG_MIN("Watchdog bans last minute"),
     WATCHDOG_DAY("Watchdog bans last day"),
+    CURRENT_GAME("Current Game"),
+    COINS("Coin Counter"),
+    EXP("Exp Counter"),
     PLAYER_COUNT("Player count");
 
     private String name;

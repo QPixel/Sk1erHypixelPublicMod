@@ -24,9 +24,14 @@ public class Sk1erChatHandler {
     public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
     public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyChatPattern = Pattern.compile("Party > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
+    public Pattern partyChatColorPattern = Pattern.compile("Party > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
+    public Pattern coinsPatternTwo = Pattern.compile("\\+(?<coins>.+) coins!");
     public Pattern friendPattern = Pattern.compile("--+\\\\nFriend request from ((?<rank>\\[.+] )?(?<player>\\w+)).*");
-    public Pattern friendButtonPattern = Pattern.compile("(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
+    public Pattern questPattern = Pattern.compile("(Daily|Weekly)? Quest: (?<name>.+?(?= Completed!))");
+    public Pattern expPattern = Pattern.compile(" \\+(?<exp>\\d+) Hypixel Experience");
+    public Pattern coinPattern = Pattern.compile(" \\+(?<coin>\\d+) (?<game>.+) Coins");
+    //    public Pattern friendButtonPattern = Pattern.compile("(?<accept>.+?(?=])]) - ?(?<deny>.+?(?=])]) - ?(?<block>.+?(?=])])");
     @ConfigOpt
     private String guildPrefix = C.GREEN + "G" + C.GOLD + "u" + C.RED + "i" + C.AQUA + "l" + C.GREEN + "d" + C.WHITE + " " + C.DARK_GREEN + "> ";
     @ConfigOpt
@@ -97,7 +102,6 @@ Friend request from MiniiShadyy
     public IChatComponent process(IChatComponent component) {
         component = applyGuild(component);
         component = applyParty(component);
-
         String unformattedText = EnumChatFormatting.getTextWithoutFormattingCodes(component.getUnformattedText());
         Matcher friendMatcher = friendPattern.matcher(unformattedText.replace("\n", "\\n"));
         if (friendMatcher.find()) {
@@ -115,6 +119,19 @@ Friend request from MiniiShadyy
             ChatUtils.sendMessage("Recent Party: " + recentPartyInvite);
             component.appendText("\n" + C.GREEN + "Alt + P to accept party invite from " + C.RED + recentPartyInvite);
         }
+        Matcher expMater = expPattern.matcher(unformattedText);
+        if (expMater.find()) {
+            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("exp", Integer.valueOf(expMater.group("exp")));
+        }
+        Matcher coinMater = coinPattern.matcher(unformattedText);
+        if (coinMater.find()) {
+            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(expMater.group("coins")));
+        }
+        coinMater = coinsPatternTwo.matcher(unformattedText);
+        if (coinMater.find()) {
+            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(expMater.group("coins")));
+        }
+
 
         return component;
     }
@@ -141,26 +158,30 @@ sUbScRiBe tO mE Pz!
             }
             //TODO make mater color matcher
 //TODO implement color propagation
-            boolean matches = colorMatcher.matches();
-            if (rank != null && showRankPrefix) {
-                newComponent.appendText(" " + (matches ? colorMatcher.group("rank") : matcher.group("rank")) + "");
-            }
+            boolean matches = colorMatcher.find();
+            newComponent.appendText(" " + (rank != null && showRankPrefix ? (matches ? colorMatcher.group("rank") : matcher.group("rank")) : "") + (matches ? colorMatcher.group("player") : matcher.group("player")));
 //            else newComponent.appendText(" ");
-            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
+//            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
             newComponent.appendText(C.WHITE + ":");
+            String colorBefore = "r";
             for (String s : textmessage.split(" ")) {
                 if (s.contains(".") && !s.endsWith(".")) {
-                    ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+                    ChatComponentText tmpText = new ChatComponentText(C.COLOR_CODE_SYMBOL + colorBefore + " " + s.replace("~", C.COLOR_CODE_SYMBOL));
                     ChatStyle style = new ChatStyle();
-                    ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? "" : "http://" + s));
+                    ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? s : "http://" + s));
                     style.setChatClickEvent(clickEvent);
-                    HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Open URL: " + (s.startsWith("http") ? "" : "http://" + s)));
+                    HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Open URL: " + (s.startsWith("http") ? s : "http://" + s)));
                     style.setChatHoverEvent(hoverEvent);
                     style.setColor(EnumChatFormatting.AQUA);
                     tmpText.setChatStyle(style);
                     newComponent.appendSibling(tmpText);
+                } else {
+                    newComponent.appendText(" " + C.COLOR_CODE_SYMBOL + colorBefore + s.replace("~", C.COLOR_CODE_SYMBOL));
+                    if (s.lastIndexOf("~") != -1) {
+                        colorBefore = s.charAt(s.lastIndexOf("~") + 1) + "";
+                    }
 
-                } else newComponent.appendText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+                }
             }
             return newComponent;
 
@@ -173,7 +194,7 @@ sUbScRiBe tO mE Pz!
         String text = EnumChatFormatting.getTextWithoutFormattingCodes(message.getUnformattedText());
         Matcher matcher = partyChatPattern.matcher(text);
         String formattedText = message.getFormattedText();
-        Matcher colorMatcher = partyChatPattern.matcher(formattedText);
+        Matcher colorMatcher = partyChatColorPattern.matcher(formattedText);
         if (matcher.find()) {
             if (!showPartyChat)
                 return new ChatComponentText("");
@@ -183,29 +204,33 @@ sUbScRiBe tO mE Pz!
             IChatComponent newComponent = new ChatComponentText(partyPrefix);
             //TODO make mater color matcher
 //TODO implement color propagation
-            boolean matches = colorMatcher.matches();
-            if (rank != null && showRankPrefix) {
-                newComponent.appendText(" " + (matches ? colorMatcher.group("rank") : matcher.group("rank")) + "");
-            }
+            boolean matches = colorMatcher.find();
+            newComponent.appendText(" " + (rank != null && showRankPrefix ? (matches ? colorMatcher.group("rank") : matcher.group("rank")) : "") + (matches ? colorMatcher.group("player") : matcher.group("player")));
+//
 //            else newComponent.appendText(" ");
             newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
             newComponent.appendText(C.WHITE + ":");
+            String colorBefore = "r";
             for (String s : textmessage.split(" ")) {
                 if (s.contains(".") && !s.endsWith(".")) {
-                    ChatComponentText tmpText = new ChatComponentText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+                    ChatComponentText tmpText = new ChatComponentText(C.COLOR_CODE_SYMBOL + colorBefore + " " + s.replace("~", C.COLOR_CODE_SYMBOL));
                     ChatStyle style = new ChatStyle();
-                    ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? "" : "http://" + s));
+                    ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.OPEN_URL, (s.startsWith("http") ? s : "http://" + s));
                     style.setChatClickEvent(clickEvent);
-                    HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Open URL: " + (s.startsWith("http") ? "" : "http://" + s)));
+                    HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Open URL: " + (s.startsWith("http") ? s : "http://" + s)));
                     style.setChatHoverEvent(hoverEvent);
                     style.setColor(EnumChatFormatting.AQUA);
                     tmpText.setChatStyle(style);
                     newComponent.appendSibling(tmpText);
+                } else {
+                    newComponent.appendText(" " + C.COLOR_CODE_SYMBOL + colorBefore + s.replace("~", C.COLOR_CODE_SYMBOL));
+                    if (s.lastIndexOf("~") != -1) {
+                        colorBefore = s.charAt(s.lastIndexOf("~") + 1) + "";
+                    }
 
-                } else newComponent.appendText(" " + s.replace("~", C.COLOR_CODE_SYMBOL));
+                }
             }
             return newComponent;
-
         }
         return message;
     }

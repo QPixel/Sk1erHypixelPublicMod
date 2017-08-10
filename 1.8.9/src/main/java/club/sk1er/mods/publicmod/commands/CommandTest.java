@@ -11,13 +11,9 @@ import net.minecraft.command.ICommandSender;
 public class CommandTest extends Sk1erCommand{
     @Override
     public String getCommandName() {
-        return "test";
+        return "publicmoddisplay";
     }
 
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "Null";
-    }
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {

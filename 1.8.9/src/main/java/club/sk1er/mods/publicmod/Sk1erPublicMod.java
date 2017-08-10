@@ -6,7 +6,7 @@ import club.sk1er.mods.publicmod.commands.CommandPartyChat;
 import club.sk1er.mods.publicmod.commands.CommandTest;
 import club.sk1er.mods.publicmod.config.DataSaveType;
 import club.sk1er.mods.publicmod.config.PublicModConfig;
-import club.sk1er.mods.publicmod.config.Sk1erTempDataSaving;
+import club.sk1er.mods.publicmod.config.DataSaving;
 import club.sk1er.mods.publicmod.display.DisplayConfig;
 import club.sk1er.mods.publicmod.display.DisplayElement;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
@@ -46,7 +46,7 @@ public class Sk1erPublicMod {
     public final boolean DEV = false;
     private GameType currentGame = GameType.UNKNOWN;
     private AtomicInteger seconds = new AtomicInteger();
-    private Sk1erTempDataSaving dataSaving;
+    private DataSaving dataSaving;
     private Sk1erMod sk1erMod;
     private Sk1erChatHandler chatHandler;
     private String uuid;
@@ -90,7 +90,7 @@ public class Sk1erPublicMod {
         keyInput = new KeyInput(this);
         displayConfig = new DisplayConfig(new File(DataSaveType.PERM.getPath() + "displayconfig.json"));
         config = new PublicModConfig(new File(DataSaveType.PERM.getPath() + "modconfig.json"));
-
+        dataSaving = new DataSaving();
         //'Register Events
         registerConfigAndEvent(chatHandler);
         registerConfigAndEvent(keyInput);
@@ -203,5 +203,9 @@ public class Sk1erPublicMod {
 
     public GuiScreen getConfigGuiInstance() {
         return new DisplayGuiConfig(this);
+    }
+
+    public DataSaving getDatSaving() {
+    return dataSaving;
     }
 }

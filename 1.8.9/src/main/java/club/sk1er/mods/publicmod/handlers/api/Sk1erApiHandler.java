@@ -102,7 +102,7 @@ public class Sk1erApiHandler {
     }
 
     public void refreshPersonalBoosters() {
-        this.personalBoosters = sk1erMod.getJson("http://sk1er.club/sk1erbooster/" + mod.getUuid());
+        this.personalBoosters = sk1erMod.getJson("https://sk1er.club/sk1erbooster/" + mod.getUuid());
     }
 
     public JsonObject getThePlayerData() {

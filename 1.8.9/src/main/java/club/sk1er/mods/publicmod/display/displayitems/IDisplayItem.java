@@ -20,6 +20,12 @@ public interface IDisplayItem {
                 return new WatchdogMinuteStats(ord, item);
             case WATCHDOG_TOTAL:
                 return new WatchdogTotalStats(ord, item);
+            case CURRENT_GAME:
+                return new CurrentGame(item, ord);
+            case COINS:
+                return new CoinDisplay(ord, item);
+            case EXP:
+                return new ExpDisplay(ord, item);
             default:
                 throw new IllegalArgumentException("No defined case for " + type);
         }
