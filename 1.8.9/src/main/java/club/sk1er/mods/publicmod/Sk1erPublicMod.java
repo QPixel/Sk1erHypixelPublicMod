@@ -101,6 +101,7 @@ public class Sk1erPublicMod {
         ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat());
         ClientCommandHandler.instance.registerCommand(new CommandGetFriends());
+        ClientCommandHandler.instance.registerCommand(new CommandGetGuild());
 
         //Start background tasks
         Multithreading.runAsync(() -> {

@@ -5,6 +5,7 @@ import club.sk1er.mods.publicmod.Multithreading;
 import club.sk1er.mods.publicmod.Sk1erCommand;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
+import club.sk1er.mods.publicmod.utils.Sk1erDateUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -92,7 +93,7 @@ public class CommandGetGuild extends Sk1erCommand {
                     }
                     ChatUtils.sendMessage(C.GREEN + "Total coins - " + C.WHITE + guild.get("coinsEver").getAsInt());
                     ChatUtils.sendMessage(C.GREEN + "Current coins - " + C.WHITE + guild.get("coins").getAsInt());
-
+                    ChatUtils.sendMessage(C.GREEN + "Founded on - " + C.WHITE + Sk1erDateUtil.getTime("DD-MM-YYYY", guild.get("created").getAsLong()));
 
                 } else {
                     if (player) {
