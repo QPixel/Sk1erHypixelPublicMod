@@ -1,12 +1,9 @@
 package club.sk1er.mods.publicmod;
 
-import club.sk1er.mods.publicmod.commands.CommandGuildChat;
-import club.sk1er.mods.publicmod.commands.CommandLoginHypixel;
-import club.sk1er.mods.publicmod.commands.CommandPartyChat;
-import club.sk1er.mods.publicmod.commands.CommandTest;
+import club.sk1er.mods.publicmod.commands.*;
 import club.sk1er.mods.publicmod.config.DataSaveType;
-import club.sk1er.mods.publicmod.config.PublicModConfig;
 import club.sk1er.mods.publicmod.config.DataSaving;
+import club.sk1er.mods.publicmod.config.PublicModConfig;
 import club.sk1er.mods.publicmod.display.DisplayConfig;
 import club.sk1er.mods.publicmod.display.DisplayElement;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
@@ -103,6 +100,7 @@ public class Sk1erPublicMod {
         ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
         ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat());
+        ClientCommandHandler.instance.registerCommand(new CommandGetFriends());
 
         //Start background tasks
         Multithreading.runAsync(() -> {
@@ -112,6 +110,7 @@ public class Sk1erPublicMod {
         });
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             config.save();
+            dataSaving.saveData();
             saveDisplayConfig();
         }));
     }
@@ -153,7 +152,7 @@ public class Sk1erPublicMod {
                             if (objectiveInDisplaySlot != null) {
                                 String GAME_NAME = EnumChatFormatting.getTextWithoutFormattingCodes(objectiveInDisplaySlot.getDisplayName());
                                 GameType type = GameType.parse(GAME_NAME);
-                                if (!currentGame.equals(GameType.UNKNOWN) && !type.equals(GameType.UNKNOWN)) {
+                                if ( !type.equals(GameType.UNKNOWN)) {
                                     this.currentGame = type;
                                 }
                             }
@@ -206,6 +205,6 @@ public class Sk1erPublicMod {
     }
 
     public DataSaving getDatSaving() {
-    return dataSaving;
+        return dataSaving;
     }
 }

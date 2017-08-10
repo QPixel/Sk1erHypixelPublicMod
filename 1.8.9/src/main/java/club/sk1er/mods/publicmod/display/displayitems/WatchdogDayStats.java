@@ -5,6 +5,8 @@ import club.sk1er.mods.publicmod.display.ElementRenderer;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by mitchellkatz on 7/21/17.
@@ -26,7 +28,7 @@ public class WatchdogDayStats implements IDisplayItem {
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
-        String string =  "Bans last day: " + (watchdogStats.has("watchdog_rollingDaily") ? watchdogStats.get("watchdog_rollingDaily").getAsInt() : 0);
+        String string =  "Bans last day: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_rollingDaily") ? watchdogStats.get("watchdog_rollingDaily").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
 

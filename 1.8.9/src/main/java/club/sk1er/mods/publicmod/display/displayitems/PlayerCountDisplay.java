@@ -5,6 +5,8 @@ import club.sk1er.mods.publicmod.display.ElementRenderer;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by mitchellkatz on 7/21/17.
@@ -26,7 +28,7 @@ public class PlayerCountDisplay implements IDisplayItem {
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
-        String string = "Player count: " + (watchdogStats.has("players") ? watchdogStats.get("players").getAsInt() : 0);
+        String string = "Player count: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("players") ? watchdogStats.get("players").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(ElementRenderer.width(string) , 10);
     }

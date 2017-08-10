@@ -5,6 +5,8 @@ import club.sk1er.mods.publicmod.display.ElementRenderer;
 import com.google.gson.JsonObject;
 
 import java.awt.*;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by Mitchell Katz on 8/9/2017.
@@ -20,7 +22,7 @@ public class CoinDisplay implements IDisplayItem {
 
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
-        String game = "Coins: " + Sk1erPublicMod.getInstance().getDatSaving().getDailyInt("coins");
+        String game = "Coins: " + NumberFormat.getNumberInstance(Locale.US).format(Sk1erPublicMod.getInstance().getDatSaving().getDailyInt("coins"));
         ElementRenderer.draw(starX, startY, game);
         return new Dimension(isConfig ? ElementRenderer.width(game) : 0, 10);
     }

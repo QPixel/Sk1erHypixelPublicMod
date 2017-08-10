@@ -40,11 +40,17 @@ public class DataSaving {
     }
 
     public void incrimentDailyInt(String key, int value) {
-        dailyInt.put(key, dailyInt.get(key) + value);
+        if(key==null)
+            return;
+        if (dailyInt.containsKey(key))
+            dailyInt.put(key, dailyInt.get(key) + value);
+        else dailyInt.put(key, value);
     }
 
     public int getDailyInt(String key) {
-        return dailyInt.get(key);
+        if (dailyInt.containsKey(key))
+            return dailyInt.get(key);
+        return 0;
     }
 
     public void save(File f, String cont) {

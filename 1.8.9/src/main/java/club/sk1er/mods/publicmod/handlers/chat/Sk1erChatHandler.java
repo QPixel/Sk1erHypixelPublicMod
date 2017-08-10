@@ -125,11 +125,11 @@ Friend request from MiniiShadyy
         }
         Matcher coinMater = coinPattern.matcher(unformattedText);
         if (coinMater.find()) {
-            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(expMater.group("coins")));
+            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(coinMater.group("coin")));
         }
         coinMater = coinsPatternTwo.matcher(unformattedText);
         if (coinMater.find()) {
-            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(expMater.group("coins")));
+            Sk1erPublicMod.getInstance().getDatSaving().incrimentDailyInt("coins", Integer.valueOf(coinMater.group("coins")));
         }
 
 

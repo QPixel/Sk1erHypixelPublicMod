@@ -27,7 +27,7 @@ public class CurrentGame implements IDisplayItem {
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         GameType currentGame = Sk1erPublicMod.getInstance().getCurrentGame();
-        String game = "Current Game: " + currentGame;
+        String game = "Current Game: " + currentGame.getName();
         ElementRenderer.draw(starX, startY, game);
         return new Dimension(isConfig ? ElementRenderer.width(game) : 0, 10);
     }
