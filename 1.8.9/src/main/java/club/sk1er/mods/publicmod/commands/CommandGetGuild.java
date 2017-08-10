@@ -80,7 +80,7 @@ public class CommandGetGuild extends Sk1erCommand {
 
 
                     StringBuilder memberBuilder = new StringBuilder();
-                    iterator = officers.iterator();
+                    iterator = members.iterator();
                     while (iterator.hasNext()) {
                         memberBuilder.append(iterator.next());
                         if (iterator.hasNext())
