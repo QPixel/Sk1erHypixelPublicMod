@@ -95,10 +95,11 @@ public class Sk1erPublicMod {
         registerConfigAndEvent(new PlayerJoinLeaveServer(this));
         registerConfigAndEvent(apiHandler);
 
-        ClientCommandHandler.instance.registerCommand(new CommandTest());
-
-        ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
+//Debug commands
         ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
+        ClientCommandHandler.instance.registerCommand(new CommandTest());
+        //Perm commands
+        ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat());
         ClientCommandHandler.instance.registerCommand(new CommandGetFriends());
         ClientCommandHandler.instance.registerCommand(new CommandGetGuild());
@@ -153,7 +154,7 @@ public class Sk1erPublicMod {
                             if (objectiveInDisplaySlot != null) {
                                 String GAME_NAME = EnumChatFormatting.getTextWithoutFormattingCodes(objectiveInDisplaySlot.getDisplayName());
                                 GameType type = GameType.parse(GAME_NAME);
-                                if ( !type.equals(GameType.UNKNOWN)) {
+                                if (!type.equals(GameType.UNKNOWN)) {
                                     this.currentGame = type;
                                 }
                             }
