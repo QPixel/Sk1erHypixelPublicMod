@@ -70,7 +70,7 @@ public class Sk1erApiHandler {
             JsonArray members = playerGuild.get("guild").getAsJsonObject().get("members").getAsJsonArray();
             for (int i = 0; i < members.size(); i++) {
                 JsonObject object = members.get(i).getAsJsonObject();
-                if (object.has("rank") && object.get("rank").getAsString().equalsIgnoreCase("member")) {
+                if (object.has("rank") && !object.get("rank").getAsString().equalsIgnoreCase("member")) {
                     if (object.get("rank").getAsString().equalsIgnoreCase("officer")) {
                         guildPlayerPrefixes.put(object.get("name").getAsString().toLowerCase(), guildOfficerPrefix);
                     } else {

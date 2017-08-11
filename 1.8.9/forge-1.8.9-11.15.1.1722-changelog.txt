@@ -905,7 +905,7 @@ Build 1.8-11.14.3.1553:
 	fry: Provide ItemCameraTransforms for vanilla models when possible.
 
 Build 1.8-11.14.3.1552:
-	fry: OBJ loader: reworked texture resolution: keys now have to start with #, like every other model loader; models without explicit library now work, remapping is possible by using the key "#OBJModel.Default.Texture.Name"; in addition to remapping by material name, remapping by texture name works too, like in other model formats.
+	fry: OBJ loader: reworked texture resolution: items now have to start with #, like every other model loader; models without explicit library now work, remapping is possible by using the key "#OBJModel.Default.Texture.Name"; in addition to remapping by material name, remapping by texture name works too, like in other model formats.
 
 Build 1.8-11.14.3.1551:
 	fry: Performace fix for item rendering.
@@ -4699,7 +4699,7 @@ Build 1.6.2-9.10.0.834:
 		MinecraftForge/FML@f157e7a6ecdeac2758fc0eaf547d3e8a763fb15b And more coremod logging
 	Christian:
 		Updated FML:
-		MinecraftForge/FML@ffdd056a18eddb8f28b74435d40e69c956b9dd48 Check keys, not values *sigh*
+		MinecraftForge/FML@ffdd056a18eddb8f28b74435d40e69c956b9dd48 Check items, not values *sigh*
 
 Build 1.6.2-9.10.0.833:
 	Christian:

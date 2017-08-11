@@ -12,9 +12,11 @@ import com.google.gson.JsonObject;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by mitchellkatz on 8/10/17.
@@ -89,10 +91,10 @@ public class CommandGetGuild extends Sk1erCommand {
                     }
                     ChatUtils.sendMessage(C.GREEN + "Members: " + memberBuilder.toString());
                     if (guild.has("canTag") && guild.get("canTag").getAsBoolean()) {
-                        ChatUtils.sendMessage("Guild tag - [" + C.GRAY + guild.get("tag").getAsString() + "]");
+                        ChatUtils.sendMessage(C.GREEN + "Guild tag - " + C.GRAY + "["+guild.get("tag").getAsString() + "]");
                     }
-                    ChatUtils.sendMessage(C.GREEN + "Total coins - " + C.WHITE + guild.get("coinsEver").getAsInt());
-                    ChatUtils.sendMessage(C.GREEN + "Current coins - " + C.WHITE + guild.get("coins").getAsInt());
+                    ChatUtils.sendMessage(C.GREEN + "Total coins - " + C.WHITE +  NumberFormat.getNumberInstance(Locale.US).format(guild.get("coinsEver").getAsInt()));
+                    ChatUtils.sendMessage(C.GREEN + "Current coins - " + C.WHITE +  NumberFormat.getNumberInstance(Locale.US).format(guild.get("coins").getAsInt()));
                     ChatUtils.sendMessage(C.GREEN + "Founded on - " + C.WHITE + Sk1erDateUtil.getTime("DD-MM-YYYY", guild.get("created").getAsLong()));
 
                 } else {

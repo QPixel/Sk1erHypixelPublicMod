@@ -28,20 +28,20 @@ public class CommandGetFriends extends Sk1erCommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        if (args.length == 1) {
+        if (args.length == 0) {
             ChatUtils.sendMessage(getCommandUsage());
         } else {
             Multithreading.runAsync(() -> {
-                ChatUtils.sendMessage("Loading....");
+                ChatUtils.sendMessage("Loading.... friends for " + args[0]);
                 JsonObject friends = Sk1erPublicMod.getInstance().getApiHandler().getFriends(args[0]);
-                if (friends.has("success") && friends.get("success").getAsBoolean()) {
-                    if (args.length == 2 && StringUtils.isNumeric(args[1])) {
+                if (!friends.has("success") || friends.get("success").getAsBoolean()) {
+                    if (args.length == 1 || (args.length == 2 && StringUtils.isNumeric(args[1]))) {
                         //Loaing friends for page args[1]
-                        int page = Integer.parseInt(args[1]);
+                        int page = args.length == 1 ? 1 : (Integer.parseInt(args[1]));
                         ChatUtils.sendMessage("Friend page: " + page);
                         Set<Map.Entry<String, JsonElement>> entries = friends.entrySet();
                         Iterator<Map.Entry<String, JsonElement>> iterator = entries.iterator();
-                        if (page * 20 > entries.size()) {
+                        if ((page - 1) * 20 > entries.size()) {
                             ChatUtils.sendMessage("Page " + page + " is too large! It must be at most " + entries.size() / 20);
                             return;
                         }
@@ -61,9 +61,9 @@ public class CommandGetFriends extends Sk1erCommand {
                             ChatUtils.sendMessage("Valid filers are: None, VIP, VIP+, MVP, MVP+, Donor, Helper, Mod, Admin, Staff");
                             return;
                         }
-                        FriendFilter filter = FriendFilter.parse(args[2]);
+                        FriendsFilter filter = FriendsFilter.parse(args[2]);
                         if (filter != null) {
-                            ChatUtils.sendMessage("Applying Filter: " + filter.keys.keys.get(0));
+                            ChatUtils.sendMessage("Applying Filter: " + filter.getKeys().items.get(0));
                             Iterator<Map.Entry<String, JsonElement>> iterator = friends.entrySet().iterator();
                             while (iterator.hasNext()) {
                                 JsonObject value = iterator.next().getValue().getAsJsonObject();
@@ -83,78 +83,35 @@ public class CommandGetFriends extends Sk1erCommand {
 
     }
 
-    enum FriendFilter {
-        NONE(new MultiStringHolder("No rank", "None"), new MultiStringHolder("NONE")),
-        VIP(new MultiStringHolder("Vip"), new MultiStringHolder("VIP")),
-        VIP_PLUS(new MultiStringHolder("VIP+", "VIP_PLUS"), new MultiStringHolder("VIP_PLUS")),
-        MVP(new MultiStringHolder("MVP"), new MultiStringHolder("MVP")),
-        MVP_PLUS(new MultiStringHolder("MVP+", "MVP_PLUS"), new MultiStringHolder("MVP_PLUS")),
-        DONOR(new MultiStringHolder("Donor", "Donator"), VIP, VIP_PLUS, MVP, MVP_PLUS),
-        HELPER(new MultiStringHolder("Helper"), new MultiStringHolder("HELPER")),
-        MOD(new MultiStringHolder("Mod", "Moderator"), new MultiStringHolder("MODERATOR")),
-        ADMIN(new MultiStringHolder("Admin"), new MultiStringHolder("ADMIN")),
-        STAFF(new MultiStringHolder("Staff"), HELPER, MOD, ADMIN);;
-
-        private MultiStringHolder keys;
-        private MultiStringHolder matches;
-
-        FriendFilter(MultiStringHolder key, FriendFilter... multiple) {
-            keys = key;
-            matches = new MultiStringHolder();
-            for (FriendFilter friendFilter : multiple) {
-                matches.addAll(friendFilter.getMatches().keys);
-            }
-
-        }
-
-        FriendFilter(MultiStringHolder keys, MultiStringHolder matchers) {
-            this.keys = keys;
-            this.matches = matchers;
-        }
-
-        public static FriendFilter parse(String input) {
-            for (FriendFilter friendFilter : values()) {
-                if (friendFilter.keys.contains(input))
-                    return friendFilter;
-            }
-            return null;
-        }
-
-        public MultiStringHolder getKeys() {
-
-            return keys;
-        }
-
-        public MultiStringHolder getMatches() {
-            return matches;
-        }
-    }
 
     static class MultiStringHolder {
 
-        private List<String> keys = new ArrayList<>();
+        private List<String> items = new ArrayList<>();
 
-        public MultiStringHolder(String... keys) {
-            this.keys = Arrays.asList(keys);
+        public MultiStringHolder(String... items) {
+            for (String item : items) {
+                this.items.add(item);
+            }
         }
 
         public void addKey(String key) {
-            this.keys.add(key);
+            this.items.add(key);
         }
 
         public void removeKey(String key) {
-            this.keys.remove(key);
+            this.items.remove(key);
         }
 
         public boolean contains(String otherKey) {
-            for (String string : keys)
+            for (String string : items)
                 if (string.equalsIgnoreCase(otherKey))
                     return true;
             return false;
         }
 
-        public void addAll(Collection<? extends String> add) {
-            keys.addAll(add);
+
+        public List<String> getItems() {
+            return items;
         }
     }
 }
