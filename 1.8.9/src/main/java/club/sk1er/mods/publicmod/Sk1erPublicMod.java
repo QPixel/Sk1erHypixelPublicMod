@@ -162,25 +162,19 @@ public class Sk1erPublicMod {
                     } catch (Exception e) {
                     }
                     int time = seconds.incrementAndGet();
-                    boolean fetchedBoosters = false;
-                    if (time % apiHandler.getTiming("boosters_live") == 0 || DEV) {
+                    if (time % apiHandler.getTiming("boosters_live") == 0 || time % apiHandler.getTiming("boosters_check") == 0 || DEV) {
                         if (getApiHandler().hasBoostrs()) {
-                            getApiHandler().refreshPersonalBoosters();
-                            fetchedBoosters = true;
+                            Multithreading.runAsync(() -> getApiHandler().refreshPersonalBoosters());
                         }
                     }
                     if (time % apiHandler.getTiming("watchdog_players") == 0 || DEV) {
-                        getApiHandler().refreshWatchdogStats();
+                        Multithreading.runAsync(() -> getApiHandler().refreshWatchdogStats());
                     }
                     if (time % apiHandler.getTiming("player_profile") == 0 || DEV) {
-                        getApiHandler().refreshPlayerData();
-                    }
-                    if (time % apiHandler.getTiming("boosters_check") == 0 || DEV) {
-                        if (!fetchedBoosters)
-                            getApiHandler().refreshPersonalBoosters();
+                        Multithreading.runAsync(() -> getApiHandler().refreshPlayerData());
                     }
                     if (time % apiHandler.getTiming("guild") == 0 || DEV) {
-                        getApiHandler().fetchPlayerGuild();
+                        Multithreading.runAsync(() -> getApiHandler().fetchPlayerGuild());
                     }
 
                 }
