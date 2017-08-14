@@ -9,29 +9,28 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Created by mitchellkatz on 7/21/17.
+ * Created by Mitchell Katz on 8/13/2017.
  */
-public class WatchdogDayStats implements IDisplayItem {
-    private int ordinal;
+public class TotalStaffBans implements IDisplayItem {
     private JsonObject data;
+    private int ordinal = 0;
 
-    public WatchdogDayStats(int ordinal, JsonObject data) {
-        this.ordinal = ordinal;
+    public TotalStaffBans(JsonObject data, int ordinal) {
         this.data = data;
+        this.ordinal = ordinal;
     }
 
     @Override
     public DisplayItemType getState() {
-        return DisplayItemType.WATCHDOG_DAY;
+        return DisplayItemType.STAFF_TOTAL;
     }
 
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
-        String string =  "Watchdog Bans Last Day: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_rollingDaily") ? watchdogStats.get("watchdog_rollingDaily").getAsInt() : 0);
+        String string = "Total Staff Bans: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("staff_total") ? watchdogStats.get("staff_total").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
-
     }
 
     @Override

@@ -28,7 +28,7 @@ public class WatchdogTotalStats implements IDisplayItem {
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
-        String string =  "Total Bans: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_total") ? watchdogStats.get("watchdog_total").getAsInt() : 0);
+        String string =  "Total Watchdog Bans: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_total") ? watchdogStats.get("watchdog_total").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
 

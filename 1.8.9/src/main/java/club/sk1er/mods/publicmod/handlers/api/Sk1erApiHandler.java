@@ -55,7 +55,7 @@ public class Sk1erApiHandler {
     }
 
     public void fetchTimings() {
-        timings = sk1erMod.getJson("http://sk1er.club/css/timing.json");
+        timings = sk1erMod.getJson("http://sk1er.club/newtiming.json");
     }
 
     public void refreshWatchdogStats() {

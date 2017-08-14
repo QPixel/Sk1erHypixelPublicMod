@@ -26,6 +26,10 @@ public interface IDisplayItem {
                 return new CoinDisplay(ord, item);
             case EXP:
                 return new ExpDisplay(ord, item);
+            case STAFF_DAY:
+                return new StaffBansLastDay(item,ord);
+            case STAFF_TOTAL: return  new TotalStaffBans(item,ord);
+
             default:
                 throw new IllegalArgumentException("No defined case for " + type);
         }

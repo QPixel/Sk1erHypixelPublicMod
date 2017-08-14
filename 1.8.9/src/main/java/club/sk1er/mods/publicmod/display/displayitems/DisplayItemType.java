@@ -5,11 +5,13 @@ package club.sk1er.mods.publicmod.display.displayitems;
  */
 public enum DisplayItemType {
     WATCHDOG_TOTAL("Total watchdog bans"),
-    WATCHDOG_MIN("Watchdog bans last minute"),
-    WATCHDOG_DAY("Watchdog bans last day"),
+    WATCHDOG_MIN("Watchdog Bans Last Minute"),
+    WATCHDOG_DAY("Watchdog Bans Last Day"),
     CURRENT_GAME("Current Game"),
     COINS("Coin Counter"),
     EXP("Exp Counter"),
+    STAFF_DAY("Staff Bans Last Day"),
+    STAFF_TOTAL("Total Staff Bans"),
     PLAYER_COUNT("Player count");
 
     private String name;

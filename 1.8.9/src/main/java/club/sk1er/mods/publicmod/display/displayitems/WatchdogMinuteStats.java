@@ -28,7 +28,7 @@ public class WatchdogMinuteStats implements IDisplayItem {
     @Override
     public Dimension draw(int starX, int startY, boolean isConfig) {
         JsonObject watchdogStats = Sk1erPublicMod.getInstance().getApiHandler().getWatchdogStats();
-        String string = "Bans last minute: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_lastMinute") ? watchdogStats.get("watchdog_lastMinute").getAsInt() : 0);
+        String string = "Watchdog Bans Last Minute: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_lastMinute") ? watchdogStats.get("watchdog_lastMinute").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
 

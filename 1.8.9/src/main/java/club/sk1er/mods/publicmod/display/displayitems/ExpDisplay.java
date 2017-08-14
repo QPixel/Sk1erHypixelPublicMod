@@ -22,7 +22,7 @@ public class ExpDisplay implements IDisplayItem {
 
     @Override
     public DisplayItemType getState() {
-        return DisplayItemType.COINS;
+        return DisplayItemType.EXP;
     }
 
     @Override
