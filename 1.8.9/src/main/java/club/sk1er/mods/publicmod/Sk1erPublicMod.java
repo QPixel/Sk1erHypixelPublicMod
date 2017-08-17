@@ -176,7 +176,7 @@ public class Sk1erPublicMod {
                     if (time % apiHandler.getTiming("guild") == 0 || DEV) {
                         Multithreading.runAsync(() -> getApiHandler().fetchPlayerGuild());
                     }
-
+                dataSaving.checkForNewDateOrSave();
                 }
             }, 1, 1, TimeUnit.SECONDS);
 
@@ -184,7 +184,7 @@ public class Sk1erPublicMod {
     }
 
     public void leaveHypixel() {
-        //TODO
+        isHypixel = false;
 
     }
 

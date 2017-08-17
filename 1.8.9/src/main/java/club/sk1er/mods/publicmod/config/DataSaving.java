@@ -17,6 +17,7 @@ import java.util.Set;
 public class DataSaving {
 
     private HashMap<String, Integer> dailyInt = new HashMap<>();
+    private String day;
 
     public DataSaving() {
         JsonObject daily = new JsonParser().parse(readRawFile(new File(DataSaveType.DAILY.getPath() + date() + "-int.txt"))).getAsJsonObject();
@@ -27,11 +28,12 @@ public class DataSaving {
             } catch (Exception ignored) {
             }
         }
+        day = date();
 
 
     }
 
-    public void saveData() {
+    public void saveData(File f) {
         JsonObject object = new JsonObject();
         for (String key : dailyInt.keySet()) {
             object.addProperty(key, dailyInt.get(key));
@@ -39,9 +41,23 @@ public class DataSaving {
         save(new File(DataSaveType.DAILY.getPath() + date() + "-int.txt"), object.toString());
     }
 
+    public void saveData() {
+        saveData(new File(DataSaveType.DAILY.getPath() + date() + "-int.txt"));
+    }
+
+    public void checkForNewDateOrSave() {
+        if (!day.equalsIgnoreCase(date())) {
+            File file = new File(DataSaveType.DAILY.getPath() + day + "-int.txt");
+            saveData(file);
+            day = date();
+            dailyInt.clear();
+        }
+    }
+
     public void incrimentDailyInt(String key, int value) {
-        if(key==null)
+        if (key == null)
             return;
+        checkForNewDateOrSave();
         if (dailyInt.containsKey(key))
             dailyInt.put(key, dailyInt.get(key) + value);
         else dailyInt.put(key, value);
@@ -98,7 +114,6 @@ public class DataSaving {
     public String weeklyOsc() {
         long delta = Math.abs(System.currentTimeMillis() - 1417237200000L);
         long oscillation = delta / 604800000L;
-
         return oscillation % 2 == 0 ? "a" : "b";
     }
 

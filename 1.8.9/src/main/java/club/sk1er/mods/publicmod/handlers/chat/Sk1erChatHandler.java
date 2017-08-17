@@ -46,7 +46,7 @@ public class Sk1erChatHandler {
     private boolean showPartyChat = true;
     private Sk1erPublicMod mod;
     @ConfigOpt
-    private String partyPrefix = "Party >";
+    private String partyPrefix = C.BLUE+"Party >";
     @ConfigOpt
     private String recentFriend = "";
     private String recentPartyInvite = "";
@@ -208,7 +208,7 @@ sUbScRiBe tO mE Pz!
             newComponent.appendText(" " + (rank != null && showRankPrefix ? (matches ? colorMatcher.group("rank") : matcher.group("rank")) : "") + (matches ? colorMatcher.group("player") : matcher.group("player")));
 //
 //            else newComponent.appendText(" ");
-            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
+//            newComponent.appendText("" + (matches ? colorMatcher.group("player") : matcher.group("player")));
             newComponent.appendText(C.WHITE + ":");
             String colorBefore = "r";
             for (String s : textmessage.split(" ")) {
