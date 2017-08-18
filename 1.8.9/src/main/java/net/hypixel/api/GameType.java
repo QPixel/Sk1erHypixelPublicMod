@@ -22,7 +22,7 @@ public enum GameType {
     SKYCLASH("SkyClash", "SkyClash", 55),
     LEGACY("Classic Games", "Legacy", 56),
     SPEED_UHC("Speed UHC", "SpeedUHC", 54),
-    BEDWARS("Bedwars", "Bedwars", 57),
+    BEDWARS("Bed Wars", "Bedwars", 57),
     UNKNOWN("Unknown", "ERROR", -1);
 
     private static final GameType[] v = values();
@@ -77,7 +77,11 @@ public enum GameType {
         try {
             return valueOf(mostRecentGameType);
         } catch (Exception e) {
-            return fromDatabase(mostRecentGameType);
+            GameType type = fromDatabase(mostRecentGameType);
+            if (type != null)
+                return type;
+            type = fromRealName(mostRecentGameType);
+            return type;
         }
     }
 

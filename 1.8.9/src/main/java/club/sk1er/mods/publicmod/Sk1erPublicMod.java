@@ -168,8 +168,7 @@ public class Sk1erPublicMod {
                                 }
                             }
                         }
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                     int time = seconds.incrementAndGet();
                     if (time % apiHandler.getTiming("boosters_live") == 0 || time % apiHandler.getTiming("boosters_check") == 0 || DEV) {
                         if (getApiHandler().hasBoostrs()) {

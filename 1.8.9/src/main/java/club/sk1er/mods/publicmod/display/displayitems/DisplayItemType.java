@@ -12,6 +12,7 @@ public enum DisplayItemType {
     EXP("Exp Counter"),
     STAFF_DAY("Staff Bans Last Day"),
     STAFF_TOTAL("Total Staff Bans"),
+    BEDWARS_RESOUCES("Bedwars Resources"),
     PLAYER_COUNT("Player count");
 
     private String name;

@@ -27,9 +27,11 @@ public interface IDisplayItem {
             case EXP:
                 return new ExpDisplay(ord, item);
             case STAFF_DAY:
-                return new StaffBansLastDay(item,ord);
-            case STAFF_TOTAL: return  new TotalStaffBans(item,ord);
-
+                return new StaffBansLastDay(item, ord);
+            case STAFF_TOTAL:
+                return new TotalStaffBans(item, ord);
+            case BEDWARS_RESOUCES:
+                return new BedwarsResourceDisplay(item, ord);
             default:
                 throw new IllegalArgumentException("No defined case for " + type);
         }
