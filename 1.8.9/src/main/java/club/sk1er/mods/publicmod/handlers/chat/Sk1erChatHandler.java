@@ -22,9 +22,9 @@ import java.util.regex.Pattern;
 public class Sk1erChatHandler {
 
     public Pattern guildChatParrern = Pattern.compile("Guild > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
-    public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
+    public Pattern guildColorPattenr = Pattern.compile("Guild > (?<rank>"+C.COLOR_CODE_SYMBOL+".+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyChatPattern = Pattern.compile("Party > (?<rank>\\[.+] )?(?<player>\\S{1,16}): (?<message>.*)");
-    public Pattern partyChatColorPattern = Pattern.compile("Party > (?<rank>§.+] )?(?<player>\\S{1,24}): (?<message>.*)");
+    public Pattern partyChatColorPattern = Pattern.compile("Party > (?<rank>"+C.COLOR_CODE_SYMBOL+".+] )?(?<player>\\S{1,24}): (?<message>.*)");
     public Pattern partyInvitePattern = Pattern.compile("(\\[.*\\] )?(?<player>\\w+) has invited you to join their party!");
     public Pattern coinsPatternTwo = Pattern.compile("\\+(?<coins>.+) coins!");
     public Pattern friendPattern = Pattern.compile("--+\\\\nFriend request from ((?<rank>\\[.+] )?(?<player>\\w+)).*");

@@ -12,6 +12,7 @@ import club.sk1er.mods.publicmod.handlers.KeyInput;
 import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
 import club.sk1er.mods.publicmod.handlers.server.PlayerJoinLeaveServer;
+import club.sk1er.mods.publicmod.utils.ChatUtils;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,7 +38,7 @@ public class Sk1erPublicMod {
     Quest: http://i.imgur.com/tGIXJAX.png
      */
     public static final String MODID = "Sk1er-Public";
-    public static final String VERSION = "1.0";
+    public static final String VERSION = "Beta-1.0";
     public static final String NAME = "Sk1er Public Mod";
     private static Sk1erPublicMod instance;
     public final boolean DEV = false;
@@ -96,10 +97,10 @@ public class Sk1erPublicMod {
         registerConfigAndEvent(apiHandler);
 
 //Debug commands
-        ClientCommandHandler.instance.registerCommand(new CommandLoginHypixel());
-        ClientCommandHandler.instance.registerCommand(new CommandTest());
         //Perm commands
         ClientCommandHandler.instance.registerCommand(new CommandGuildChat());
+        ClientCommandHandler.instance.registerCommand(new CommandPublicModDisplay());
+
         ClientCommandHandler.instance.registerCommand(new CommandPartyChat());
         ClientCommandHandler.instance.registerCommand(new CommandGetFriends());
         ClientCommandHandler.instance.registerCommand(new CommandGetGuild());
@@ -137,7 +138,15 @@ public class Sk1erPublicMod {
             apiHandler.fetchQuests();
             apiHandler.refreshPersonalBoosters();
             apiHandler.refreshPlayerData();
-
+            while (Minecraft.getMinecraft().thePlayer == null) {
+                try {
+                    Thread.sleep(500L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ChatUtils.sendMessage(C.BOLD + C.RED + "Warning: This mod (Sk1er Public Mod) Is current in Beta. Bugs and other incomplete features may be experienced. Current version: " + VERSION);
+            ;
         });
     }
 
@@ -176,7 +185,7 @@ public class Sk1erPublicMod {
                     if (time % apiHandler.getTiming("guild") == 0 || DEV) {
                         Multithreading.runAsync(() -> getApiHandler().fetchPlayerGuild());
                     }
-                dataSaving.checkForNewDateOrSave();
+                    dataSaving.checkForNewDateOrSave();
                 }
             }, 1, 1, TimeUnit.SECONDS);
 
