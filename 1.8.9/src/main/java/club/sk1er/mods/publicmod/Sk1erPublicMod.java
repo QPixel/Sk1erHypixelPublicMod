@@ -162,6 +162,7 @@ public class Sk1erPublicMod {
                             ScoreObjective objectiveInDisplaySlot = scoreboard.getObjectiveInDisplaySlot(1);
                             if (objectiveInDisplaySlot != null) {
                                 String GAME_NAME = EnumChatFormatting.getTextWithoutFormattingCodes(objectiveInDisplaySlot.getDisplayName());
+                                ChatUtils.sendMessage(GAME_NAME);
                                 GameType type = GameType.parse(GAME_NAME);
                                 if (!type.equals(GameType.UNKNOWN)) {
                                     this.currentGame = type;

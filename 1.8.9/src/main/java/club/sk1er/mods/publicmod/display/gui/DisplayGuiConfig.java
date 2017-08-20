@@ -54,7 +54,7 @@ public class DisplayGuiConfig extends GuiScreen {
                 boolean b = super.mousePressed(mc, mouseX, mouseY);
                 if (b) {
                     List<IDisplayItem> iDisplayItems = new ArrayList<>();
-                    DisplayElement element = new DisplayElement(.5, .5, 1.0, 6, iDisplayItems);
+                    DisplayElement element = new DisplayElement(.5, .5, 1.0, 1, iDisplayItems);
                     mod.getDisplayElements().add(element);
                     mc.displayGuiScreen(new EditSubElementsGui(element, mod));
                 }

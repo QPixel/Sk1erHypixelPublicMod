@@ -77,6 +77,7 @@ public enum GameType {
         try {
             return valueOf(mostRecentGameType);
         } catch (Exception e) {
+
             GameType type = fromDatabase(mostRecentGameType);
             if (type != null)
                 return type;

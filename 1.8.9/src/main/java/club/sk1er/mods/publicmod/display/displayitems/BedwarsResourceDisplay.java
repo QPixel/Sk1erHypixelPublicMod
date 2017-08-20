@@ -2,6 +2,7 @@ package club.sk1er.mods.publicmod.display.displayitems;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
+import club.sk1er.mods.publicmod.utils.ChatUtils;
 import com.google.gson.JsonObject;
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
@@ -59,19 +60,24 @@ public class BedwarsResourceDisplay implements IDisplayItem {
         if (thePlayer != null) {
             ItemStack[] mainInventory = thePlayer.inventory.mainInventory;
             if (Sk1erPublicMod.getInstance().getCurrentGame().equals(GameType.BEDWARS)) {
-                ItemStack stack = mainInventory[8];
-                if (stack != null && stack.getUnlocalizedName().equals("item.compass")) {
+                ItemStack stack1 = mainInventory[1];
+                if (stack1 != null) {
+                    ChatUtils.sendMessage(stack1.getUnlocalizedName());
                     return new Dimension(0, 0);
                 }
+
+                HashMap<Item, Integer> amounts = new HashMap<>();
+                for (ItemStack stack : mainInventory) {
+                    if (stack == null)
+                        continue;
+                    String unlocalizedName = stack.getItem().getUnlocalizedName();
+                    for (Item i : scans) amounts.put(i, 0);
+                    for (Item i : scans)
+                        if (i.getUnlocalizedName().equalsIgnoreCase(unlocalizedName))
+                            amounts.put(i, amounts.get(i) + 1);
+                }
+                render(amounts, starX, startY);
             }
-            HashMap<Item, Integer> amounts = new HashMap<>();
-            for (ItemStack stack : mainInventory) {
-                String unlocalizedName = stack.getItem().getUnlocalizedName();
-                for (Item i : scans) amounts.put(i, 0);
-                for (Item i : scans)
-                    if (i.getUnlocalizedName().equalsIgnoreCase(unlocalizedName)) amounts.put(i, amounts.get(i) + 1);
-            }
-            render(amounts, starX, startY);
 
         }
         return new Dimension(0, 0);
