@@ -25,7 +25,7 @@ public class PublicModConfig {
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
                 StringBuilder builder = new StringBuilder();
-                String line = null;
+                String line;
                 while ((line = br.readLine()) != null)
                     builder.append(line);
 
@@ -33,7 +33,7 @@ public class PublicModConfig {
                 config = new JsonParser().parse(done).getAsJsonObject();
             } else {
                 config = new JsonObject();
-saveFile();
+                saveFile();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +49,6 @@ saveFile();
             bw.close();
             fw.close();
         } catch (Exception e) {
-
         }
     }
 
@@ -57,7 +56,6 @@ saveFile();
         for (Object o : configObjects)
             saveToJsonFromRamObject(o);
         saveFile();
-
     }
 
     public void register(Object object) {
@@ -123,7 +121,6 @@ saveFile();
                 } else if (field.getType().isAssignableFrom(double.class)) {
                     config.addProperty(field.getName(), field.getDouble(object));
                 }
-
             }
         }
     }

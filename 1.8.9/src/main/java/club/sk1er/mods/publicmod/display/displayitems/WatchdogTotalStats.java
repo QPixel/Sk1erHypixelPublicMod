@@ -2,6 +2,7 @@ package club.sk1er.mods.publicmod.display.displayitems;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
+
 import com.google.gson.JsonObject;
 
 import java.awt.*;
@@ -31,7 +32,6 @@ public class WatchdogTotalStats implements IDisplayItem {
         String string =  "Total Watchdog Bans: " + NumberFormat.getNumberInstance(Locale.US).format(watchdogStats.has("watchdog_total") ? watchdogStats.get("watchdog_total").getAsInt() : 0);
         ElementRenderer.draw(starX, startY, string);
         return new Dimension(isConfig ? ElementRenderer.width(string) : 0, 10);
-
     }
 
     @Override

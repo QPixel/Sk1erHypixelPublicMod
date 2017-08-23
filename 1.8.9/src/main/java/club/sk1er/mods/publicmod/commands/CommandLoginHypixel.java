@@ -9,6 +9,7 @@ import net.minecraft.command.ICommandSender;
  * Created by mitchellkatz on 7/24/17.
  */
 public class CommandLoginHypixel extends Sk1erCommand {
+
     @Override
     public String getCommandName() {
         return "loginhypixel";

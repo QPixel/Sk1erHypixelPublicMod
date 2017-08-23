@@ -29,8 +29,6 @@ public class DataSaving {
             }
         }
         day = date();
-
-
     }
 
     public void saveData(File f) {
@@ -83,7 +81,6 @@ public class DataSaving {
         }
     }
 
-
     public String readRawFile(File file) {
         try {
             FileReader fr = new FileReader(file);
@@ -106,7 +103,6 @@ public class DataSaving {
         return "Week-" + weeklyOsc();
     }
 
-
     public String date() {
         return new SimpleDateFormat("dd-MM-yy").format(new Date(System.currentTimeMillis()));
     }
@@ -116,5 +112,4 @@ public class DataSaving {
         long oscillation = delta / 604800000L;
         return oscillation % 2 == 0 ? "a" : "b";
     }
-
 }

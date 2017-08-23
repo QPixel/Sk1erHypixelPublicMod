@@ -2,6 +2,7 @@ package club.sk1er.mods.publicmod.display.displayitems;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
+
 import com.google.gson.JsonObject;
 
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.util.Locale;
  * Created by Mitchell Katz on 8/9/2017.
  */
 public class ExpDisplay implements IDisplayItem {
+
     private int ordinal;
     private JsonObject state;
 

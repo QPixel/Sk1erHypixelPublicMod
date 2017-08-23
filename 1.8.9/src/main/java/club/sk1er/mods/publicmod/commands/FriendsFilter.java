@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Mitchell Katz on 8/11/2017.
  */
 public enum FriendsFilter {
+
     NONE(new CommandGetFriends.MultiStringHolder("No rank", "None"), new CommandGetFriends.MultiStringHolder("NONE")),
     VIP(new CommandGetFriends.MultiStringHolder("Vip"), new CommandGetFriends.MultiStringHolder("VIP")),
     VIP_PLUS(new CommandGetFriends.MultiStringHolder("VIP+", "VIP_PLUS"), new CommandGetFriends.MultiStringHolder("VIP_PLUS")),
@@ -29,7 +30,6 @@ public enum FriendsFilter {
                 matches.addKey(s);
             }
         }
-
     }
 
     FriendsFilter(CommandGetFriends.MultiStringHolder keys, CommandGetFriends.MultiStringHolder matchers) {
@@ -46,7 +46,6 @@ public enum FriendsFilter {
     }
 
     public CommandGetFriends.MultiStringHolder getKeys() {
-
         return keys;
     }
 

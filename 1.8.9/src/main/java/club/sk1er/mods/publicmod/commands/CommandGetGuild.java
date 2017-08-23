@@ -31,28 +31,29 @@ public class CommandGetGuild extends Sk1erCommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length <= 1) {
-            ChatUtils.sendMessage("/getguild <player,name> <player,name>");
+            ChatUtils.sendMessage("/getguild <player, name> <player,name>");
         } else {
             Multithreading.runAsync(() -> {
-                String type = args[0];
-                JsonObject guild = null;
+
+                JsonObject guild;
                 boolean player = false;
-                String arg1 = args[1];
-                if (type.equalsIgnoreCase("player")) {
-                    if (arg1.length() > 16) {
-                        ChatUtils.sendMessage("Player name " + arg1 + " is too long!");
+
+                if (args[0].equalsIgnoreCase("player")) {
+                    if (args[1].length() > 16) {
+                        ChatUtils.sendMessage("Player name " + args[1] + " is too long!");
+                        return;
                     }
-                    guild = Sk1erPublicMod.getInstance().getApiHandler().getGuildPlayer(arg1);
+                    guild = Sk1erPublicMod.getInstance().getApiHandler().getGuildPlayer(args[1]);
                     player = true;
-                } else if (type.equalsIgnoreCase("name")) {
-                    guild = Sk1erPublicMod.getInstance().getApiHandler().getGuildByName(arg1);
+                } else if (args[0].equalsIgnoreCase("name")) {
+                    guild = Sk1erPublicMod.getInstance().getApiHandler().getGuildByName(args[1]);
                 } else {
-                    ChatUtils.sendMessage("Fetch type '" + type + "' is not valid! Must be either player or name");
+                    ChatUtils.sendMessage("Fetch type '" + args[0] + "' is not valid! Must be either player or name");
                     return;
                 }
                 if (guild.has("success") && guild.get("success").getAsBoolean()) {
                     guild = guild.get("guild").getAsJsonObject();
-                    ChatUtils.sendMessage("Guild name: " + guild.get("name").getAsString());
+                    ChatUtils.sendMessage(C.GREEN + "Guild name: " + guild.get("name").getAsString());
                     String guildMaster = null;
                     List<String> officers = new ArrayList<>();
                     List<String> members = new ArrayList<>();
@@ -91,7 +92,7 @@ public class CommandGetGuild extends Sk1erCommand {
                     }
                     ChatUtils.sendMessage(C.GREEN + "Members: " + memberBuilder.toString());
                     if (guild.has("canTag") && guild.get("canTag").getAsBoolean()) {
-                        ChatUtils.sendMessage(C.GREEN + "Guild tag - " + C.GRAY + "["+guild.get("tag").getAsString() + "]");
+                        ChatUtils.sendMessage(C.GREEN + "Guild tag - " + C.GRAY + "[" + guild.get("tag").getAsString() + "]");
                     }
                     ChatUtils.sendMessage(C.GREEN + "Total coins - " + C.WHITE +  NumberFormat.getNumberInstance(Locale.US).format(guild.get("coinsEver").getAsInt()));
                     ChatUtils.sendMessage(C.GREEN + "Current coins - " + C.WHITE +  NumberFormat.getNumberInstance(Locale.US).format(guild.get("coins").getAsInt()));
@@ -99,7 +100,7 @@ public class CommandGetGuild extends Sk1erCommand {
 
                 } else {
                     if (player) {
-                        ChatUtils.sendMessage("Player " + arg1 + " is not in a guild!");
+                        ChatUtils.sendMessage("Player " + args[1] + " is not in a guild!");
                     }
                 }
             });

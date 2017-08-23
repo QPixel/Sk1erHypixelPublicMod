@@ -16,6 +16,7 @@ import java.util.*;
  * Created by Mitchell Katz on 8/9/2017.
  */
 public class CommandGetFriends extends Sk1erCommand {
+
     @Override
     public String getCommandName() {
         return "getfriends";
@@ -32,11 +33,11 @@ public class CommandGetFriends extends Sk1erCommand {
             ChatUtils.sendMessage(getCommandUsage());
         } else {
             Multithreading.runAsync(() -> {
-                ChatUtils.sendMessage("Loading.... friends for " + args[0]);
+                ChatUtils.sendMessage("Loading friends for " + args[0] + "....");
                 JsonObject friends = Sk1erPublicMod.getInstance().getApiHandler().getFriends(args[0]);
                 if (!friends.has("success") || friends.get("success").getAsBoolean()) {
                     if (args.length == 1 || (args.length == 2 && StringUtils.isNumeric(args[1]))) {
-                        //Loaing friends for page args[1]
+                        // Loading friends for page args[1]
                         int page = args.length == 1 ? 1 : (Integer.parseInt(args[1]));
                         ChatUtils.sendMessage("Friend page: " + page);
                         Set<Map.Entry<String, JsonElement>> entries = friends.entrySet();
@@ -64,9 +65,8 @@ public class CommandGetFriends extends Sk1erCommand {
                         FriendsFilter filter = FriendsFilter.parse(args[2]);
                         if (filter != null) {
                             ChatUtils.sendMessage("Applying Filter: " + filter.getKeys().items.get(0));
-                            Iterator<Map.Entry<String, JsonElement>> iterator = friends.entrySet().iterator();
-                            while (iterator.hasNext()) {
-                                JsonObject value = iterator.next().getValue().getAsJsonObject();
+                            for (Map.Entry<String, JsonElement> stringJsonElementEntry : friends.entrySet()) {
+                                JsonObject value = stringJsonElementEntry.getValue().getAsJsonObject();
                                 if (filter.getMatches().contains(value.get("rank").getAsString())) {
                                     ChatUtils.sendMessage(value.get("display").getAsString());
                                 }
@@ -89,9 +89,7 @@ public class CommandGetFriends extends Sk1erCommand {
         private List<String> items = new ArrayList<>();
 
         public MultiStringHolder(String... items) {
-            for (String item : items) {
-                this.items.add(item);
-            }
+            Collections.addAll(this.items, items);
         }
 
         public void addKey(String key) {

@@ -14,11 +14,13 @@ import java.util.List;
  * Created by Mitchell Katz on 5/25/2017.
  */
 public class DisplayElement {
-    private double xloc, yloc;
+
     private List<IDisplayItem> displayItems = new ArrayList<>();
+
+    private double prevX, prevY, xloc, yloc;
     private double scale = 1;
+
     private int color;
-    private double prevX, prevY;
 
     public DisplayElement(double xloc, double yloc, double scale, int color, List<IDisplayItem> items) {
         this.xloc = xloc;
@@ -26,23 +28,6 @@ public class DisplayElement {
         this.scale = scale;
         this.color = color;
         this.displayItems = items;
-    }
-
-    @Override
-    public String toString() {
-        return "DisplayElement{" +
-                "xloc=" + xloc +
-                ", yloc=" + yloc +
-                ", displayItems=" + displayItems +
-                ", scale=" + scale +
-                ", color=" + color +
-                '}';
-    }
-
-    private void render(double x, double y, String string) {
-        GL11.glScaled(scale, scale, 0);
-        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(string, (float) ((float) x / scale), (float) y, ElementRenderer.getColor(color));
-        GL11.glScaled(1.0 / scale, 1.0 / scale, 0);
     }
 
     public int getColor() {
@@ -109,7 +94,6 @@ public class DisplayElement {
         this.prevY = addy;
         GlStateManager.scale(1.0 / getScale(), 1.0 / getScale(), 0);
 //        System.out.println("Prev X:" + prevX + " Prev Y: " + prevY);
-
     }
 
     public void draw() {
@@ -121,8 +105,6 @@ public class DisplayElement {
             y += d.getHeight() * scale;
         }
 //        System.out.println("Prev X:" + prevX + " Prev Y: " + prevY);
-
-
     }
 
     public void renderEditView() {
@@ -137,7 +119,6 @@ public class DisplayElement {
             Dimension d = iDisplayItem.draw(x, y, false);
             y += d.getHeight();
         }
-
     }
 
     public void adjustOrdinal() {
@@ -145,4 +126,22 @@ public class DisplayElement {
             displayItems.get(ord).setOrdinal(ord);
         }
     }
+
+    @Override
+    public String toString() {
+        return "DisplayElement{" +
+                "xloc=" + xloc +
+                ", yloc=" + yloc +
+                ", displayItems=" + displayItems +
+                ", scale=" + scale +
+                ", color=" + color +
+                '}';
+    }
+
+    // Appears to be unused
+//    private void render(double x, double y, String string) {
+//        GL11.glScaled(scale, scale, 0);
+//        Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(string, (float) ((float) x / scale), (float) y, ElementRenderer.getColor(color));
+//        GL11.glScaled(1.0 / scale, 1.0 / scale, 0);
+//    }
 }

@@ -3,8 +3,11 @@ package club.sk1er.mods.publicmod.display.displayitems;
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
+
 import com.google.gson.JsonObject;
+
 import net.hypixel.api.GameType;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -21,6 +24,7 @@ import java.util.Map;
  * Created by Mitchell Katz on 8/18/2017.
  */
 public class BedwarsResourceDisplay implements IDisplayItem {
+
     private static List<Item> scans = new ArrayList<>();
 
     static {
@@ -78,7 +82,6 @@ public class BedwarsResourceDisplay implements IDisplayItem {
                 }
                 render(amounts, starX, startY);
             }
-
         }
         return new Dimension(0, 0);
     }

@@ -13,6 +13,7 @@ import club.sk1er.mods.publicmod.handlers.api.Sk1erApiHandler;
 import club.sk1er.mods.publicmod.handlers.chat.Sk1erChatHandler;
 import club.sk1er.mods.publicmod.handlers.server.PlayerJoinLeaveServer;
 import club.sk1er.mods.publicmod.utils.ChatUtils;
+
 import net.hypixel.api.GameType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -146,7 +147,6 @@ public class Sk1erPublicMod {
                 }
             }
             ChatUtils.sendMessage(C.BOLD + C.RED + "Warning: This mod (Sk1er Public Mod) Is current in Beta. Bugs and other incomplete features may be experienced. Current version: " + VERSION);
-            ;
         });
     }
 
@@ -194,7 +194,6 @@ public class Sk1erPublicMod {
 
     public void leaveHypixel() {
         isHypixel = false;
-
     }
 
     public List<DisplayElement> getDisplayElements() {

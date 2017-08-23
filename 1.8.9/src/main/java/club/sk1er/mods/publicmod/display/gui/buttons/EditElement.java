@@ -10,6 +10,7 @@ import net.minecraft.client.gui.GuiButton;
  * Created by mitchellkatz on 5/30/17.
  */
 public class EditElement extends GuiButton {
+
     private DisplayGuiConfig gui;
     private Sk1erPublicMod mod;
 

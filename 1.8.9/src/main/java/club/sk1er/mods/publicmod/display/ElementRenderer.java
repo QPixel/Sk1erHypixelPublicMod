@@ -57,10 +57,9 @@ public class ElementRenderer {
     }
 
     public static void draw(int x, int y, List<String> list) {
-        int tx = x;
         int ty = y;
         for (String string : list) {
-            Minecraft.getMinecraft().fontRendererObj.drawString(string, (int) (tx / getCurrentScale()), (int) (ty / getCurrentScale()), getColor(color));
+            Minecraft.getMinecraft().fontRendererObj.drawString(string, (int) (x / getCurrentScale()), (int) (ty / getCurrentScale()), getColor(color));
             ty += 10;
         }
     }

@@ -8,12 +8,12 @@ import net.minecraft.command.ICommandSender;
 /**
  * Created by mitchellkatz on 7/21/17.
  */
-public class CommandPublicModDisplay extends Sk1erCommand{
+public class CommandPublicModDisplay extends Sk1erCommand {
+
     @Override
     public String getCommandName() {
         return "publicmoddisplay";
     }
-
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {

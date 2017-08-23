@@ -22,8 +22,8 @@ public class CommandPartyChat extends Sk1erCommand {
             ChatUtils.sendMessage(getCommandUsage(sender));
         } else {
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < args.length; i++) {
-                builder.append(args[i]).append(" ");
+            for (String arg : args) {
+                builder.append(arg).append(" ");
             }
             String trim = builder.toString().trim();
             if (trim.equalsIgnoreCase("toggle") || trim.equalsIgnoreCase("t")) {

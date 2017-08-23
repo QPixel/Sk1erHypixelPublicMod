@@ -48,20 +48,32 @@ public class AddItemScreen extends GuiScreen {
         textField.setFocused(true);
     }
 
+    @Override
+    public void initGui() {
+        generateButtons("");
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        textField.drawTextBox();
+        ScaledResolution current = ResolutionUtil.current();
+        double startX = current.getScaledWidth_double() / 6.0;
+        int y = 50;
+        ElementRenderer.draw((int) startX, y - 10, "All display items");
+        for (DisplayItemType type : DisplayItemType.values()) {
+            ElementRenderer.draw((int) startX, y, type.getName());
+            y += 10;
+        }
+    }
+
     private void generateButtons(String param) {
         int y = 100;
         ScaledResolution resolution = new ScaledResolution(Minecraft.getMinecraft());
+
         buttonList.clear();
-        buttonList.add(new GuiButton(1, 5, 25, 50, 20, "Back") {
-            @Override
-            public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-                boolean b = super.mousePressed(mc, mouseX, mouseY);
-                if (b) {
-                    Minecraft.getMinecraft().displayGuiScreen(new EditSubElementsGui(element, mod));
-                }
-                return b;
-            }
-        });
+        buttonList.add(new GuiButton(1, 5, 25, 50, 20, "Back"));
+
         int width = Math.max(Minecraft.getMinecraft().fontRendererObj.getStringWidth("New Coords Display") + 10, resolution.getScaledWidth() / 9);
         for (DisplayItemType type : DisplayItemType.values()) {
             if (type.getName().toLowerCase().contains(param.trim().toLowerCase()) || param.isEmpty()) {
@@ -80,6 +92,15 @@ public class AddItemScreen extends GuiScreen {
         }
     }
 
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id) {
+            case 1:
+                Minecraft.getMinecraft().displayGuiScreen(new EditSubElementsGui(element, mod));
+                break;
+        }
+    }
+
     public void generateNew(DisplayItemType type) {
         element.getDisplayItems().add(IDisplayItem.parse(type, element.getDisplayItems().size(), new JsonObject()));
         Minecraft.getMinecraft().displayGuiScreen(new EditSubElementsGui(element, mod));
@@ -93,20 +114,6 @@ public class AddItemScreen extends GuiScreen {
 
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        textField.drawTextBox();
-        ScaledResolution current = ResolutionUtil.current();
-        double startX = current.getScaledWidth_double() / 6.0;
-        int y = 50;
-        ElementRenderer.draw((int) startX, y-10, "All display items");
-        for (DisplayItemType type : DisplayItemType.values()) {
-            ElementRenderer.draw((int) startX, y, type.getName());
-            y += 10;
-        }
-    }
-
-    @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         super.keyTyped(typedChar, keyCode);
         textField.textboxKeyTyped(typedChar, keyCode);
@@ -116,12 +123,5 @@ public class AddItemScreen extends GuiScreen {
     public void updateScreen() {
         super.updateScreen();
         textField.updateCursorCounter();
-    }
-
-    @Override
-    public void initGui() {
-
-        super.initGui();
-        generateButtons("");
     }
 }

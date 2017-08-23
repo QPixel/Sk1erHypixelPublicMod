@@ -2,6 +2,7 @@ package club.sk1er.mods.publicmod.display.displayitems;
 
 import club.sk1er.mods.publicmod.Sk1erPublicMod;
 import club.sk1er.mods.publicmod.display.ElementRenderer;
+
 import com.google.gson.JsonObject;
 
 import java.awt.*;
